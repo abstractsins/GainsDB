@@ -1,4 +1,7 @@
-import { useState } from "react";
+"use client";
+
+import ExercisesList from "@/app/components/ExercisesList";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function NewWorkout() {
   const [formData, setFormData] = useState({
@@ -9,11 +12,11 @@ export default function NewWorkout() {
     sets: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const res = await fetch("http://localhost:5000/api/log-workout", {
@@ -33,6 +36,9 @@ export default function NewWorkout() {
   return (
     <div>
       <h1>Log a New Workout</h1>
+
+      <ExercisesList></ExercisesList>
+
       <form onSubmit={handleSubmit}>
         <input type="date" name="date" value={formData.date} onChange={handleChange} required />
         <input type="text" name="machine" placeholder="Machine" value={formData.machine} onChange={handleChange} required />

@@ -19,3 +19,26 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.footer-link {
+  border-right: 1px solid white;
+  @apply flex items-center
+  justify-center
+  text-white 
+  hover:text-blue-300
+  hover:underline
+  text-[12pt]
+  md:text-[14pt]
+  lg:text-[16pt]
+  m-1
+  pr-6
+  pl-4
+  font-light
+}
+
+.dashboard-link {
+  @apply
+  text-[12pt]
+  md:text-[14pt]
+  lg:text-[16pt]
+}

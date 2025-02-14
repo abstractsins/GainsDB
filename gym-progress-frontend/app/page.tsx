@@ -1,49 +1,102 @@
 "use client"; // Required for state & interactivity in Next.js App Router
 
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
+import { Oswald } from "next/font/google";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+const oswald = Oswald({ 
+  subsets: ["latin"], 
+  weight: ["400", "700"],
+  display: "swap" 
+});
 
 export default function Home() {
-
+  
+  const { data: session, status } = useSession();
   const [showLogin, setShowLogin] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    const res = await signIn("credentials", {
+      username, 
+      password,
+      redirect: false,
+    })
+
+    if (res?.error) {
+      alert("Invalid login credentials");
+    } else {
+      console.log("🤔🤔🤔 Correct credentials")
+      console.log("🔍 New Session Data:", session);
+      router.push("/dashboard");
+    }
+  }
 
   function dropDown(show: boolean) {
-    document.getElementById('login-drawer')?.classList.add('exposed');
-    setShowLogin(show);
+    setShowLogin(show); // Only update state, let React handle class updates
+    if (usernameRef.current) {
+      usernameRef.current.focus(); // Auto-focus the input field
+    }
   }
 
-  function submitForm() {
-  }
+  const usernameRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setIsClient(true);
+    setShowLogin(false); 
+  }, []);
 
   return (
     <div className="splash-container">
       {/* POPUP CONTAINER */}
       <div className="popup">
-        <h1>Gym Progress Tracker</h1>
+        <h1 className={oswald.className}>Gym Progress Tracker</h1>
         <h2>Track your workouts and visualize progress!</h2>
       </div>
 
-      <div id="login-drawer" className="form-container">
-        <form method="get">
-        {/* SLIDING LOGIN FORM (Only Appears When Clicked) */}
-        <div className="login-fields-container">
-          <input className="login-field" type="text" placeholder="Username" required />
-          <input className="login-field" type="password" placeholder="Password" required />
-        </div>
+      {isClient && (
+        <div id="login-drawer" className={showLogin ? "form-container exposed" : "form-container"}>
+        <form method="get" onSubmit={handleLogin}>
+          {/* SLIDING LOGIN FORM (Only Appears When Clicked) */}
+          <div className="login-fields-container">
+            <input 
+              ref={usernameRef}
+              className="login-field" 
+              type="text" 
+              placeholder="Username" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} required 
+            />
+            <input 
+              className="login-field" 
+              type="password" 
+              placeholder="Password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} required 
+              />
+          </div>
           <div className="login-container">
             {showLogin ? (
-              <button type="submit" key="submit" className="submit-button" onClick={() => submitForm()}>SUBMIT</button>
-            ): (
-              <button 
-                className="login-button" 
+              <button type="submit" key="submit" className="submit-button">SUBMIT</button>
+            ) : (
+              <button
+                className="login-button"
                 key="login"
                 onClick={(e) => {
                   e.preventDefault();
                   dropDown(true)
-                }}>LOGIN</button>
+                }}>
+                  LOGIN
+              </button>
             )}
           </div>
         </form>
-      </div>
+      </div>)}
 
       <style jsx>{`
         .splash-container {
@@ -99,11 +152,12 @@ export default function Home() {
           width: 65%;
           border-radius: 0 0 10px 10px;
           transition: transform 500ms;
-          transform: translateY(-140);
+          transform: translateY(-60%);
         }
         div.form-container.exposed {
           transform: translateY(0);
         }
+        
         .login-form {
         }
 
@@ -218,6 +272,10 @@ export default function Home() {
             flex-direction: row;
             padding: 20px 0;
           }
+          div.form-container {
+            transform: translateY(-50%);
+          }
+
         }
 
 
