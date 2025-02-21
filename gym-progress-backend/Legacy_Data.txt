@@ -1,0 +1,818 @@
+"Gym"
+
+20240206
+
+Lat pull down
+90lb 4x15
+
+Converging shoulder press 
+70lb 4x5
+
+20240209
+
+Angled leg press unloaded 136lbs
+140lb 3x15
+
+Inner thigh
+100lb 3x15
+
+Outer thigh 
+100lb 3x15
+
+20240212
+
+Diverging seated row
+90lb 3x15
+
+Lat pull down
+90lb 3x15
+
+Lateral raise
+90lb 1x10
+70lb 1x10
+50lb 1x10
+60lb 1x10
+
+20240216
+
+Angled leg press unloaded 136lbs
+140lb 4x15
+
+Inner thigh
+105lb 3x15
+
+Outer thigh 
+105lb 3x15
+
+20240220
+
+Diverging Seated Row
+95lb 3x15
+
+Lat pulldown
+90lb 3x15
+
+Lat raise
+95lb 1x10
+75lb 1x10
+55lb 1x10
+65lb 1x10
+
+20240225
+
+Angled leg press unloaded 136lbs
+160lb 6x10
+
+Inner Thigh
+110lb 3x15
+
+Outer thigh
+110lb 3x15
+
+20240228
+
+Diverging seated row
+100lb 3x15
+
+Lat pull down
+90lb 3x15
+
+Lat raise
+95lb 1x10
+75lb 1x10
+55lb 1x10
+65lb 1x10
+
+20240304
+
+Angled leg press unloaded 136lbs
+160lb 3x10
+160lb 2x15
+
+Outer Thigh
+110lb 4x15
+
+Inner Thigh
+110lb 4x15
+
+20240308
+
+Diverging seated row 
+105lb 3x15
+
+Lat pull down
+90lb 3x15
+
+Lat raise 
+95lb 1x10
+75lb 1x10
+55lb 1x10
+65lb 1x10
+
+20240313
+
+Angled leg press unloaded 136lbs
+170lb 4x15
+
+Inner thigh
+115lb 3x15
+
+Outer thigh
+115lb 3x15
+
+20240315
+
+Diverging seated row 
+110lb 3x15
+
+Lat pull down 
+105lb 2x10
+90lb 2x15 
+90lb 1x10
+
+20240326
+
+Angled leg press unloaded 136lbs
+170lb 4x15
+
+Outer thigh
+115lb 3x15
+
+Inner thigh
+115lb 3x15
+
+20240410
+
+Diverging seated row 
+115lb 3x15
+
+Converging chest press 
+95lb 1x14
+90lb 1x4
+80lb 1x3
+60lb 1x3
+
+Lat pulldown 
+90lb 3x15
+
+20240416
+
+Angled leg press unloaded 136lbs
+180lb 4x15
+
+Outer thigh
+120lb 3x15
+
+Inner thigh
+120lb 3x15
+
+20240422
+
+Diverging seated row 
+120lb 3x15
+
+Lat pulldown 
+90lb 3x15
+
+Converging chest press 
+90lb 1x10
+80lb 1x10
+60lb 1x5
+
+20240429
+
+Angled leg press unloaded 136lbs
+180lb 4x15
+
+Inner thigh
+125lb 3x15
+
+Outer thigh
+125lb 3x15
+
+20240503
+
+Diverging seated row 
+125lb 3x15
+
+Biceps Curl
+60lb 1x5
+40lb 1x10
+30lb 1x10
+
+Converging chest press 
+95lb 1x10
+85lb 1x6
+45lb 1x15
+
+20240510
+
+Angled leg press unloaded 136lbs
+190lb 4x15
+
+Inner thigh
+135lb 3x15
+
+Outer thigh
+135lb 3x15
+
+20240602
+
+Angled leg press unloaded 136lbs
+190lb 4x15
+
+Inner thigh
+135lb 3x15
+
+Outer thigh
+135lb 3x15
+
+20240608
+
+Diverging seated row 
+125lb 3x15
+
+Converging chest press 
+95lb 1x10
+85lb 1x10
+45lb 1x15
+
+Triceps extension
+60lb 1x15
+50lb 1x15
+40lb 1x15
+
+20240615
+
+Diverging seated row 
+130lb 3x15
+
+Triceps extension 
+60lb 1x15
+50lb 1x15
+40lb 1x15
+30lb 1x15
+
+Converging chest press
+100lb 1x10
+90lb 1x10
+50lb 2x10
+
+20240622
+
+Diverging seated row 
+135lb 3x15
+
+Triceps extension 
+65lb 2x15
+45lb 1x15
+55lb 1x15
+
+Converging chest press 
+105lb 1x5
+95lb 1x10
+60lb  2x10
+
+20240629
+
+Triceps extension 
+70lb 2x15
+50lb 1x15
+60lb 1x15
+
+Converging chest press 
+110lb 1x5
+100lb 1x10
+65lb 2x10
+
+Diverging seated row 
+140lb 3x15
+
+20240706
+
+Diverging seated row 
+145lb 3x15
+
+Triceps Extension 
+75lb 2x15
+60lb 2x15
+
+Converging chest press
+115lb 1x5
+105lb 1x10
+70lb 2x10
+
+20240710
+
+Biceps Curl
+70lb 1x10
+50lb 1x15
+50lb 1x10
+40lb 1x10
+
+Lateral pulldown 
+105lb 3x15
+75lb 1x15
+
+Converging shoulder press
+80lb 2x5
+
+20240714
+
+Triceps extension 
+80lb 2x15
+65lb 2x15
+
+Rotary torso
+40lb 2x15
+50lb 2x15
+60lb 2x15
+
+Converging shoulder press 
+80lb 4x5
+
+Ab Coaster
+1lb 4x15
+
+20240717
+
+Lateral pulldown 
+105lb 4x15
+
+Biceps Curl 
+75lb 2x5
+50lb 3x10
+40lb 1x9
+
+20240721
+
+Diverging seated row
+150lb 3x15
+150lb 1x10
+
+Triceps extension 
+85lb 1x15
+80lb 1x10
+80lb 1x5
+60lb 2x20
+
+20240728
+
+Diverging seated row 
+155lb 3x15
+155lb 1x10
+
+Triceps extension 
+85lb 2x15
+65lb 2x20
+
+20240803
+
+Lateral pulldown 
+105lb 4x15
+105lb 1x5
+
+Converging shoulder press 
+80lb 3x10 
+
+20240811
+
+Triceps extension 
+90lb 1x14
+85lb 1x14
+70lb 1x16
+60lb 1x20
+
+Converging shoulder press 
+90lb 1x8
+80lb 1x10
+70lb 1x12
+
+Rotary torso 
+100lb 2x15
+
+20240822
+Biceps Curl 
+80lb 2x5
+55lb 1x10
+50lb 2x20
+40lb 1x10
+
+20240829
+Biceps Curl 
+80lb 2x5
+50lb 3x10
+40lb 2x10
+20lb 1x10
+
+Converging shoulder press 
+90lb 1x10
+80lb 1x10
+70lb 1x13
+
+20240902
+
+Triceps extension 
+85lb 1x15
+90lb 1x8
+70lb 1x15
+60lb 2x15
+65lb 1x15
+
+Lateral pulldown 
+105lb 3x15
+
+20240906
+
+Biceps Curl 
+85lb 2x5
+55lb 3x10
+45lb 2x10
+25lb 1x10
+
+Converging shoulder press 
+90lb 1x15
+80lb 1x12
+70lb 1x10
+
+20240908
+
+Outer thigh 
+135lb 4x15
+
+Inner thigh
+135lb 4x15
+
+Angled leg press unloaded 136lbs 
+200lb 4x15
+
+20240913
+
+Diverging seated row 
+160lb 3x15
+160lb 1x10
+
+Converging chest press 
+115lb 1x7
+105lb 1x10
+70lb 2x10
+
+20240915
+
+Converging shoulder press 
+95lb 1x15
+85lb 1x13
+75lb 1x12
+
+Biceps Curl 
+90lb 2x5
+60lb 3x10
+50lb 1x10
+
+20240918
+
+Converging chest press 
+115lb 1x8
+105lb 1x10
+70lb 1x13
+70lb 1x12
+
+Triceps extension 
+90lb 1x10
+85lb 1x15
+70lb 1x15
+65lb 1x15
+
+20240921
+
+Inner thigh 
+140lb 4x15
+
+Angled leg press unloaded 136lbs 
+210lb 4x15
+
+Outer thigh 
+140lb 4x15
+
+20240925
+
+Biceps Curl 
+80lb 3x10
+60lb 1x15
+50lb 1x15
+
+Converging shoulder press 
+95lb 1x15
+85lb 1x15
+75lb 1x15
+
+20240930
+
+Inner thigh 
+150lb 4x15
+
+Outer thigh
+150lb 4x15
+
+20241002
+
+Converging chest press 
+115lb 1x9
+105lb 1x10
+70lb 1x15
+70lb 1x13
+
+20241004
+
+Converging shoulder press 
+100lb 1x15
+90lb 1x15
+80lb 1x15
+
+20241006
+
+Biceps Curl
+80lb 2x15
+60lb 2x15
+60lb 1x5
+
+20241009
+
+Triceps extension 
+90lb 2x15
+80lb 2x15
+70lb 2x15
+
+20241017
+
+Lateral pulldown 
+120lb 2x15
+105lb 2x15
+135lb 1x5
+
+20241020
+
+Converging shoulder press 
+105lb 1x15
+95lb 1x12
+85lb 1x17
+75lb 1x10
+
+Biceps Curl
+85lb 1x10
+80lb 1x10
+75lb 1x10
+70lb 2x15
+60lb 1x2
+
+20241030
+
+Diverging seated row 
+160lb 4x15
+
+Converging chest press 
+115lb 1x10
+105lb 1x10
+80lb 2x15
+
+20241103
+
+Converging shoulder press 
+105lb 1x15
+95lb 1x15
+85lb 1x17
+75lb 1x15
+
+Biceps Curl
+85lb 1x10
+80lb 1x15
+80lb 1x12
+75lb 1x12
+
+20241106
+
+Triceps extension 
+90lb 2x15
+80lb 2x15
+
+20241109
+
+Outer thigh
+160lb 4x15
+
+Inner thigh
+160lb 4x15
+
+20241110
+
+Lat raise
+95lb 1x15
+90lb 1x15
+85lb 2x15
+
+Biceps Curl
+85lb 1x15
+80lb 2x15
+75lb 1x15
+
+20241116
+
+Converging chest press 
+120lb 1x9
+110lb 1x8
+85lb 2x11
+
+Rear delt
+80lb 3x15
+
+20241121
+
+Triceps extension 
+95lb 2x15
+85lb 2x15
+
+Rear delt 
+90lb 1x15
+80lb 1x15
+85lb 1x15
+
+20241127
+
+Rear delt 
+95lb 1x15
+90lb 1x15
+85lb 1x15
+
+Converging chest press 
+120lb 1x10
+110lb 1x9
+85lb 2x12
+
+20241209
+
+Triceps extension 
+100lb 2x15
+90lb 1x10
+
+Rotary torso 
+110lb 2x15
+
+Rear delt 
+100lb 2x15
+90lb 1x10
+
+20241215
+
+Lateral pulldown 
+135lb 4x10
+120lb 1x10
+
+20241217
+
+Biceps Curl 
+85lb 1x15
+85lb 1x10
+70lb 1x14
+60lb 1x12
+
+Converging shoulder press 
+105lb 1x15
+95lb 1x16
+85lb 1x17
+75lb 1x15
+
+20241227
+
+Converging shoulder press 
+105lb 1x16
+100lb 1x15
+80lb 2x15
+
+20241229
+
+Diverging seated row 
+165lb 4x15
+
+20250104
+
+Triceps extension 
+100lb 2x15
+80lb 1x15
+80lb 1x18
+
+Rear delt 
+95lb 3x15
+
+20250110
+
+Converging chest press 
+120lb 1x11
+110lb 1x10
+85lb 1x13
+85lb 1x12
+
+Rear delt 
+100lb 3x15
+
+20250112
+
+Converging shoulder press 
+110lb 1x16
+100lb 1x14
+90lb 1x12
+80lb 1x15
+
+20250117
+
+Converging chest press 
+120lb 1x12
+110lb 1x11
+85lb 1x14
+85lb 1x13
+
+Lat raise
+100lb 1x15
+90lb 2x15
+85lb 1x15
+
+20250122
+
+Converging chest press 
+120lb 1x13
+110lb 1x11
+85lb 1x15
+85lb 1x13
+
+Rear delt 
+105lb 3x15
+
+20250125
+
+Diverging seated row 
+170lb 4x15
+
+Converging shoulder press 
+115lb 1x15
+105lb 1x15
+95lb 1x13
+85lb 1x15
+
+20250128
+
+Converging chest press 
+125lb 1x12
+65lb 1x5
+115lb 1x11
+90lb 1x15
+90lb 1x12
+
+Rear delt 
+110lb 3x15
+
+20250131
+
+Triceps extension 
+100lb 2x15
+90lb 2x15
+
+Biceps Curl 
+90lb 1x15
+90lb 1x12
+80lb 1x12
+70lb 1x15
+
+20250205
+
+Lateral pulldown 
+150lb 1x15
+135lb 2x15
+120lb 1x10
+
+Lat raise
+100lb 2x15
+90lb 2x15
+
+90lb 2x15
+85lb 1x15
+
+20250209
+
+Converging chest press 
+125lb 1x13
+65lb 1x7
+115lb 1x10
+90lb 1x15
+90lb 1x13
+
+Diverging seated row 
+175lb 4x15
+
+20250215
+
+Diverging seated row 
+180lb 4x15
+
+Converging shoulder press
+120lb 2x15
+110lb 1x9
+95lb 1x15

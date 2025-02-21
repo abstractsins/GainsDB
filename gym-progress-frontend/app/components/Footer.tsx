@@ -1,6 +1,7 @@
 "use client";
 
 import { Roboto_Slab } from "next/font/google"
+import { Oswald } from "next/font/google";
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react";
 
@@ -10,6 +11,12 @@ const robotoSlab = Roboto_Slab({
     weight: ["400", "700"],
     display: "swap"
 });
+
+const oswald = Oswald({
+    subsets: ["latin"],
+    weight: ["400", "700"],
+    display: "swap"
+})
 
 export default function Footer() {
 
@@ -32,26 +39,28 @@ export default function Footer() {
                 (
                     <button
                         onClick={() => signOut({ callbackUrl: "/" })}
-                        className="footer-link"
+                        className={`footer-link ${oswald.className}`}
                     >
                         Logout
                     </button>
                 ) : (
                     <Link
                         href="/register"
-                        className="footer-link"
+                        className={`footer-link ${oswald.className}`}
                     >
                         Register
                     </Link>
                 )}
             <Link
                 href="/about"
-                className="footer-link"
+                className={`footer-link ${oswald.className}`}
             >
                 About
             </Link>
-            <a
+            <Link
                 href="https://divs4u.com"
+                target="_blank" 
+                rel="noopener noreferrer"
                 className={`
                     ${robotoSlab.className} 
                     flex
@@ -67,9 +76,10 @@ export default function Footer() {
                     md:text-[20pt]
                     lg:text-[22pt]
                     xl:text-[24pt]
-                `}>
+                `}
+            >
                 Divs4U
-            </a>
+            </Link>
         </footer>
     )
 }

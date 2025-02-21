@@ -20,6 +20,11 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+
+
+
+  
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     const res = await signIn("credentials", {
@@ -30,12 +35,29 @@ export default function Home() {
 
     if (res?.error) {
       alert("Invalid login credentials");
-    } else {
-      console.log("🤔🤔🤔 Correct credentials")
-      console.log("🔍 New Session Data:", session);
-      router.push("/dashboard");
+      return;
+    } 
+
+    const session = await fetch("/api/auth/session").then(res => res.json());
+
+    if (session?.user.id) {
+      localStorage.setItem("userId", session.user.id);
     }
+
+    if (session?.token) {
+      localStorage.setItem("token", session.token); // ✅ Store token in localStorage
+    }
+  
+    console.log("Going to /dashboard");
+    
+    router.refresh(); // Force session update
+    router.push("/dashboard");
   }
+
+
+
+
+
 
   function dropDown(show: boolean) {
     setShowLogin(show); // Only update state, let React handle class updates
@@ -56,7 +78,7 @@ export default function Home() {
       {/* POPUP CONTAINER */}
       <div className="popup">
         <h1 className={oswald.className}>Gym Progress Tracker</h1>
-        <h2>Track your workouts and visualize progress!</h2>
+        <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>
       </div>
 
       {isClient && (
@@ -115,6 +137,7 @@ export default function Home() {
           border-radius: 10px 10px 0 0;
           background-color: #136;
           min-height: 25%;
+          max-height: 40%;
           width: 65%;
           display: flex;
           flex-direction: column;

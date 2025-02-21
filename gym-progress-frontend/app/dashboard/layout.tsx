@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { Oswald } from "next/font/google";
 import Navbar from "@/app/components/Navbar";
 import ClientLoader from "../components/ClientLoader";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const oswald = Oswald({ 
-  subsets: ["latin"], 
+const oswald = Oswald({
+  subsets: ["latin"],
   weight: ["400", "700"],
-  display: "swap" 
+  display: "swap"
 });
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -22,9 +22,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     console.log("🔍 Debug - Session Status:", status);
     console.log("🔍 Debug - Session Data:", session);
+    
+    if (status === "authenticated" && !session) {
+      router.push("/");
+    }
 
     if (status === "loading") {
-      return; // ✅ Do nothing while loading
+      return;
     }
 
     if (status === "unauthenticated" || !session?.user) {
@@ -36,7 +40,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, [status, session, router]);
 
   if (status === "loading" || isChecking) {
-    return <p>Checking authentication...</p>; // ✅ Prevents premature redirects
+    return <p>Checking authentication...</p>;
   }
 
   return (
@@ -48,6 +52,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/dashboard/new-workout" className="dashboard-link hover:bg-gray-700 p-2 rounded">💪 Log Workout</Link>
           <Link href="/dashboard/history" className="dashboard-link hover:bg-gray-700 p-2 rounded">📜 Workout History</Link>
           <Link href="/dashboard/exercises" className="dashboard-link hover:bg-gray-700 p-2 rounded">🏋️‍♂️ Exercises</Link>
+          <Link href="/dashboard/charts" className="dashboard-link hover:bg-gray-700 p-2 rounded">📈 Charts</Link>
           <Link href="/dashboard/settings" className="dashboard-link hover:bg-gray-700 p-2 rounded">⚙️ Settings</Link>
         </nav>
       </aside>
@@ -58,7 +63,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <Navbar></Navbar>
         <ClientLoader>
           <main className="p-6 overflow-auto">{children}</main>
-        </ClientLoader>      
+        </ClientLoader>
       </div>
     </div>
   );
