@@ -108,6 +108,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
 
             try {
                 const response = await fetch(`${server}/api/user/${userId}/exercises/${exercise.id}/latest-workout`);
+                console.log(userId);
                 if (!response.ok) throw new Error("Failed to fetch workout data");
 
                 const data = await response.json();

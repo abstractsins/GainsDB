@@ -1,7 +1,7 @@
 import pool from './src/db.js';
 import fs from 'fs';
 
-const USER_ID = 5; // Replace with actual user ID
+const USER_ID = 3; // Replace with actual user ID
 
 // Function to parse workout data from text
 function parseWorkoutData(data) {
@@ -88,29 +88,60 @@ async function getOrCreateWorkout(userId, workoutDate) {
 }
 
 // Function to get or create an exercise entry
-async function getOrCreateExercise(exerciseName) {
+async function getOrCreateExercise(userId, exerciseName) {
     const client = await pool.connect();
     try {
-        const res = await client.query(
-            'SELECT id FROM exercises WHERE name = $1',
-            [exerciseName]
+        const normalizedName = exerciseName.trim().toLowerCase();
+
+        // Step 1: Check if the exercise exists
+        let exerciseResult = await client.query(
+            `SELECT id FROM exercises WHERE LOWER(name) = LOWER($1)`,
+            [normalizedName]
         );
-        if (res.rows.length > 0) {
-            return res.rows[0].id;
-        } else {
-            const insertRes = await client.query(
-                'INSERT INTO exercises (name) VALUES ($1) RETURNING id',
-                [exerciseName]
+
+        // Step 2: If it doesn’t exist, insert it
+        if (exerciseResult.rows.length === 0) {
+            exerciseResult = await client.query(
+                `INSERT INTO exercises (name, created_by) 
+                 VALUES ($1, $2) 
+                 ON CONFLICT (LOWER(name)) DO NOTHING 
+                 RETURNING id`,
+                [normalizedName, userId]
             );
-            return insertRes.rows[0].id;
+
+            // If insert didn't return an ID, fetch the existing ID
+            if (exerciseResult.rows.length === 0) {
+                exerciseResult = await client.query(
+                    `SELECT id FROM exercises WHERE LOWER(name) = LOWER($1)`,
+                    [normalizedName]
+                );
+            }
         }
+
+        // Ensure an ID was found before proceeding
+        if (!exerciseResult.rows.length) {
+            throw new Error(`Failed to find or insert exercise: ${normalizedName}`);
+        }
+
+        const exerciseId = exerciseResult.rows[0].id;
+
+        // Step 3: Link the user to the exercise
+        await client.query(
+            `INSERT INTO user_exercises (user_id, exercise_id) 
+             VALUES ($1, $2) 
+             ON CONFLICT (user_id, exercise_id) DO NOTHING`,
+            [userId, exerciseId]
+        );
+
+        return exerciseId;
     } catch (err) {
-        console.error('Error inserting exercise:', err);
+        console.error("Error inserting or retrieving exercise:", err);
         throw err;
     } finally {
         client.release();
     }
 }
+
 
 // Function to get or create a workout-exercise link
 async function getOrCreateWorkoutExercise(workoutId, exerciseId) {
@@ -179,7 +210,7 @@ async function insertWorkoutData(records) {
             if (exerciseCache.has(record.exercise)) {
                 exerciseId = exerciseCache.get(record.exercise);
             } else {
-                exerciseId = await getOrCreateExercise(record.exercise);
+                exerciseId = await getOrCreateExercise(record.user_id, record.exercise);
                 exerciseCache.set(record.exercise, exerciseId);
             }
 
@@ -206,6 +237,7 @@ async function insertWorkoutData(records) {
     }
 }
 
+
 async function createTablesIfNotExist() {
     const client = await pool.connect();
     try {
@@ -227,7 +259,15 @@ async function createTablesIfNotExist() {
 
             CREATE TABLE IF NOT EXISTS exercises (
                 id SERIAL PRIMARY KEY,
-                name VARCHAR(100) UNIQUE NOT NULL
+                name VARCHAR(100) UNIQUE NOT NULL,
+                created_by INT REFERENCES users(id) ON DELETE CASCADE
+            );
+
+            CREATE TABLE IF NOT EXISTS user_exercises (
+                id SERIAL PRIMARY KEY,
+                user_id INT REFERENCES users(id) ON DELETE CASCADE,
+                exercise_id INT REFERENCES exercises(id) ON DELETE CASCADE,
+                UNIQUE(user_id, exercise_id) -- ✅ Prevents duplicate links
             );
 
             CREATE TABLE IF NOT EXISTS workout_exercises (

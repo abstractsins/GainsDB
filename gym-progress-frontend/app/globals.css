@@ -459,6 +459,11 @@ div.exe-card-top {
   max-height: 164px;
 }
 
+div.exe-card-left {
+  width: 264px;
+}
+
+
 li.exercise-card.active.expand2 {
   height: 630px;
 }
@@ -466,6 +471,7 @@ li.exercise-card.active.expand2 {
 div.expanded-lvl-1 {
   min-width: 50%;
   max-width: 75%;
+  padding-left: 15px;
 }
 
 div.expanded-lvl-1 ul {}
@@ -653,10 +659,10 @@ div.expansion-button-container {
 
 button.click-for-more {
   background-color: var(--darkGray);
-  width: 150px;
-  font-size: 16pt;
+  width: 120px;
+  font-size: 12pt;
   border-radius: 10px;
-  padding: 10px 20px;
+  padding: 5px;
   transition: border 300ms ease;
   border: 2px solid transparent;
   color: whitesmoke;
