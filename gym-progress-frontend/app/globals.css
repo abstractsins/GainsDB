@@ -79,6 +79,7 @@ div.popup {
   position: absolute;
   height: 100%;
   justify-content: space-between;
+  z-index: 100;
 }
 
 div.popup-footer {
@@ -129,6 +130,10 @@ footer.footer {
   bottom: 0;
   right: 20px;
 }
+
+
+
+
 
 
 
@@ -427,18 +432,15 @@ div.exercises-legend {
   height: 100px;
 }
 
-.exercise-card {
+li.exercise-card {
   display: flex;
-  position: sticky;
   flex-direction: column;
   justify-content: space-between;
   padding: 15px;
   border-radius: 10px;
-  /* border: 3px solid whitesmoke; */
   width: 300px;
+  height: 200px;
   margin: 15px;
-  height: 150px;
-  /* background-color: #216869; */
   cursor: pointer;
   border: 3px solid transparent;
   transition: border 300ms ease,
@@ -446,11 +448,52 @@ div.exercises-legend {
               height 300ms ease;
 }
 
-.exercise-card.active {
+li.exercise-card.active {
   width: 630px;
-  height: 330px;
+  /* height: 330px; */
+  /* flex-direction: row; */
   z-index: 10;
 }
+
+div.exe-card-top {
+  max-height: 164px;
+}
+
+li.exercise-card.active.expand2 {
+  height: 630px;
+}
+
+div.expanded-lvl-1 {
+  min-width: 50%;
+  max-width: 75%;
+}
+
+div.expanded-lvl-1 ul {}
+
+div.expanded-lvl-1 li {
+  width: fit-content;
+}
+
+div.lvl-1-exe-data {
+  background-color: var(--darkGray);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  /* max-height: 100%; */
+  height: 100%;
+  width: auto;
+  font-size: 12pt;
+}
+
+div.lvl-1-exe-data span {
+  letter-spacing: 1.25;
+}
+
 
 .exercise-placeholder {
   position: fixed;
@@ -471,9 +514,13 @@ div.exercises-legend {
 }
 
 .exercise-card:active {
-  border: 3px solid gray;
-  background-color: whitesmoke;
-  color: black;
+  /* border: 3px solid gray; */
+  /* background-color: whitesmoke; */
+  /* color: black; */
+}
+
+.exercise-card.active:hover {
+  border-color: transparent;
 }
 
 .exercises-ul {
@@ -483,9 +530,16 @@ div.exercises-legend {
 }
 
 h2.exercise-list {
-  font-size: 22pt;
+  font-size: 28pt;
   font-family: "oswald";
   line-height: 1.25;
+}
+
+div.exe-card-left {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 input.exe-search {
@@ -591,7 +645,53 @@ input.new-exercise-name {
   border-radius: 7px;
 }
 
+div.expansion-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+button.click-for-more {
+  background-color: var(--darkGray);
+  width: 150px;
+  font-size: 16pt;
+  border-radius: 10px;
+  padding: 10px 20px;
+  transition: border 300ms ease;
+  border: 2px solid transparent;
+}
+
+button.click-for-more:hover {
+  border: 2px solid white;
+}
+
+div.exe-card-bottom{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+}
+
+div.exe-card-bottom-body {
+  /* padding: 20px; */
+  height: 90%;
+  width: 100%;
+}
+
+div.greater-chart-area {
+  background-color: var(--darkGray);
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+div.exe-card-top {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+}
 
 
 

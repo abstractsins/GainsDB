@@ -109,6 +109,47 @@ app.get("/api/user/:userId/exercises", authMiddleware, async (req, res) => {
 
 
 
+app.get("/api/user/:userId/exercises/:exerciseId/latest-workout", async (req, res) => {
+  try {
+      const { exerciseId } = req.params;
+
+      const query = `
+          WITH RecentWorkout AS (
+              SELECT we.id AS workout_exercise_id, w.id AS workout_id, w.workout_date, w.user_id
+              FROM workout_exercises we
+              JOIN workouts w ON we.workout_id = w.id
+              WHERE we.exercise_id = $1
+              ORDER BY w.workout_date DESC
+              LIMIT 1
+          )
+          SELECT 
+              rw.workout_id,
+              rw.workout_date,
+              rw.user_id,
+              s.set_order,
+              s.weight,
+              s.reps
+          FROM RecentWorkout rw
+          JOIN sets s ON rw.workout_exercise_id = s.workout_exercise_id
+          ORDER BY s.set_order;
+      `;
+
+      const { rows } = await pool.query(query, [exerciseId]);
+
+      if (rows.length === 0) {
+          return res.status(404).json({ error: "No recent workout found for this exercise." });
+      }
+
+      console.dir(rows) ;
+
+      res.json(rows);
+  } catch (error) {
+      console.error("Error fetching recent workout:", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 app.get("/api/user/:userId/history", authMiddleware, async (req, res) => {
   console.log(`:userId/history get request`);
   const { userId } = req.params;

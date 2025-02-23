@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import ExerciseCard from "./ExerciseCard";
 
 interface ExerciseCard {
+  iid: number;
   name: string;
   category: string;
   last_logged_date: string;
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise }) => {
+
+  const [expandedExerciseId, setExpandedExerciseId] = useState<number | null>(null);
 
   return (
     <ul className="exercises-ul">
@@ -29,7 +32,12 @@ const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise }) => {
       {/* Map each exercise to an ExerciseCard */}
       {exercises.length ? (
         exercises.map((exercise, index) => (
-          <ExerciseCard key={index} exercise={exercise} />
+          <ExerciseCard 
+            key={index} 
+            exercise={exercise} 
+            isExpanded={expandedExerciseId === exercise.id}
+            setExpandedExerciseId={setExpandedExerciseId}
+          />
         ))
       ) : (
         <h2>No exercises found!</h2>
