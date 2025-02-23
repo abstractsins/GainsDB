@@ -11,9 +11,10 @@ interface ExerciseCard {
 interface Props {
   exercises: ExerciseCard[];
   onNewExercise: () => void;
+  resetInnerExpansion: boolean;
 }
 
-const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise }) => {
+const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise, resetInnerExpansion }) => {
 
   const [expandedExerciseId, setExpandedExerciseId] = useState<number | null>(null);
 
@@ -37,6 +38,7 @@ const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise }) => {
             exercise={exercise} 
             isExpanded={expandedExerciseId === exercise.id}
             setExpandedExerciseId={setExpandedExerciseId}
+            resetInnerExpansion={resetInnerExpansion}
           />
         ))
       ) : (

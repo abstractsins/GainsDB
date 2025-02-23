@@ -659,6 +659,7 @@ button.click-for-more {
   padding: 10px 20px;
   transition: border 300ms ease;
   border: 2px solid transparent;
+  color: whitesmoke;
 }
 
 button.click-for-more:hover {

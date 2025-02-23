@@ -28,6 +28,8 @@ export default function Exercises() {
   const userId = session?.user?.id || localStorage.getItem("userId");
   const [dataUpdated, setDataUpdated] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [resetInnerExpansion, setResetInnerExpansion] = useState(false);
+  const [expandedExerciseId, setExpandedExerciseId] = useState(null);
 
   const refreshContent = () => setDataUpdated(prev => prev + 1);
 
@@ -46,6 +48,10 @@ export default function Exercises() {
       return;
     }
 
+    document.querySelectorAll(".exercise-card.active").forEach((el) => {
+      el.classList.remove("active");
+    });
+
     if (normalizedCategory === 'all') {
       setFilteredExercises(exercises);
       setSelectedCategory(null);
@@ -56,6 +62,15 @@ export default function Exercises() {
         : filteredByCategory;
       setFilteredExercises(filteredBySearch);
     }
+
+
+    setExpandedExerciseId(null);
+    setResetInnerExpansion(true);
+
+    setTimeout(() => {
+      setResetInnerExpansion(false); // Allow expansion again after a short delay
+    }, 100);
+
 
   };
 
@@ -110,9 +125,6 @@ export default function Exercises() {
     }
   };
 
-  const toTitleCase = (text: string) => text.replace(/\b\w/g, (char) => char.toUpperCase());
-
-
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.toLowerCase();
@@ -143,6 +155,12 @@ export default function Exercises() {
     refreshContent();
   }
 
+  const handleResetExpansions = () => {
+    setExpandedExerciseId(null);
+    setResetInnerExpansion(true);
+    setTimeout(() => setResetInnerExpansion(false), 100);
+  };
+
   return (
     <div>
 
@@ -163,11 +181,18 @@ export default function Exercises() {
         ></input>
 
       </div>
-      <ExercisesLegend onCategorySelect={handleCategorySelect} />
+      <ExercisesLegend
+        onCategorySelect={handleCategorySelect}
+        onResetExpansion={handleResetExpansions}
+      />
       {loading ? (
         <Loading />
       ) : (
-        <ExerciseCards exercises={filteredExercises} onNewExercise={newExerciseHandler} />
+        <ExerciseCards
+          exercises={filteredExercises}
+          onNewExercise={newExerciseHandler}
+          resetInnerExpansion={resetInnerExpansion}
+        />
       )}
 
       {popupVisible && <NewExercisePopup visible={popupVisible} onClose={closeFunctions} />}
