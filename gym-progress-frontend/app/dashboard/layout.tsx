@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Oswald } from "next/font/google";
+import { Tourney } from "next/font/google";
 import Navbar from "@/app/components/Navbar";
 import ClientLoader from "../components/ClientLoader";
 import { useRouter } from "next/navigation";
@@ -11,6 +12,12 @@ import { useEffect, useState } from "react";
 const oswald = Oswald({
   subsets: ["latin"],
   weight: ["400", "700"],
+  display: "swap"
+});
+
+const tourney = Tourney({
+  subsets: ["latin"],
+  weight: ["100", "400", "700"],
   display: "swap"
 });
 
@@ -47,7 +54,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="flex h-screen">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white p-5 flex flex-col space-y-4">
-        <h2 className={`${oswald.className} text-[12pt] sm:text-[14pt] md:text-[18pt] lg:text-[22pt] font-bold`}>Gym Tracker</h2>
+        <h2 className={`${tourney.className} text-[12pt] sm:text-[14pt] md:text-[18pt] lg:text-[22pt] xl:text-[28pt]`}>GainsDB</h2>
         <nav className="flex flex-col space-y-2">
           <Link href="/dashboard/new-workout" className="dashboard-link hover:bg-gray-700 p-2 rounded">💪 Log Workout</Link>
           <Link href="/dashboard/history" className="dashboard-link hover:bg-gray-700 p-2 rounded">📜 Workout History</Link>

@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import ExercisesLegend from "@/app/components/ExercisesLegend";
 import NewExerciseButton from "@/app/components/NewExerciseButton";
 import NewExercisePopup from "@/app/components/NewExercisePopup";
+import ExerciseCards from "@/app/components/ExerciseCards";
 import normalizeDate from "@/app/components/normalizeDate";
 import Loading from "./loading";
 
@@ -25,20 +26,20 @@ export default function Exercises() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [popupVisible, setPopupVisible] = useState<boolean>(false);
   const userId = session?.user?.id || localStorage.getItem("userId");
-  const [dataUpdated, setDataUpdated] = useState(0); 
+  const [dataUpdated, setDataUpdated] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
 
   const refreshContent = () => setDataUpdated(prev => prev + 1);
 
   const handleCategorySelect = (category: string) => {
     const normalizedCategory = category.toLowerCase().replace(/\s/g, "-");
-  
+
     setSelectedCategory(prev => prev === normalizedCategory ? null : normalizedCategory);
-    
+
     console.log("Selected Category:", normalizedCategory);
-  
+
     if (selectedCategory === normalizedCategory) {
-      setFilteredExercises(searchTerm 
+      setFilteredExercises(searchTerm
         ? exercises.filter(exe => exe.name.toLowerCase().includes(searchTerm))
         : exercises
       );
@@ -48,16 +49,16 @@ export default function Exercises() {
     if (normalizedCategory === 'all') {
       setFilteredExercises(exercises);
       setSelectedCategory(null);
-    } else { 
+    } else {
       const filteredByCategory = exercises.filter(exe => exe.category === normalizedCategory);
       const filteredBySearch = searchTerm
-      ? filteredByCategory.filter(exe => exe.name.toLowerCase().includes(searchTerm))
-      : filteredByCategory; 
+        ? filteredByCategory.filter(exe => exe.name.toLowerCase().includes(searchTerm))
+        : filteredByCategory;
       setFilteredExercises(filteredBySearch);
     }
-  
+
   };
-  
+
 
   useEffect(() => {
     if (status === "authenticated" && session?.user?.authToken) {
@@ -69,9 +70,9 @@ export default function Exercises() {
 
   const fetchExercises = async () => {
     if (status === "loading") return;
-    
+
     setLoading(true);
-    
+
     const token = session?.user?.authToken || localStorage.getItem("token");
 
     if (!token) {
@@ -127,7 +128,7 @@ export default function Exercises() {
       : filteredBySearch;
 
     const sortedExercises = [...filteredByCategory].sort((a, b) =>
-        a.name.localeCompare(b.name)
+      a.name.localeCompare(b.name)
     );
 
     setFilteredExercises(sortedExercises);
@@ -138,7 +139,7 @@ export default function Exercises() {
   }
 
   const closeFunctions = () => {
-    setPopupVisible(false); 
+    setPopupVisible(false);
     refreshContent();
   }
 
@@ -163,32 +164,13 @@ export default function Exercises() {
 
       </div>
       <ExercisesLegend onCategorySelect={handleCategorySelect} />
-      { loading 
-      ? <Loading />
-      : (<ul className="exercises-ul" key={dataUpdated}>
-        <li 
-          className="exercise-card"
-          id="add-exercise-card"
-          onClick={newExerciseHandler}
-          >
-          <NewExerciseButton />
-        </li>
+      {loading ? (
+        <Loading />
+      ) : (
+        <ExerciseCards exercises={filteredExercises} onNewExercise={newExerciseHandler} />
+      )}
 
-        {filteredExercises.length ? filteredExercises.map((exercise, index) => (
-          <li
-          key={index}
-          className={`${exercise.category} exercise-card text-white`}
-          >
-            <h2 className="exercise-list">{toTitleCase(exercise.name)}</h2>
-            <span className="text-[12pt] font-thin">Last logged: {normalizeDate(exercise['last_logged_date'], true)}</span>
-          </li>
-        )) : (
-          <h2>No exercises found!</h2>
-        )}
-      </ul>)
-      }
-
-      {popupVisible && <NewExercisePopup visible={popupVisible} onClose={closeFunctions}/>}
+      {popupVisible && <NewExercisePopup visible={popupVisible} onClose={closeFunctions} />}
 
     </div>
   );

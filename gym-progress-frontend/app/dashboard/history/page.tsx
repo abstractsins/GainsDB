@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Loading from "./loading";
-import normalizeDate from "@/app/components/normalizeDate"; 
+import normalizeDate from "@/app/components/normalizeDate";
 
 interface Workout {
   id: number;
@@ -62,12 +62,12 @@ export default function History() {
         const errorData = await response.json();
         throw new Error("Failed to fetch exercises", errorData.message);
       }
-      
+
       const data: Workout[] = await response.json();
-      
+
       if (!data.workouts) {
         return;
-      } 
+      }
 
       setTotalWorkouts(data.totalWorkouts);
       setWorkouts(data.workouts);
@@ -96,46 +96,49 @@ export default function History() {
 
   return (
     <div>
+      <h1 className="page-header">Workout History</h1>
       {/* Timeframe Selector */}
-      <label className="text-white m-2">Timeframe:</label>
-      <select
-        value={timeframe}
-        onChange={(e) => {
-          setTimeframe(e.target.value );
-          setHRTimeframe(HRTime(e.target.value));
-          setPage(1);
-        }}
-        className="bg-gray-800 text-white p-2 rounded"
-      >
-        <option value="all">All</option>
-        <option value="1w">1 Week</option>
-        <option value="2w">2 Weeks</option>
-        <option value="3w">3 Weeks</option>
-        <option value="4w">4 Weeks</option>
-        <option value="5w">5 Weeks</option>
-        <option value="6w">6 Weeks</option>
-      </select>
-      {timeframe !== "all" 
-        ? <span className="m-2 p-2">You logged {workouts.length || 0} workouts in the last {HRTimeframe || "2 weeks"}!</span> 
-        : <span className="m-2 p-2">Total workouts logged: {totalWorkouts}</span>
-      }
+      <div className="timeframe-filter">
+        <label className="timeframe">Timeframe:</label>
+        <select
+          value={timeframe}
+          onChange={(e) => {
+            setTimeframe(e.target.value);
+            setHRTimeframe(HRTime(e.target.value));
+            setPage(1);
+          }}
+          className="bg-gray-800 text-white p-2 rounded"
+        >
+          <option value="all">All</option>
+          <option value="1w">1 Week</option>
+          <option value="2w">2 Weeks</option>
+          <option value="3w">3 Weeks</option>
+          <option value="4w">4 Weeks</option>
+          <option value="5w">5 Weeks</option>
+          <option value="6w">6 Weeks</option>
+        </select>
+        {timeframe !== "all"
+          ? <span className="timeframe">You logged {workouts.length || 0} workouts in the last {HRTimeframe || "2 weeks"}!</span>
+          : <span className="timeframe">Total workouts logged: {totalWorkouts}</span>
+        }
+      </div>
 
       {loading ? (
         <Loading />
-        ):(
-          <ul className="history">
+      ) : (
+        <ul className="history">
           {workouts.length ? workouts.map((workout, i) =>
             <li
-            className="workout"
-            key={`${workout['workout_date']}-${i}`}
+              className="workout"
+              key={`${workout['workout_date']}-${i}`}
             >
               {normalizeDate(workout['workout_date'], false)}
             </li>
-            ) : (
-              <h2>No workouts found!</h2>
-            )}
-          </ul>
-        ) 
+          ) : (
+            <h2>No workouts found!</h2>
+          )}
+        </ul>
+      )
       }
 
       {/* Pagination Controls */}

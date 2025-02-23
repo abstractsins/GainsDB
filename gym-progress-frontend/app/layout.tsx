@@ -29,7 +29,7 @@ const roboto = Roboto({
 });
 
 export const metadata = {
-  title: "Gym Progress Tracker",
+  title: "GainsDB",
   description: "Track your workouts efficiently",
 };
 
@@ -47,7 +47,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
       >
         <AuthProvider>
           <ClientLoader>{children}</ClientLoader>      
-          <Footer></Footer>
+          <Footer />
         </AuthProvider>
       </body>
     </html>

@@ -23,18 +23,7 @@ export default function Footer() {
     const { data: session } = useSession(); // Get user session
 
     return (
-        <footer
-            className="
-            absolute 
-            bottom-0 
-            flex 
-            justify-end 
-            w-screen
-            p-2
-            sm:p-4
-            md:p-8"
-        >
-
+        <footer className="footer">
             {session ?
                 (
                     <button

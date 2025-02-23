@@ -351,7 +351,7 @@ app.post("/api/user/:userId/exercises", authMiddleware, async (req, res) => {
 
 //* Register New User
 app.post("/api/register", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, date } = req.body;
 
   const normalizedUsername = username.toLowerCase();
 
@@ -370,8 +370,8 @@ app.post("/api/register", async (req, res) => {
 
     // Insert new user
     const result = await pool.query(
-      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id;",
-      [normalizedUsername, hashedPassword]
+      "INSERT INTO users (username, password, created_on) VALUES ($1, $2, $3) RETURNING id;",
+      [normalizedUsername, hashedPassword, date]
     );
 
     const userId = result.rows[0].id;
@@ -435,16 +435,6 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-
-//* Logout User (Clear Cookie)
-app.post("/api/logout", (req, res) => {
-  console.log("logging out");
-  res.clearCookie("auth_token");
-  res.json({ message: "Logged out successfully!" });
-});
-
-
 
 
 

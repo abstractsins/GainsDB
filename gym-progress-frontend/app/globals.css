@@ -5,6 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --darkGray: #1f2421;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,8 +21,32 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+input {
+  color: black;
+}
+
+div.image-container-coming-soon {
+  display: flex;
+  justify-content: center;
+  margin: 0 30px;
+  padding: 0 30px;
+}
+
+span.coming-soon {
+  display: flex;
+  justify-content: center;
+  font-family: 'Tourney';
+  margin: 50px;
+  font-size: 4em;
+}
+
+.coming-soon-img {
+  border-radius: 20px;
+}
+
 .footer-link {
   border-right: 1px solid whitesmoke;
+  border-radius: 10px;
   color: whitesmoke;
   @apply flex items-center
   justify-center
@@ -44,7 +69,8 @@ body {
 }
 
 h1.page-header {
-  font-size: 24pt;
+  font-size: 28pt;
+  font-family: "Oswald";
 }
 
 div.popup {
@@ -76,11 +102,6 @@ div.popup-footer button {
   font-weight: 600;
 }
 
-button#submit-button {
-  background-color: #70ae6e;
-  color: black;
-}
-
 button#cancel-button {
   color: whitesmoke;
   font-size: 26pt;
@@ -96,17 +117,132 @@ button#cancel-button:hover {
   color: whitesmoke;
 }
 
-button#submit-button:hover {
-  background-color: #35a031;
-  color: whitesmoke;
-}
-
 h2.popup-header {
   font-family: "oswald";
   font-size: 32pt;
 }
 
+footer.footer {
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+}
+
+
+
+
+/** REGISTRATION */
+div.non-dash-page {
+  padding: 30px;
+}
+
+div.non-dash-page div.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+div.non-dash-page div.header h1 {
+  font-family: "Oswald";
+  font-size: 44pt;
+}
+
+div.registration-body {
+  background-color: #1f2421;
+  border-radius: 20px;
+  padding: 30px;
+  justify-self: center;
+  margin: 30px;
+}
+
+div.registration-body div.body-header {
+  margin: 0 0 20px 0;
+  padding: 20px;
+  border-bottom: 1px solid whitesmoke;
+}
+
+div.non-dash-page {
+  height: 95vh;
+}
+
+div.registration-body li {
+  list-style: disc;
+}
+
+div.registration-form-module  div.module-label span {
+  font-size: 18pt;
+}
+
+div.registration-form-module  div.module-label {
+  /* margin: 10px 0 5px 0; */
+}
+
+div.registration-form-module input {
+  font-size: 18pt;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+div.registration-form-module {
+  margin: 15px;
+}
+
+p.field-subtitle {
+  margin: 5px 0 10px 0;
+}
+
+button.register-button,
+button.popup-button#submit-button {
+  background-color: lightgray;
+  font-size: 16pt;
+  color: darkgray;
+  border-radius: 10px;
+  padding: 10px;
+  height: 80px;
+  width: 200px;
+  transition: background-color 150ms ease-out;
+}
+button.register-button.active {
+  background-color: green;
+  color: white;
+}
+
+div.registration-footer {
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+}
+
+p.field-subtitle {
+  font-size: 10pt;
+  font-style: italic;
+  height: 20px;
+}
+
+
+
+
+
+
+
 /** NEW SET */
+form#new-set-form {
+  border-radius: 10px;
+  background-color: var(--darkGray);
+  padding: 35px;
+  margin-top: 30px;
+  width: fit-content;
+}
+
+div.new-workout-form-container {
+  display: flex;
+  justify-content: center;
+}
+
 .new-workout-field {
   background-color: whitesmoke;
   color: black;
@@ -116,9 +252,41 @@ h2.popup-header {
   /* width: 95%; */
 }
 
+select.new-workout-field[name='exercise'] {
+  padding-right: 40px;
+}
+
 input[type='date'] {
   padding: 20px;
 }
+
+.form-xl-row#weight-reps {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-xl-row#footer {
+  display: flex;
+  justify-content: center;
+}
+
+button#submit-button.active {
+  background-color: #ADD989;
+  color: black;
+  font-size: 16pt;
+}
+
+button#submit-button.active:hover {
+  background-color: #35a031;
+  color: whitesmoke;
+}
+
+button#submit-button.active:active {
+  background-color: whitesmoke;
+  color: black;
+}
+
+
 
 button.new-workout-button {
   background-color: lightgray;
@@ -240,6 +408,13 @@ div.form-xl-row {
   }
 }
 
+
+
+
+
+
+
+
 /** Exercises Page */
 div.exercises-legend {
   margin: 5px 0;
@@ -254,6 +429,7 @@ div.exercises-legend {
 
 .exercise-card {
   display: flex;
+  position: sticky;
   flex-direction: column;
   justify-content: space-between;
   padding: 15px;
@@ -262,17 +438,42 @@ div.exercises-legend {
   width: 300px;
   margin: 15px;
   height: 150px;
-  background-color: #216869;
+  /* background-color: #216869; */
   cursor: pointer;
+  border: 3px solid transparent;
+  transition: border 300ms ease,
+              width 300ms ease,
+              height 300ms ease;
+}
+
+.exercise-card.active {
+  width: 630px;
+  height: 330px;
+  z-index: 10;
+}
+
+.exercise-placeholder {
+  position: fixed;
+  visibility: hidden;
+  border-radius: 10px;
+  width: 300px;
+  margin: 15px;
+  height: 150px;
+  transition: all 0.3s ease-in-out;
+}
+
+.hidden-placeholder.expanded {
+  z-index: 5;
 }
 
 .exercise-card:hover {
   border: 3px solid whitesmoke;
-  padding: 12px;
 }
 
 .exercise-card:active {
   border: 3px solid gray;
+  background-color: whitesmoke;
+  color: black;
 }
 
 .exercises-ul {
@@ -284,6 +485,7 @@ div.exercises-legend {
 h2.exercise-list {
   font-size: 22pt;
   font-family: "oswald";
+  line-height: 1.25;
 }
 
 input.exe-search {
@@ -328,9 +530,11 @@ div.exercises-legend-square {
 }
 
 h2.new-exercise-button-header {
-  font-size: 44pt;
+  font-size: 32pt;
   display: flex;
+  text-align: center;
   justify-content: center;
+  font-family: "Tourney";
 }
 
 li.upper-body,
@@ -387,7 +591,26 @@ input.new-exercise-name {
   border-radius: 7px;
 }
 
+
+
+
+
+
+
+
 /** WORKOUT HISTORY */
+div.timeframe-filter {
+  margin: 30px 0 10px 0;
+}
+
+label.timeframe {
+  margin: 10px 10px 10px 0;
+}
+
+span.timeframe {
+  margin: 10px;
+}
+
 ul.history {
   display: flex;
   max-width: 100%;
@@ -497,3 +720,5 @@ li.dashboard-list {
 * {
   /* border: 1px solid red; */
 }
+
+

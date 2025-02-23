@@ -69,7 +69,7 @@ export default function NewExercisePopup({ visible, onClose }: NewExercisePopupP
                 <input type="text" className="new-exercise-name" required autoFocus placeholder="exercise name..." onChange={inputHandler} />
             </form>
             <div className="popup-footer">
-                <button className="popup-button" id="submit-button" onClick={submitNewExercise}>Submit</button>
+                <button className={`${entryValue?'active':''} popup-button`} id="submit-button" disabled={entryValue?false:true} onClick={submitNewExercise}>Submit</button>
             </div>
             <button className="popup-button" id="cancel-button" onClick={onClose}><RiCloseLargeFill /></button>
         </div>

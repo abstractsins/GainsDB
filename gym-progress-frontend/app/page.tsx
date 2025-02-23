@@ -2,17 +2,25 @@
 
 import { useRef, useEffect, useState } from "react";
 import { Oswald } from "next/font/google";
+import { Tourney } from "next/font/google";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-const oswald = Oswald({ 
-  subsets: ["latin"], 
+const oswald = Oswald({
+  subsets: ["latin"],
   weight: ["400", "700"],
-  display: "swap" 
+  display: "swap"
 });
 
+const tourney = Tourney({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "700"],
+  display: "swap"
+});
+
+
 export default function Home() {
-  
+
   const { data: session, status } = useSession();
   const [showLogin, setShowLogin] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -23,20 +31,21 @@ export default function Home() {
 
 
 
-  
+
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     const res = await signIn("credentials", {
-      username, 
+      username,
       password,
       redirect: false,
     })
 
+
     if (res?.error) {
       alert("Invalid login credentials");
       return;
-    } 
+    }
 
     const session = await fetch("/api/auth/session").then(res => res.json());
 
@@ -47,9 +56,9 @@ export default function Home() {
     if (session?.token) {
       localStorage.setItem("token", session.token); // ✅ Store token in localStorage
     }
-  
+
     console.log("Going to /dashboard");
-    
+
     router.refresh(); // Force session update
     router.push("/dashboard");
   }
@@ -70,55 +79,55 @@ export default function Home() {
 
   useEffect(() => {
     setIsClient(true);
-    setShowLogin(false); 
+    setShowLogin(false);
   }, []);
 
   return (
     <div className="splash-container">
       {/* POPUP CONTAINER */}
       <div className="popup">
-        <h1 className={oswald.className}>Gym Progress Tracker</h1>
+        <h1 className={oswald.className}>GainsDB</h1>
         <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>
       </div>
 
       {isClient && (
         <div id="login-drawer" className={showLogin ? "form-container exposed" : "form-container"}>
-        <form method="get" onSubmit={handleLogin}>
-          {/* SLIDING LOGIN FORM (Only Appears When Clicked) */}
-          <div className="login-fields-container">
-            <input 
-              ref={usernameRef}
-              className="login-field" 
-              type="text" 
-              placeholder="Username" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} required 
-            />
-            <input 
-              className="login-field" 
-              type="password" 
-              placeholder="Password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} required 
+          <form method="get" onSubmit={handleLogin}>
+            {/* SLIDING LOGIN FORM (Only Appears When Clicked) */}
+            <div className="login-fields-container">
+              <input
+                ref={usernameRef}
+                className="login-field"
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)} required
               />
-          </div>
-          <div className="login-container">
-            {showLogin ? (
-              <button type="submit" key="submit" className="submit-button">SUBMIT</button>
-            ) : (
-              <button
-                className="login-button"
-                key="login"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dropDown(true)
-                }}>
+              <input
+                className="login-field"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} required
+              />
+            </div>
+            <div className="login-container">
+              {showLogin ? (
+                <button type="submit" key="submit" className="submit-button">SUBMIT</button>
+              ) : (
+                <button
+                  className="login-button"
+                  key="login"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dropDown(true)
+                  }}>
                   LOGIN
-              </button>
-            )}
-          </div>
-        </form>
-      </div>)}
+                </button>
+              )}
+            </div>
+          </form>
+        </div>)}
 
       <style jsx>{`
         .splash-container {
@@ -234,14 +243,19 @@ export default function Home() {
           background-color: #ADD989;
         }
 
-        button:hover {
-          {/* background-color: lightgray; */}
+        button.submit-button:hover {
+          background-color: #35a031;
+          color: whitesmoke;
+        }
+
+        button.submit-button:active {
+          background-color: whitesmoke;
+          color: black;
         }
 
         h1 {
-          font-size: 3em;
-          text-transform: uppercase;
-          font-family: "Oswald";
+          font-size: 6em;
+          font-family: "Tourney";
         }
 
         h2 {
@@ -250,7 +264,7 @@ export default function Home() {
 
         @media (max-width: 848px) {
           h1 {
-            font-size: 28pt;
+            font-size: 4em;
           }
           h2 {
             font-size: 1.25em;
@@ -263,9 +277,6 @@ export default function Home() {
           #login-drawer {
             min-width: 90%;
           }
-          h1 {
-          font-size: 2.5em;
-          }
           h2 {
             font-size: 1.25em;
           }
@@ -275,15 +286,13 @@ export default function Home() {
           .popup {
             padding: 25px 25px 0;
           }
-          h1 {
-            font-size: 1.75em;
-          }
         }
         
         @media (min-width: 1200px) {
 
           h1 {
-            font-size: 3.5em;
+            font-size: 8em;
+            font-weight: 400;
           }
           h2 {
             font-size: 1.75em;
