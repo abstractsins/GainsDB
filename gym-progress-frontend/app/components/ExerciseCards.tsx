@@ -17,6 +17,11 @@ interface Props {
 const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise, resetInnerExpansion }) => {
 
   const [expandedExerciseId, setExpandedExerciseId] = useState<number | null>(null);
+  const [expandedExercise, setExpandedExercise] = useState<string | null>(null);
+
+  const toggleExpand = (exerciseId: string) => {
+    setExpandedExercise(prev => (prev === exerciseId ? null : exerciseId));
+  };
 
   return (
     <ul className="exercises-ul">
@@ -35,10 +40,12 @@ const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise, resetInnerExp
         exercises.map((exercise, index) => (
           <ExerciseCard 
             key={index} 
+            id={exercise.id}
             exercise={exercise} 
             isExpanded={expandedExerciseId === exercise.id}
             setExpandedExerciseId={setExpandedExerciseId}
-            resetInnerExpansion={resetInnerExpansion}
+            resetInnerExpansion={expandedExerciseId !== exercise.id}
+            onClick={() => toggleExpand(exercise.id)}
           />
         ))
       ) : (

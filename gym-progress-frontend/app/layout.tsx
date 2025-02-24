@@ -45,7 +45,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
       <body
         className={`${inter.className} antialiased relative`}
       >
-        <AuthProvider>
+        <AuthProvider >
           <ClientLoader>{children}</ClientLoader>      
           <Footer />
         </AuthProvider>

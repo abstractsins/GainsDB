@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 interface ExerciseLegendProps {
-    onCategorySelect: (category: string) => void; // ✅ Remove `expandedExerciseId`
+    onCategorySelect: (category: string) => void;
     onResetExpansion: () => void;
 }
 
@@ -12,8 +12,8 @@ export default function ExercisesLegend({ onCategorySelect, onResetExpansion }: 
     const handleClick = (category: string) => {
         setActiveCategory(prev => (prev === category ? null : category));
 
-        onCategorySelect(category); // ✅ Pass only the category
-        onResetExpansion(); // ✅ Ensure all expansions reset
+        onCategorySelect(category); 
+        onResetExpansion(); 
     };
 
     const normalizedCategory = (category: string) => {

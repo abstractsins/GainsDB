@@ -44,6 +44,16 @@ span.coming-soon {
   border-radius: 20px;
 }
 
+button.disabled {
+  background-color: lightgray !important;
+  color: darkgray !important;
+}
+
+button.disabled:hover {
+  border-color: transparent !important;
+  cursor: unset !important;
+}
+
 .footer-link {
   border-right: 1px solid whitesmoke;
   border-radius: 10px;
@@ -131,6 +141,22 @@ footer.footer {
   right: 20px;
 }
 
+.exe-tooltip {
+  background-color: lightgray;
+  color: black;
+  /* border: 3px solid black; */
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.exe-tooltip .intro {
+  color: darkblue;
+}
+
+.exercise-card .recharts-responsive-container {
+  padding: 15px 20px 15px 10px;
+  font-size: 10pt;
+}
 
 
 

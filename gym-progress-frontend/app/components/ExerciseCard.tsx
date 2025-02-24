@@ -4,6 +4,13 @@ import React, { useState, useEffect } from "react";
 import normalizeDate from "@/app/components/normalizeDate";
 import { useSession } from "next-auth/react";
 import toTitleCase from '@/utils/toTitleCase';
+import ExerciseVolumeChart from "./ExerciseVolumeChart";
+
+
+
+
+
+
 
 
 
@@ -43,37 +50,47 @@ interface Props {
 
 
 
+
+
+
 const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerciseId, resetInnerExpansion }) => {
+
+
 
     const [workoutData, setWorkoutData] = useState<WorkoutData | null>(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const [isExpanded2, setIsExpanded2] = useState(false);
     const { data: session } = useSession(); // Ensure this is defined before use
     const userId = session?.user?.id || localStorage.getItem("userId");
     const server = process.env.NEXT_PUBLIC_BACKEND;
+    const [moreDisabled, setMoreDisabled] = useState(false);
+
+    const token = session?.user?.authToken || localStorage.getItem("token");
+    if (!token) {
+        setError("No authentication session found. Please log in.");
+        return;
+    }
 
     useEffect(() => {
-        if (resetInnerExpansion) {
-            console.log("Resetting inner expansion for:", exercise.name);
-            setIsExpanded2(false);
-            setExpandedExerciseId(null);
-            console.log(`isExpanded2 after reset: ${isExpanded2}`);
+        if (!isExpanded) {
+            setIsExpanded2(false); // Collapse chart section when this card is collapsed
         }
-    }, [resetInnerExpansion]); 
+    }, [isExpanded]);
+    
 
 
     const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
         console.log(`${exercise.name} clicked`);
 
-        console.log(e);
-
-        if (!e.target.classList.contains('click-for-more') 
+        if (!e.target.classList.contains('click-for-more')
             && !e.target.classList.contains('exe-card-bottom')
             && !e.target.classList.contains('greater-chart-area')
             && !e.target.classList.contains('exe-card-bottom-body')
             && !e.target.classList.contains('exe-card-bottom-header-text')
             && !e.target.classList.contains('exe-card-bottom-header')
         ) {
+            setLoading(true);
 
             const clickedLi = e.currentTarget;
             console.log(clickedLi);
@@ -86,18 +103,13 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
                 return;
             } else {
                 setExpandedExerciseId(null);
-                setTimeout(() => setExpandedExerciseId(exercise.id), 300); 
+                setTimeout(() => setExpandedExerciseId(exercise.id), 300);
             }
 
-            setLoading(true);
 
 
             // Remove 'active' class from all sibling <li> elements
-            document.querySelectorAll(".exercise-card.active").forEach((el) => {
-                console.log(exercise)
-                console.log(el)
-                el.classList.remove("active");
-            });
+            document.querySelectorAll(".exercise-card.active").forEach((el) => el.classList.remove("active"));
 
             if (Number(setExpandedExerciseId) == exercise.id) {
                 clickedLi.classList.remove('active');
@@ -107,12 +119,19 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
             }
 
             try {
-                const response = await fetch(`${server}/api/user/${userId}/exercises/${exercise.id}/latest-workout`);
-                console.log(userId);
-                if (!response.ok) throw new Error("Failed to fetch workout data");
-
+                const response = await fetch(`${server}/api/user/${userId}/exercises/${exercise.id}/latest-workout`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) console.error("Failed to fetch workout data");
                 const data = await response.json();
                 setWorkoutData(data.length ? data : null);
+                if (workoutData !== null) {
+                    setMoreDisabled(true);
+                }
             } catch (error) {
                 console.error("Error fetching workout data:", error);
                 setWorkoutData(null);
@@ -124,29 +143,30 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
 
 
 
-    const moreClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const moreClickHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
 
-        console.log(e.target.closest('li'));
-
-        const clickedLi = e.target.closest('li');
-        if (clickedLi.classList.contains('expand2')) {
-            clickedLi.classList.remove('expand2');
-        } else {
-            clickedLi.classList.add('expand2');
-        }   
-
-        if (isExpanded2) {
-            console.log('isExpanded2 = true');
-            setIsExpanded2(false);
-            return;
-        } else {
-            console.log('isExpanded2 = false');
-            setTimeout(() => setIsExpanded2(true), 300); // Expand the clicked card
+        if (workoutData) {
+            
+            console.log(e.target.closest('li'));
+            
+            const clickedLi = e.target.closest('li');
+            if (clickedLi.classList.contains('expand2')) {
+                clickedLi.classList.remove('expand2');
+            } else {
+                clickedLi.classList.add('expand2');
+            }
+            
+            if (isExpanded2) {
+                setIsExpanded2(false);
+                return;
+            } else {
+                setExpandedExerciseId(exercise.id);
+                setTimeout(() => setIsExpanded2(true), 300); // Expand the clicked card
+            }
         }
     }
 
-
-    console.log(`isExpanded2 before render for ${exercise.name}:`, isExpanded2);
 
 
     return (
@@ -157,7 +177,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
                     <h2 className="exercise-list text-xl">{toTitleCase(exercise.name)}</h2>
                     {isExpanded
                         && <div className="expansion-button-container">
-                            <button className="click-for-more" onClick={moreClickHandler}>{`${isExpanded2 ? 'Less...' : 'More...'}`}</button>
+                            <button className={`${workoutData ? '' : 'disabled'} click-for-more`} onClick={moreClickHandler}>{`${isExpanded2 ? 'Less...' : 'More...'}`}</button>
                         </div>
                     }
                     <span className="text-[12pt] font-thin">
@@ -189,10 +209,13 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
             {isExpanded2 &&
                 <div key={isExpanded2 ? "open" : "closed"} className="exe-card-bottom">
                     <div className="exe-card-bottom-header">
-                        <h3 className="exe-card-bottom-header-text">Progress Over Time</h3>
                     </div>
                     <div className="exe-card-bottom-body">
-                        <div className="greater-chart-area"></div>
+                        <div className="greater-chart-area">
+                            <ExerciseVolumeChart
+                                exerciseId={exercise.id}
+                            />
+                        </div>
                     </div>
                 </div>
             }
