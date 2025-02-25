@@ -725,7 +725,7 @@ div.exe-card-bottom{
 
 div.exe-card-bottom-body {
   /* padding: 20px; */
-  height: 90%;
+  height: 95%;
   width: 100%;
 }
 
@@ -742,6 +742,14 @@ div.exe-card-top {
   width: 100%;
   justify-content: space-between;
 }
+
+.exe-card-bottom-header {
+  display: none;
+}
+
+
+
+
 
 
 

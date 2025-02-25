@@ -53,7 +53,7 @@ interface Props {
 
 
 
-const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerciseId, resetInnerExpansion }) => {
+const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, setExpandedExerciseId, resetInnerExpansion }) => {
 
     const [workoutData, setWorkoutData] = useState<WorkoutData | null>(null);
     const [loading, setLoading] = useState(false);
@@ -63,57 +63,73 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
     const userId = session?.user?.id || localStorage.getItem("userId");
     const server = process.env.NEXT_PUBLIC_BACKEND;
     const [moreDisabled, setMoreDisabled] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
 
+    
+    useEffect(() => {
+        // isThisExpanded = false;
+        if (!isThisExpanded) {
+            setIsExpanded(false);
+            setIsExpanded2(false); // Collapse chart section when this card is collapsed
+        } else {
+            setIsExpanded(true);
+        }
+    }, [isThisExpanded]);
+    
+    
     const token = session?.user?.authToken || localStorage.getItem("token");
     if (!token) {
         setError("No authentication session found. Please log in.");
         return;
     }
 
-    useEffect(() => {
-        isExpanded = false;
-        if (!isExpanded) {
-            setIsExpanded2(false); // Collapse chart section when this card is collapsed
-        }
-    }, [isExpanded]);
-
-
-
     const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
         console.log(`${exercise.name} clicked`);
+        console.log(isThisExpanded);
+
+        if ((e.target as HTMLElement).closest('.exe-card-bottom')) {
+            e.stopPropagation(); // Prevent collapsing
+            return;
+        }
 
         setIsExpanded2(false);
 
-        if (!e.target.classList.contains('click-for-more')
-            && !e.target.classList.contains('exe-card-bottom')
-            && !e.target.classList.contains('greater-chart-area')
-            && !e.target.classList.contains('exe-card-bottom-body')
-            && !e.target.classList.contains('exe-card-bottom-header-text')
-            && !e.target.classList.contains('exe-card-bottom-header')
+        if (!(e.target as HTMLElement).classList.contains('click-for-more')
+            && !(e.target as HTMLElement).classList.contains('exe-card-bottom')
+            && !(e.target as HTMLElement).classList.contains('greater-chart-area')
+            && !(e.target as HTMLElement).classList.contains('exe-card-bottom-body')
+            && !(e.target as HTMLElement).classList.contains('exe-card-bottom-header-text')
+            && !(e.target as HTMLElement).classList.contains('exe-card-bottom-header')
         ) {
             setLoading(true);
 
             const clickedLi = e.currentTarget;
-            console.log(clickedLi);
 
             clickedLi.classList.remove('expand2');
 
             if (isExpanded) {
                 setExpandedExerciseId(null);
+                setIsExpanded(false);
                 setIsExpanded2(false);
+                console.log(clickedLi)
                 clickedLi.classList.toggle('active');
                 return;
             } else {
+                // console.log(`setExpandedExerciseId(null);`);
+                setIsExpanded(true)
                 setExpandedExerciseId(null);
-                setTimeout(() => setExpandedExerciseId(exercise.id), 300);
-            }
 
+                console.log(`setTimeout(() => setExpandedExerciseId(exercise.id), 300);`);
+                setTimeout(() => setExpandedExerciseId(exercise.id), 300);
+            //     isExpanded = true;
+            }
 
 
             // Remove 'active' class from all sibling <li> elements
             document.querySelectorAll(".exercise-card.active").forEach((el) => el.classList.remove("active"));
 
             if (Number(setExpandedExerciseId) == exercise.id) {
+                setExpandedExerciseId(null);
                 clickedLi.classList.remove('active');
                 return; // Collapse the card
             } else {
@@ -150,13 +166,13 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
 
         if (workoutData) {
 
-            console.log(e.target.closest('li'));
+            console.log((e.target as HTMLElement).closest('li'));
 
-            const clickedLi = e.target.closest('li');
-            if (clickedLi.classList.contains('expand2')) {
-                clickedLi.classList.remove('expand2');
+            const clickedLi = (e.target as HTMLElement).closest('li');
+            if ((clickedLi as HTMLElement).classList.contains('expand2')) {
+                (clickedLi as HTMLElement).classList.remove('expand2');
             } else {
-                clickedLi.classList.add('expand2');
+                (clickedLi as HTMLElement).classList.add('expand2');
             }
 
             if (isExpanded2) {
@@ -183,7 +199,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
             </div>
         );
     }
-    
+
 
     return (
         <li className={`exercise-card ${exercise.category}`} onClick={handleClick}>
@@ -191,7 +207,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
 
                 <div className="exe-card-left">
                     <h2 className="exercise-list text-xl">{toTitleCase(exercise.name)}</h2>
-                    {isExpanded
+                    {isThisExpanded
                         && <div className="expansion-button-container">
                             <button className={`${workoutData ? '' : 'disabled'} click-for-more`} onClick={moreClickHandler}>{`${isExpanded2 ? 'Less...' : 'More...'}`}</button>
                         </div>
@@ -201,7 +217,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
                     </span>
                 </div>
 
-                {isExpanded && (
+                {isThisExpanded && (
                     <div className="expanded-lvl-1">
                         {loading ? (
                             <SkeletonLoader />
