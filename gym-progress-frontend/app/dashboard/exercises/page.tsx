@@ -4,10 +4,8 @@ import { GiWeightLiftingUp } from "react-icons/gi";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import ExercisesLegend from "@/app/components/ExercisesLegend";
-import NewExerciseButton from "@/app/components/NewExerciseButton";
 import NewExercisePopup from "@/app/components/NewExercisePopup";
 import ExerciseCards from "@/app/components/ExerciseCards";
-import normalizeDate from "@/app/components/normalizeDate";
 import Loading from "./loading";
 
 interface Exercise {
@@ -175,6 +173,7 @@ export default function Exercises() {
 
         <input
           type="text"
+          id="exe-search"
           placeholder="search exercises..."
           className="exe-search text-[18pt] p-2 m-4"
           onChange={handleSearch}

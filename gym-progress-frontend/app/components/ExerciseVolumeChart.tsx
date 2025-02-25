@@ -58,7 +58,7 @@ export default function ExerciseVolumeChart({ exerciseId }: props) {
                     'total_volume': workout.total_volume.split('.')[0]
                 }
             })
-            
+
             setDataSet(dataRefined);
             setMaxValue(findMaxValue(dataRefined));
             setMinValue(findMinValue(dataRefined));
@@ -77,7 +77,7 @@ export default function ExerciseVolumeChart({ exerciseId }: props) {
         const year = dateArr[0].slice(-2);
         const month = dateArr[1];
         const day = dateArr[2];
-                
+
         return `${month}/${day}/${year}`;
     }
 
@@ -91,7 +91,7 @@ export default function ExerciseVolumeChart({ exerciseId }: props) {
         return value;
     }
 
-    
+
     const findMinValue = (data: Array) => {
         let value = 100000;
         data.forEach((entry: VolumeHistory) => {
@@ -102,25 +102,45 @@ export default function ExerciseVolumeChart({ exerciseId }: props) {
         return value;
     }
 
-    if (loading) return <p>Loading chart...</p>;
-    if (dataSet.length === 0) return <p>No data available.</p>;
+    // if (loading) return <p>Loading chart...</p>;
+
+
+    function SkeletonLoader() {
+        return (
+            <div className="chart-skeleton animate-pulse">
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+            </div>
+        )
+    }
+
+
 
     return (
         <>
-            <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={dataSet}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                        dataKey="workout_date" 
+            {loading
+                ? <SkeletonLoader />
+                : (<ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={dataSet}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                            dataKey="workout_date"
                         />
-                    <YAxis 
-                        dataKey="total_volume"
-                        domain={[minValue-200, maxValue+500]}
-                    />
-                    <Tooltip content={<ExeToolTip />} />
-                    <Line type="monotone" dataKey="total_volume" stroke="#8884d8" strokeWidth={2} />
-                </LineChart>
-            </ResponsiveContainer>
+                        <YAxis
+                            dataKey="total_volume"
+                            domain={[minValue - 200, maxValue + 500]}
+                        />
+                        <Tooltip content={<ExeToolTip />} />
+                        <Line type="monotone" dataKey="total_volume" stroke="#8884d8" strokeWidth={2} />
+                    </LineChart>
+                </ResponsiveContainer>)
+            }
         </>
     );
 }

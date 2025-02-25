@@ -77,11 +77,13 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
             setIsExpanded2(false); // Collapse chart section when this card is collapsed
         }
     }, [isExpanded]);
-    
+
 
 
     const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
         console.log(`${exercise.name} clicked`);
+
+        setIsExpanded2(false);
 
         if (!e.target.classList.contains('click-for-more')
             && !e.target.classList.contains('exe-card-bottom')
@@ -95,11 +97,12 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
             const clickedLi = e.currentTarget;
             console.log(clickedLi);
 
+            clickedLi.classList.remove('expand2');
+
             if (isExpanded) {
                 setExpandedExerciseId(null);
                 setIsExpanded2(false);
                 clickedLi.classList.toggle('active');
-                clickedLi.classList.remove('expand2');
                 return;
             } else {
                 setExpandedExerciseId(null);
@@ -147,16 +150,16 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
         e.stopPropagation();
 
         if (workoutData) {
-            
+
             console.log(e.target.closest('li'));
-            
+
             const clickedLi = e.target.closest('li');
             if (clickedLi.classList.contains('expand2')) {
                 clickedLi.classList.remove('expand2');
             } else {
                 clickedLi.classList.add('expand2');
             }
-            
+
             if (isExpanded2) {
                 setIsExpanded2(false);
                 return;
@@ -167,7 +170,21 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
         }
     }
 
-
+    function SkeletonLoader() {
+        return (
+            <div className="set-list-skeleton animate-pulse">
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+            </div>
+        );
+    }
+    
 
     return (
         <li className={`exercise-card ${exercise.category}`} onClick={handleClick}>
@@ -188,7 +205,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
                 {isExpanded && (
                     <div className="expanded-lvl-1">
                         {loading ? (
-                            <p>Loading workout data...</p>
+                            <SkeletonLoader />
                             // <Loading />
                         ) : workoutData ? (
                             <div className="lvl-1-exe-data">

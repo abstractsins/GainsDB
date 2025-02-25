@@ -1,7 +1,7 @@
 import pool from './src/db.js';
 import fs from 'fs';
 
-const USER_ID = 3; // Replace with actual user ID
+const USER_ID = 7; // Replace with actual user ID
 
 // Function to parse workout data from text
 function parseWorkoutData(data) {

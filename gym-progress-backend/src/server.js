@@ -109,11 +109,11 @@ app.get("/api/user/:userId/exercises", authMiddleware, async (req, res) => {
 
 
 
-app.get("/api/user/:userId/exercises/:exerciseId/latest-workout", async (req, res) => {
+app.get("/api/user/:userId/exercises/:exerciseId/latest-workout", authMiddleware, async (req, res) => {
   try {
-      const { userId, exerciseId } = req.params; // ✅ Get userId from URL
+    const { userId, exerciseId } = req.params; // ✅ Get userId from URL
 
-      const query = `
+    const query = `
           WITH RecentWorkout AS (
               SELECT we.id AS workout_exercise_id, w.id AS workout_id, w.workout_date, w.user_id
               FROM workout_exercises we
@@ -134,17 +134,17 @@ app.get("/api/user/:userId/exercises/:exerciseId/latest-workout", async (req, re
           ORDER BY s.set_order;
       `;
 
-      const { rows } = await pool.query(query, [exerciseId, userId]); // ✅ Pass userId
+    const { rows } = await pool.query(query, [exerciseId, userId]); // ✅ Pass userId
 
-      if (rows.length === 0) {
-          return res.status(404).json({ error: "No recent workout found for this exercise." });
-      }
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "No recent workout found for this exercise." });
+    }
 
-      console.dir(rows);
-      res.json(rows);
+    console.dir(rows);
+    res.json(rows);
   } catch (error) {
-      console.error("Error fetching recent workout:", error);
-      res.status(500).json({ error: "Internal server error" });
+    console.error("Error fetching recent workout:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -381,6 +381,40 @@ app.post("/api/user/:userId/exercises", authMiddleware, async (req, res) => {
 
   }
 })
+
+
+app.get("/api/user/:userId/exercises/:exerciseId/volume-history", authMiddleware, async (req, res) => {
+
+  try {
+    const { userId, exerciseId } = req.params;
+
+    const query = `
+      SELECT 
+          w.workout_date, 
+          SUM(s.weight * s.reps) AS total_volume
+      FROM workouts w
+      JOIN workout_exercises we ON w.id = we.workout_id
+      JOIN sets s ON we.id = s.workout_exercise_id
+      WHERE w.user_id = $1 AND we.exercise_id = $2
+      GROUP BY w.workout_date
+      ORDER BY w.workout_date;
+    `;
+
+    const { rows } = await pool.query(query, [userId, exerciseId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "No workout history found" });
+    }
+
+    console.dir(rows);
+
+    res.json(rows);
+
+  } catch (err) {
+    console.log(err);
+  }
+})
+
 
 /**
  * END PROTECTED ROUTES

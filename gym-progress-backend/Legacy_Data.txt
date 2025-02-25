@@ -792,8 +792,6 @@ Lat raise
 100lb 2x15
 90lb 2x15
 
-90lb 2x15
-85lb 1x15
 
 20250209
 
@@ -812,7 +810,14 @@ Diverging seated row
 Diverging seated row 
 180lb 4x15
 
-Converging shoulder press
-120lb 2x15
-110lb 1x9
-95lb 1x15
+20250222
+
+Converging chest press 
+125lb 1x14
+65lb 1x10
+115lb 1x11
+90lb 1x15
+90lb 1x15
+
+Rear delt
+115lb 3x15
