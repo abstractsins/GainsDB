@@ -12,8 +12,12 @@ export default function ExercisesLegend({ onCategorySelect, onResetExpansion }: 
     const handleClick = (category: string) => {
         setActiveCategory(prev => (prev === category ? null : category));
 
-        onCategorySelect(category); 
-        onResetExpansion(); 
+        onCategorySelect(category);
+        onResetExpansion();
+        document.querySelectorAll(".exercise-card.active").forEach((el) => {
+            el.classList.remove("active");
+        });
+
     };
 
     const normalizedCategory = (category: string) => {
@@ -27,7 +31,7 @@ export default function ExercisesLegend({ onCategorySelect, onResetExpansion }: 
                     key={category}
                     id={`${normalizedCategory(category)}-legend`}
                     className={`exercises-legend-filter ${activeCategory === category ? "active" : ""}`}
-                    onClick={() => handleClick(category)} 
+                    onClick={() => handleClick(category)}
                 >
                     <div className="exercises-legend-square" id={`${normalizedCategory(category)}-square`}></div>
                     <div className="legend-label">{category}</div>

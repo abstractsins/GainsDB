@@ -46,9 +46,6 @@ export default function Exercises() {
       return;
     }
 
-    document.querySelectorAll(".exercise-card.active").forEach((el) => {
-      el.classList.remove("active");
-    });
 
     if (normalizedCategory === 'all') {
       setFilteredExercises(exercises);

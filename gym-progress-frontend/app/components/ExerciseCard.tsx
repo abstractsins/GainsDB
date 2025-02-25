@@ -55,8 +55,6 @@ interface Props {
 
 const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerciseId, resetInnerExpansion }) => {
 
-
-
     const [workoutData, setWorkoutData] = useState<WorkoutData | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -73,6 +71,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded, setExpandedExerci
     }
 
     useEffect(() => {
+        isExpanded = false;
         if (!isExpanded) {
             setIsExpanded2(false); // Collapse chart section when this card is collapsed
         }

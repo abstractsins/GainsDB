@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ExerciseCard from "./ExerciseCard";
 
 interface ExerciseCard {
-  iid: number;
+  id: number;
   name: string;
   category: string;
   last_logged_date: string;
@@ -22,6 +22,12 @@ const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise, resetInnerExp
   const toggleExpand = (exerciseId: string) => {
     setExpandedExercise(prev => (prev === exerciseId ? null : exerciseId));
   };
+
+  useEffect(() => {
+    if (resetInnerExpansion) {
+      setExpandedExerciseId(null);
+    }
+  }, [resetInnerExpansion]);
 
   return (
     <ul className="exercises-ul">
