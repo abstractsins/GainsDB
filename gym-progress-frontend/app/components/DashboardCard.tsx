@@ -1,13 +1,13 @@
-interface InfoCardProps {
-    icon: any;
+interface Props {
+    icon: React.ReactNode;
     title: string;
-    value: string;
+    value: string | number;
     description: string;
 }
   
-const InfoCard: React.FC<InfoCardProps> = ({ icon, title, value, description }) => {
+const InfoCard: React.FC<InfoCardProps> = ({ icon, title, value, description }: Props) => {
 
-    const textLength = value.length;
+    const textLength = value.toString().length;
     const style = { "--char-count": textLength } as React.CSSProperties;  
 
     return (
