@@ -123,7 +123,7 @@ app.get("/api/user/:userId/dashboard", authMiddleware, async (req, res) => {
 
   //* MOST CHANGE
   const mostChange = await pool.query(
-        `WITH VolumeProgress AS (
+    `WITH VolumeProgress AS (
         SELECT 
             we.exercise_id, 
             e.name AS exercise_name,
