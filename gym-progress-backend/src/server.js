@@ -1,4 +1,5 @@
 import express, { query } from 'express';
+import workoutProcessing from './workoutProcessing.js';
 import cors from 'cors';
 import pool from './db.js'; // PostgreSQL connection
 import bcrypt from "bcrypt";
@@ -62,7 +63,14 @@ app.get('/', (req, res) => {
  */
 
 //* Dashboard
-app.get("/api/dashboard", authMiddleware, (req, res) => {
+app.get("/api/dashboard", authMiddleware, async (req, res) => {
+
+  const totalWeeks = await pool.query(
+    `SELECT COUNT(DISTINCT DATE_TRUNC('week', workout_date)) AS total_weeks 
+    FROM workouts WHERE user_id = $1`,
+    [userId]
+  );
+
   res.json({ message: "Welcome to the dashboard", user: (req).user });
 });
 
@@ -155,7 +163,7 @@ app.get("/api/user/:userId/history", authMiddleware, async (req, res) => {
   const { userId } = req.params;
   const timeframe = req.query.timeframe || "all"; // Default: all  
   const page = parseInt(req.query.page) || 1;
-  const limit = timeframe === "all" ? 10 : null;
+  const limit = timeframe === "all" ? 9 : null;
   const offset = limit ? (page - 1) * limit : null;
 
   console.log(`looking up workout history for user ${userId}`);
@@ -165,12 +173,27 @@ app.get("/api/user/:userId/history", authMiddleware, async (req, res) => {
 
   if (timeframe === "all") {
     query = `
-      SELECT id, workout_date
-      FROM workouts
-      WHERE user_id = $1
-      ORDER BY workout_date DESC
-      LIMIT $2 OFFSET $3
-    `;
+          WITH PaginatedWorkouts AS (
+              SELECT id AS workout_id, workout_date
+              FROM workouts
+              WHERE user_id = $1
+              ORDER BY workout_date DESC
+              LIMIT $2 OFFSET $3
+          )
+          SELECT 
+              pw.workout_id, 
+              pw.workout_date, 
+              e.id AS exercise_id, 
+              e.name AS exercise_name, 
+              s.set_order, 
+              s.weight, 
+              s.reps
+          FROM PaginatedWorkouts pw
+          JOIN workout_exercises we ON pw.workout_id = we.workout_id
+          JOIN exercises e ON we.exercise_id = e.id
+          JOIN sets s ON we.id = s.workout_exercise_id
+          ORDER BY pw.workout_date DESC, e.id, s.set_order;
+      `;
     params.push(limit, offset);
   } else {
     let interval;
@@ -185,11 +208,21 @@ app.get("/api/user/:userId/history", authMiddleware, async (req, res) => {
     }
 
     query = `
-      SELECT id, workout_date 
-      FROM workouts 
-      WHERE user_id = $1 
-      AND workout_date >= NOW() - INTERVAL '${interval}'
-      ORDER BY workout_date DESC
+      SELECT 
+          w.id AS workout_id, 
+          w.workout_date, 
+          e.id AS exercise_id, 
+          e.name AS exercise_name, 
+          s.set_order, 
+          s.weight, 
+          s.reps
+      FROM workouts w
+      JOIN workout_exercises we ON w.id = we.workout_id
+      JOIN exercises e ON we.exercise_id = e.id
+      JOIN sets s ON we.id = s.workout_exercise_id
+      WHERE w.user_id = $1 
+      AND w.workout_date >= NOW() - INTERVAL '${interval}'
+      ORDER BY w.workout_date DESC, e.id, s.set_order;
     `;
   }
 
@@ -197,26 +230,27 @@ app.get("/api/user/:userId/history", authMiddleware, async (req, res) => {
     const result = await pool.query(query, params);
     let totalPages = 1;
     let totalWorkouts = 0;
+    const workoutsRefined = workoutProcessing(result.rows);
 
     if (timeframe === "all") {
       const totalResult = await pool.query(`SELECT COUNT(*) FROM workouts WHERE user_id = $1`, [userId]);
       totalWorkouts = parseInt(totalResult.rows[0].count);
       totalPages = Math.ceil(totalWorkouts / limit);
+    } else {
+      console.log(result.rows);
+      totalWorkouts = workoutsRefined.dates.length;
     }
 
     if (result.rows.length === 0) {
       return res.status(200).json({ message: "No workouts found for this user" });
     }
 
-    const totalResult = await pool.query(
-      `SELECT COUNT(DISTINCT DATE_TRUNC('week', workout_date)) AS total_weeks 
-      FROM workouts WHERE user_id = $1`,
-      [userId]
-    );
+
+    console.dir(workoutsRefined, {depth: null, colors: true});
 
     res.json({
-      workouts: result.rows,
-      totalWorkouts: totalWorkouts,
+      workouts: workoutsRefined,
+      totalWorkouts,
       totalPages,
       currentPage: page
     } || []);
@@ -226,6 +260,9 @@ app.get("/api/user/:userId/history", authMiddleware, async (req, res) => {
   }
 
 });
+
+
+
 
 app.post("/api/user/:userId/log-workout", authMiddleware, async (req, res) => {
   console.log("post attempt");
@@ -314,6 +351,9 @@ app.post("/api/user/:userId/log-workout", authMiddleware, async (req, res) => {
     client.release();
   }
 });
+
+
+
 
 //* NEW EXERCISE
 app.post("/api/user/:userId/exercises", authMiddleware, async (req, res) => {

@@ -3,17 +3,8 @@
 import React, { useState, useEffect } from "react";
 import normalizeDate from "@/app/components/normalizeDate";
 import { useSession } from "next-auth/react";
-import toTitleCase from '@/utils/toTitleCase';
+import { toTitleCase } from "@/utils/utils";
 import ExerciseVolumeChart from "./ExerciseVolumeChart";
-
-
-
-
-
-
-
-
-
 
 
 
@@ -42,11 +33,6 @@ interface Props {
     setExpandedExerciseId: (exerciseId: number | null) => void;
     resetInnerExpansion: boolean;
 }
-
-
-
-
-
 
 
 
@@ -227,7 +213,8 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
                                 <ul>
                                     {workoutData.map((set, index) => (
                                         <li key={index}>
-                                            <span>Set {set.set_order}: {Math.floor(Number(set.weight))} lbs x {set.reps} rep{`${Number(set.reps) > 1 ? 's' : ''}`}</span>
+                                            <span className="order">{set.set_order +  (set.set_order == 1 ? 'st' : (set.set_order == 2 ? 'nd' : (set.set_order == 3 ? 'rd' : 'th')))}:</span>
+                                            <span>{Math.floor(Number(set.weight))} lbs x {set.reps} rep{`${Number(set.reps) > 1 ? 's' : ''}`}</span>
                                         </li>
                                     ))}
                                 </ul>

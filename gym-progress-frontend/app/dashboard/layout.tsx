@@ -28,7 +28,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     console.log("🔍 Debug - Session Status:", status);
-    console.log("🔍 Debug - Session Data:", session);
     
     if (status === "authenticated" && !session) {
       router.push("/");

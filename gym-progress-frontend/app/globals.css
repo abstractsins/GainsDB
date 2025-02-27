@@ -181,6 +181,14 @@ footer.footer {
 
 
 
+
+
+
+
+
+
+
+
 /** REGISTRATION */
 div.non-dash-page {
   padding: 30px;
@@ -776,6 +784,8 @@ ul.history {
 }
 
 li.workout {
+  display: flex;
+  /* flex-direction: column; */
   background-color: #007cbe;
   cursor: pointer;
   color: whitesmoke;
@@ -784,9 +794,66 @@ li.workout {
   margin: 20px;
   /* border: 2px solid whitesmoke; */
   border-radius: 10px;
-  width: 320px;
-  height: 120px;
+  width: 400px;
+  /* height: 180px; */
+  /* height: 150px; */
+  height: fit-content;
+  transition: height 300ms ease, width 300ms ease;
 }
+
+li.workout.active {
+  /* height: 400px !important; */
+  /* height: 600px; */
+}
+
+div.workout-card-header h2 {
+  font-family: "Oswald";
+  font-size: 18pt;
+}
+
+div.workout-card-header span {
+  font-size: 14pt;
+}
+
+.workout-card-exe-name {
+  color: lightgoldenrodyellow;
+  font-size: 14pt;
+}
+
+div.workout-card-glance-body {
+  background-color: var(--darkGray);
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  width: 75%;
+  height: 100%;
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+
+div.workout-card-details-body {
+  background-color: var(--darkGray);
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  height: 100%;
+  border-radius: 10px;
+  padding: 10px 15px;
+
+}
+
+div.workout-card-glance-body ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+div.workout-card-glance-body ul li {
+  padding: 5px 0;
+}
+
 
 button.pagination {
   width: 100px;
@@ -799,8 +866,41 @@ span.nav-readout {
 }
 
 li.workout.skeleton {
-  background-color: black !important;
+    display: flex;
+    border-radius: 10px;
+    background-color: black;
+    width: 300px;
+    height: 200px;
+    margin: 15px;
+  }
+
+div.workout-card {
+  display: flex;
+  width: 100%;
 }
+
+.exe-card-exe-container {
+  margin-bottom: 10px;
+}
+
+.workout-detail-exercise-set {
+  display: flex;
+}
+
+.exe-card-set {
+  font-size: 12pt;
+  letter-spacing: 1.25;
+}
+
+span.order {
+  color: lightgray;
+  padding-right: 10px;
+}
+
+
+
+
+
 
 /** DASHBOARD */
 div.dashboard-card {
@@ -874,6 +974,12 @@ ul.dashboard-list {
 li.dashboard-list {
   margin: 10px;
 }
+
+
+
+
+
+
 
 * {
   /* border: 1px solid red; */

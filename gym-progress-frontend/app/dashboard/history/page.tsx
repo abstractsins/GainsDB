@@ -4,15 +4,19 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Loading from "./loading";
 import normalizeDate from "@/app/components/normalizeDate";
+import WorkoutHistoryList from "@/app/components/WorkoutHistory/WorkoutHistoryList";
 
-interface Workout {
-  id: number;
-  workout_date: string;
-}
+
+import { WorkoutsObj } from "@/app/types/types";
+import { DateObj } from "@/app/types/types";
+import { WorkoutListContainer } from "@/app/types/types";
+
+
+
 
 export default function History() {
   const { data: session, status } = useSession();
-  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [workoutsObj, setWorkoutsObj] = useState<WorkoutsObj>();
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -35,7 +39,7 @@ export default function History() {
     if (status === "loading") return;
 
     setLoading(true);
-    setWorkouts([]);
+    setWorkoutsObj();
 
     const token = session?.user?.authToken || localStorage.getItem("token");
 
@@ -57,32 +61,33 @@ export default function History() {
         },
       });
 
-      console.log("🔍 API Request URL:", response.url);
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error("Failed to fetch exercises", errorData.message);
       }
 
-      const data: Workout[] = await response.json();
+      const workoutListContainer: WorkoutListContainer = await response.json();
 
-      if (!data.workouts) {
+      console.log(workoutListContainer);
+
+      if (!workoutListContainer.totalPages) {
         return;
       }
 
-      setTotalWorkouts(data.totalWorkouts);
-      setWorkouts(data.workouts);
-      setTotalPages(data.totalPages);
+      console.log('DATA!!!')
+      console.log(workoutListContainer.workouts);
+
+      setTotalWorkouts(workoutListContainer.totalWorkouts);
+      setWorkoutsObj(workoutListContainer.workouts);
+      setTotalPages(workoutListContainer.totalPages);
       setShowPagination(timeframe === "all");
-    } catch (error: any) {
-      console.error("Error fetching exercises:", error.message);
+    } catch (error: unknown) {
+      console.error("Error fetching exercises:", error?.message);
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
-
-  const toTitleCase = (text: string) => text.replace(/\b\w/g, (char) => char.toUpperCase());
 
   const HRTime = (value: string) => {
     switch (value) {
@@ -119,7 +124,7 @@ export default function History() {
           <option value="6w">6 Weeks</option>
         </select>
         {timeframe !== "all"
-          ? <span className="timeframe">You logged {workouts.length || 0} workouts in the last {HRTimeframe || "2 weeks"}!</span>
+          ? <span className="timeframe">You logged {totalWorkouts || 0} workouts in the last {HRTimeframe || "2 weeks"}!</span>
           : <span className="timeframe">Total workouts logged: {totalWorkouts}</span>
         }
       </div>
@@ -127,18 +132,10 @@ export default function History() {
       {loading ? (
         <Loading />
       ) : (
-        <ul className="history">
-          {workouts.length ? workouts.map((workout, i) =>
-            <li
-              className="workout"
-              key={`${workout['workout_date']}-${i}`}
-            >
-              {normalizeDate(workout['workout_date'], false)}
-            </li>
-          ) : (
-            <h2>No workouts found!</h2>
-          )}
-        </ul>
+        // <Loading />
+        <WorkoutHistoryList 
+          workoutsObj={workoutsObj}
+        />
       )
       }
 
