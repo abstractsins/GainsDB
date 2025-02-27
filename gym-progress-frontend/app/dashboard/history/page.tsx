@@ -15,6 +15,7 @@ import { WorkoutListContainer } from "@/app/types/types";
 
 
 export default function History() {
+
   const { data: session, status } = useSession();
   const [workoutsObj, setWorkoutsObj] = useState<WorkoutsObj>();
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +27,7 @@ export default function History() {
   const [totalWorkouts, setTotalWorkouts] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
   const userId = session?.user?.id || localStorage.getItem("userId");
-  
+
 
   useEffect(() => {
     if (status === "authenticated" && session?.user?.authToken) {
