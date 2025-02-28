@@ -12,6 +12,7 @@
     "axios": "^1.7.9",
     "bcryptjs": "^3.0.0",
     "framer-motion": "^12.4.2",
+    "gsap": "^3.12.7",
     "next": "15.1.7",
     "next-auth": "^4.24.11",
     "postgres": "^3.4.5",

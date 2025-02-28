@@ -96,8 +96,7 @@ app.get("/api/user/:userId/dashboard", authMiddleware, async (req, res) => {
     JOIN exercises e ON we.exercise_id = e.id
     WHERE w.user_id = $1 
     GROUP BY e.id, e.name
-    ORDER BY log_count DESC
-    LIMIT 1;`,
+    ORDER BY log_count DESC;`,
     [userId]
   );
   const mostLoggedExe = mostLogged.rows

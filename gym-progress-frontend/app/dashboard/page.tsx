@@ -4,9 +4,13 @@ import React, { useState, useEffect } from "react";
 import InfoCard from "../components/DashboardCard";
 import { env } from "process";
 import { useSession } from "next-auth/react";
+
 import { IoRibbon } from "react-icons/io5";
 import { FaClipboardList } from "react-icons/fa";
 import { FaWeightHanging } from "react-icons/fa";
+import { BsGraphUpArrow } from "react-icons/bs";
+import { BsExclamationTriangle } from "react-icons/bs";
+
 import { toTitleCase } from "@/utils/utils";
 import { DashboardData } from "../types/types";
 
@@ -70,23 +74,41 @@ export default function DashboardPage() {
       </div>
       <ul className="dashboard-list">
         <li className="dashboard-list">
-          <InfoCard icon={<FaClipboardList />} 
-            title="Logged Workouts" 
+          <InfoCard icon={<FaClipboardList />}
+            title="Logged Workouts"
             value={data2?.totalWorkouts || "N/A"}
             description={`over ${data2?.totalWeeks || 0} weeks`}
+            id="logged-workouts"
           />
         </li>
+
         <li className="dashboard-list">
-          <InfoCard icon={<IoRibbon />} 
-            title="Most Logged" 
+          <InfoCard icon={<IoRibbon />}
+            title="Most Logged"
             value={toTitleCase(data2?.mostLoggedExe[0]['exercise_name']) || "N/A"}
-            description={`in ${data2?.mostLoggedExe[0]['log_count']} workouts`} />
+            description={`${data2?.mostLoggedExe[0]['log_count']} workouts`} />
         </li>
+
         <li className="dashboard-list">
-          <InfoCard icon={<FaWeightHanging />} 
-            title="Most Weight" 
-            value="" 
-            description=" lbs!" />
+          <InfoCard icon={<BsExclamationTriangle />}
+            title="Least Logged"
+            value={toTitleCase(data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['exercise_name']) || "N/A"}
+            description={`${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count']} workout${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count'] == '1' ? '' : 's'}`} />
+        </li>
+
+        <li className="dashboard-list">
+          <InfoCard icon={<FaWeightHanging />}
+            title="Most Weight"
+            value={`${Number(data2?.theMostWeight[0]['max_weight'])} lbs`}
+            description={toTitleCase(data2?.theMostWeight[0]['exercise_name']) || "N/A"} />
+        </li>
+
+        <li className="dashboard-list">
+          <InfoCard icon={<BsGraphUpArrow />}
+            title="Gained Most Volume"
+            value={toTitleCase(data2?.mostVolumeChange[0]['exercise_name']) || "N/A"}
+            description={toTitleCase(`${Number(data2?.mostVolumeChange[0]['min_volume'])} -> ${Number(data2?.mostVolumeChange[0]['max_volume'])}`) || "N/A"}
+          />
         </li>
       </ul>
     </>

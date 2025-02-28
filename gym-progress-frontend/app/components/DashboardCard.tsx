@@ -3,9 +3,10 @@ interface Props {
     title: string;
     value: string | number;
     description: string;
+    id: string;
 }
   
-const InfoCard: React.FC<InfoCardProps> = ({ icon, title, value, description }: Props) => {
+const InfoCard: React.FC<InfoCardProps> = ({ icon, title, value, description, id }: Props) => {
 
     const textLength = value.toString().length;
     const style = { "--char-count": textLength } as React.CSSProperties;  
@@ -23,10 +24,15 @@ const InfoCard: React.FC<InfoCardProps> = ({ icon, title, value, description }: 
                     <span 
                         className="dashboard-card-value"
                         style={style}
-                    >{value}</span>
+                        id={id}
+                    >
+                        {value}
+                    </span>
                 </div>
                 <div className="dashboard-card-desc-container">
-                    <aside>{description}</aside>
+                    <aside>
+                        {description}
+                    </aside>
                 </div>
             </div>
         </div>

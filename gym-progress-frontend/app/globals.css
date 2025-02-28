@@ -794,16 +794,27 @@ li.workout {
   margin: 20px;
   /* border: 2px solid whitesmoke; */
   border-radius: 10px;
-  width: 400px;
+  width: 450px;
   /* height: 180px; */
   /* height: 150px; */
   height: fit-content;
+  min-height: 200px;
   transition: height 300ms ease, width 300ms ease;
 }
 
 li.workout.active {
   /* height: 400px !important; */
   /* height: 600px; */
+}
+
+div.workout-card {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+div.workout-card-header {
+  width: 40%;
 }
 
 div.workout-card-header h2 {
@@ -826,7 +837,7 @@ div.workout-card-glance-body {
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: center;
-  width: 75%;
+  width: 85%;
   height: 100%;
   border-radius: 10px;
   padding: 10px 15px;
@@ -836,11 +847,11 @@ div.workout-card-details-body {
   background-color: var(--darkGray);
   display: flex;
   flex-direction: column;
-  width: 75%;
+  /* width: 75%; */
   height: 100%;
   border-radius: 10px;
   padding: 10px 15px;
-
+  width: 85%;
 }
 
 div.workout-card-glance-body ul {
@@ -866,17 +877,12 @@ span.nav-readout {
 }
 
 li.workout.skeleton {
-    display: flex;
-    border-radius: 10px;
-    background-color: black;
-    width: 300px;
-    height: 200px;
-    margin: 15px;
-  }
-
-div.workout-card {
   display: flex;
-  width: 100%;
+  border-radius: 10px;
+  background-color: black;
+  width: 300px;
+  height: 200px;
+  margin: 15px;
 }
 
 .exe-card-exe-container {
@@ -906,8 +912,8 @@ span.order {
 div.dashboard-card {
   display: flex;
   flex-direction: column;
-  width: 225px;
-  height: 250px;
+  width: 365px;
+  height: 225px;
   /* height: fit-content; */
   border-radius: 10px;
   border: 3px solid whitesmoke;
@@ -963,22 +969,108 @@ span.dashboard-card-value {
   width: 100%;
   bottom: 0;
   padding: 2px 5px;
-  justify-content: flex-start;
+  justify-content: center;
+  text-align: center;
 }
 
 ul.dashboard-list {
   display: flex;
   max-width: 100%;
+  flex-wrap: wrap;
 }
 
 li.dashboard-list {
   margin: 10px;
 }
 
+#logged-workouts {
+  font-size: 5em;
+}
+
+div#about-page header {
+  padding: 25px 50px;
+}
+
+div#about-page header h1 {
+  display: inline;
+}
+
+span.app-name {
+  font-family: "Tourney" !important;
+  font-size: 1.25em;
+}
 
 
 
 
+
+
+
+
+
+/* * ABOUT PAGE */
+div#about-page .about-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 200px;
+}
+
+.about-body div {
+  /* line-height: 2.5; */
+}
+
+.about-body .img-app-window,
+.about-body .img-notes-app {
+  margin: 40px;
+}
+
+div#about-page .about-body div {
+  font-size: 1.25em;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+span.leading-text {
+  font-size: 2em;
+}
+
+div.about-body ul.about-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 15px 100px;
+}
+
+div.about-body ul.about-list li {
+  list-style: disc;
+}
+
+.ul-title {
+  text-transform: uppercase;
+}
+
+.moving-bg {
+  position: fixed;
+  top: 150px;
+  left: 0;
+  width: 100%;
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+  /* transition: all 700ms ease; */
+  z-index: -10;
+}
+
+div.about-body div.text-section {
+  background-color: rgb(10, 10, 10);
+  width: 100%;
+  padding: 50px 500px;
+  margin: 600px 0;
+  /* min-height: 600px; */
+  min-height: 100vh;
+}
 
 
 * {
