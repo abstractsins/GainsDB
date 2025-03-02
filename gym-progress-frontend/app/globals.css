@@ -6,6 +6,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --darkGray: #1f2421;
+  --black: rgb(10, 10, 10);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,6 +14,14 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -23,6 +32,12 @@ body {
 
 input {
   color: black;
+}
+
+.splash-container {
+  background-image: url('/bg3.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 div.image-container-coming-soon {
@@ -136,7 +151,7 @@ h2.popup-header {
 footer.footer {
   display: flex;
   justify-content: flex-end;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 20px;
 }
@@ -909,7 +924,14 @@ span.order {
 
 
 /** DASHBOARD */
+div#dashboard-page {
+  background-position: top;
+  background-image: url(/bg2.jpg);
+  background-size: cover;
+}
+
 div.dashboard-card {
+  background-color: rgba(10, 10, 10, 0.7);
   display: flex;
   flex-direction: column;
   width: 365px;
@@ -1009,27 +1031,62 @@ span.app-name {
 
 
 /* * ABOUT PAGE */
-div#about-page .about-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-bottom: 200px;
+div#about-page {
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: "cover";
+  background-position: "left";
 }
 
-.about-body div {
-  /* line-height: 2.5; */
+#about-page header {
+  background-color: rgb(10, 10, 10);
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+div.about-body {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-evenly; */
+  /* background-image: url("/bg1.jpg"); */
+  background-size: cover;
+  background-position: bottom;
+  background-attachment: fixed;
+  height: 100vh;
+  width: 400vw;
+  /* flex-wrap: nowrap; */
+  
+}
+
+.parallax-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200vw; /* Make it twice the viewport width for a smoother scroll effect */
+  height: 100vh;
+  background-image: url('/bg1.jpg');
+  background-size: 120% auto; /* Ensures enough width to move */
+  background-repeat: no-repeat;
+  background-position: bottom; /* Ensures GSAP can animate this */
+  z-index: -1;
+}
+
+
+
+.about-track {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
 }
 
 .about-body .img-app-window,
 .about-body .img-notes-app {
   margin: 40px;
-}
-
-div#about-page .about-body div {
-  font-size: 1.25em;
-  width: 100%;
-  margin-bottom: 30px;
 }
 
 span.leading-text {
@@ -1040,7 +1097,7 @@ div.about-body ul.about-list {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 15px 100px;
+  margin: 15px;
 }
 
 div.about-body ul.about-list li {
@@ -1051,26 +1108,40 @@ div.about-body ul.about-list li {
   text-transform: uppercase;
 }
 
-.moving-bg {
-  position: fixed;
-  top: 150px;
-  left: 0;
-  width: 100%;
-  height: 500px;
-  background-size: cover;
-  background-position: center;
-  /* transition: all 700ms ease; */
-  z-index: -10;
+div.about-section {
+  display: flex;
+  background-color: rgba(10, 10, 10, 0.7);
+  border-radius: 10px;
+  width: 50vw;
+  height: 50vh;
+  padding: 50px;
+  margin: 20px;
+  font-size: 1.25em;
 }
 
-div.about-body div.text-section {
-  background-color: rgb(10, 10, 10);
-  width: 100%;
-  padding: 50px 500px;
-  margin: 600px 0;
-  /* min-height: 600px; */
-  min-height: 100vh;
+#p1 {
+  display: flex;
+  flex-direction: column;
 }
+
+
+/* 
+html {
+  overflow-y: scroll;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+body {
+  overflow-y: visible;
+  position: relative;
+  height: unset;
+}
+html, body {
+  overflow-x: scroll;
+  margin: 0;
+} */
+
 
 
 * {

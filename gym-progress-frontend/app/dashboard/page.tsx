@@ -68,7 +68,7 @@ export default function DashboardPage() {
   if (loading) return <p>Loading...</p>
 
   return (
-    <>
+    <div id="dashboard-page">
       <div>
         <h1 className="page-header">Check out your stats!</h1>
       </div>
@@ -111,7 +111,7 @@ export default function DashboardPage() {
           />
         </li>
       </ul>
-    </>
+    </div>
 
   );
 }

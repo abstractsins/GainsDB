@@ -142,12 +142,13 @@ export default function Home() {
 
         /* POPUP STYLES */
         .popup {
+          background-color: var(--black);
+          background-color: var(--darkGray);
           padding: 50px 50px 0 50px;
           border-radius: 10px 10px 0 0;
-          background-color: #136;
           min-height: 25%;
           max-height: 40%;
-          width: 65%;
+          width: 48%;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
@@ -177,11 +178,12 @@ export default function Home() {
           align-items: center;
         }
         div.form-container {
-          background-color: #136; 
+          background-color: var(--black);
+          background-color: var(--darkGray);
           display: flex;
           flex-direction: column;
           align-items: center;
-          width: 65%;
+          width: 48%;
           border-radius: 0 0 10px 10px;
           transition: transform 500ms;
           transform: translateY(-60%);
@@ -199,7 +201,7 @@ export default function Home() {
           bottom: 0;
           left: 0;
           right: 0;
-          background-color: #fff;
+          background-color: var(--black);
           padding: 20px;
           border-top-left-radius: 10px;
           border-top-right-radius: 10px;
@@ -254,7 +256,7 @@ export default function Home() {
         }
 
         h1 {
-          font-size: 6em;
+          font-size: 5em;
           font-family: "Tourney";
         }
 

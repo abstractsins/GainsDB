@@ -1,0 +1,10 @@
+{
+    "name": "GainsDB",
+    "short_name": "GainsDB",
+    "description": "Track and visualize your workout progress easily.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#111827"
+  }
+  
