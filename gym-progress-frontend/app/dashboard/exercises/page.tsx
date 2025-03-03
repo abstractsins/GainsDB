@@ -29,6 +29,8 @@ export default function Exercises() {
   const [resetInnerExpansion, setResetInnerExpansion] = useState(false);
   const [expandedExerciseId, setExpandedExerciseId] = useState(null);
 
+  // Popup Log trial
+
   const refreshContent = () => setDataUpdated(prev => prev + 1);
 
   const handleCategorySelect = (category: string) => {
@@ -157,13 +159,13 @@ export default function Exercises() {
   };
 
   return (
-    <div>
+    <div id="exercises-page">
 
       {error && <p className="text-red-500">{error}</p>}
 
-      <div className="exe-header p-2 flex items-center">
+      <div className="exe-header flex items-center">
 
-        <div className="p-2 flex flex-col items-center">
+        <div className="flex flex-col items-center">
           <h1 className="page-header">Your Exercises</h1>
           <span className="w-[100%]">Total exercises logged: {exercises.length}</span>
         </div>

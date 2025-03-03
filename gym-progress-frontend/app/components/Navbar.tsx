@@ -11,7 +11,7 @@ const oswald = Oswald({
 
 export default function Navbar() {
     return (
-        <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
+        <header className="nav-header">
 
         <Link href="/dashboard" className="hover:text-blue-300 flex items-center">
             <MdDashboard className="mr-2 text-xl" />

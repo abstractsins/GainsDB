@@ -117,7 +117,7 @@ export default function NewWorkout() {
   }
 
   return (
-    <div>
+    <div id="new-workout-page">
       <h1 className="page-header">Record a Set!</h1>
 
       <div className="new-workout-form-container">

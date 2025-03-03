@@ -8,6 +8,7 @@ import Navbar from "@/app/components/Navbar";
 import ClientLoader from "../components/ClientLoader";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { usePathname } from 'next/navigation';
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -26,8 +27,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter();
   const [isChecking, setIsChecking] = useState(true);
 
+  const pathname = usePathname();
+
+  // console.log(pathname);
+
   useEffect(() => {
-    console.log("🔍 Debug - Session Status:", status);
+    // console.log("🔍 Debug - Session Status:", status);
     
     if (status === "authenticated" && !session) {
       router.push("/");
@@ -43,6 +48,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     } else {
       setIsChecking(false);
     }
+
   }, [status, session, router]);
 
   if (status === "loading" || isChecking) {
@@ -68,7 +74,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Top Navbar */}
         <Navbar></Navbar>
         <ClientLoader>
-          <main className="p-6 overflow-auto">{children}</main>
+          <main className={`overflow-auto`}>{children}</main>
         </ClientLoader>
       </div>
     </div>

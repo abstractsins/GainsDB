@@ -10,7 +10,7 @@ const tourney = Tourney({
 
 export default function Charts() {
     return (
-        <>
+        <div id="charts-page">
             <h1 className="page-header">Charts</h1>
             <span className={`${tourney.className} coming-soon`}>Coming Soon!</span>
             <div className="image-container-coming-soon">
@@ -22,6 +22,6 @@ export default function Charts() {
                     height={500}
                 />
             </div>
-        </>
+        </div>
     );
 }

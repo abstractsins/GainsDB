@@ -101,7 +101,7 @@ export default function Home() {
                 type="text"
                 placeholder="Username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)} required
+                onChange={(e) => setUsername(e.target.value.trim())} required
               />
               <input
                 className="login-field"

@@ -21,7 +21,7 @@ export default function DashboardPage() {
   const [data2, setData2] = useState<DashboardData | null>();
   const [error, setError] = useState<string | null>(null);
 
-  const { data: session } = useSession(); // Ensure this is defined before use
+  const { data: session } = useSession();
   const userId = session?.user?.id || localStorage.getItem("userId");
   const server = process.env.NEXT_PUBLIC_BACKEND || 'http://localhost:5000';
 
@@ -69,48 +69,51 @@ export default function DashboardPage() {
 
   return (
     <div id="dashboard-page">
-      <div>
+      {/* <div>
         <h1 className="page-header">Check out your stats!</h1>
+      </div> */}
+      <div className="dashboard-body">
+
+        <ul className="dashboard-list">
+          <li className="dashboard-list">
+            <InfoCard icon={<FaClipboardList />}
+              title="Logged Workouts"
+              value={data2?.totalWorkouts || "N/A"}
+              description={`over ${data2?.totalWeeks || 0} weeks`}
+              id="logged-workouts"
+            />
+          </li>
+
+          <li className="dashboard-list">
+            <InfoCard icon={<IoRibbon />}
+              title="Most Logged"
+              value={toTitleCase(data2?.mostLoggedExe[0]['exercise_name']) || "N/A"}
+              description={`${data2?.mostLoggedExe[0]['log_count']} workouts`} />
+          </li>
+
+          <li className="dashboard-list">
+            <InfoCard icon={<BsExclamationTriangle />}
+              title="Least Logged"
+              value={toTitleCase(data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['exercise_name']) || "N/A"}
+              description={`${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count']} workout${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count'] == '1' ? '' : 's'}`} />
+          </li>
+
+          <li className="dashboard-list">
+            <InfoCard icon={<FaWeightHanging />}
+              title="Most Weight"
+              value={`${Number(data2?.theMostWeight[0]['max_weight'])} lbs`}
+              description={toTitleCase(data2?.theMostWeight[0]['exercise_name']) || "N/A"} />
+          </li>
+
+          <li className="dashboard-list">
+            <InfoCard icon={<BsGraphUpArrow />}
+              title="Gained Most Volume"
+              value={toTitleCase(data2?.mostVolumeChange[0]['exercise_name']) || "N/A"}
+              description={toTitleCase(`${Number(data2?.mostVolumeChange[0]['min_volume'])} -> ${Number(data2?.mostVolumeChange[0]['max_volume'])}`) || "N/A"}
+            />
+          </li>
+        </ul>
       </div>
-      <ul className="dashboard-list">
-        <li className="dashboard-list">
-          <InfoCard icon={<FaClipboardList />}
-            title="Logged Workouts"
-            value={data2?.totalWorkouts || "N/A"}
-            description={`over ${data2?.totalWeeks || 0} weeks`}
-            id="logged-workouts"
-          />
-        </li>
-
-        <li className="dashboard-list">
-          <InfoCard icon={<IoRibbon />}
-            title="Most Logged"
-            value={toTitleCase(data2?.mostLoggedExe[0]['exercise_name']) || "N/A"}
-            description={`${data2?.mostLoggedExe[0]['log_count']} workouts`} />
-        </li>
-
-        <li className="dashboard-list">
-          <InfoCard icon={<BsExclamationTriangle />}
-            title="Least Logged"
-            value={toTitleCase(data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['exercise_name']) || "N/A"}
-            description={`${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count']} workout${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count'] == '1' ? '' : 's'}`} />
-        </li>
-
-        <li className="dashboard-list">
-          <InfoCard icon={<FaWeightHanging />}
-            title="Most Weight"
-            value={`${Number(data2?.theMostWeight[0]['max_weight'])} lbs`}
-            description={toTitleCase(data2?.theMostWeight[0]['exercise_name']) || "N/A"} />
-        </li>
-
-        <li className="dashboard-list">
-          <InfoCard icon={<BsGraphUpArrow />}
-            title="Gained Most Volume"
-            value={toTitleCase(data2?.mostVolumeChange[0]['exercise_name']) || "N/A"}
-            description={toTitleCase(`${Number(data2?.mostVolumeChange[0]['min_volume'])} -> ${Number(data2?.mostVolumeChange[0]['max_volume'])}`) || "N/A"}
-          />
-        </li>
-      </ul>
     </div>
 
   );

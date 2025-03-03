@@ -50,6 +50,8 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
     const server = process.env.NEXT_PUBLIC_BACKEND;
     const [moreDisabled, setMoreDisabled] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
+    const [logPopup, setLogPopup] = useState<boolean>(false);
+    const [logExerciseId, setLogExererciseId] = useState<string|null>(null);
 
     
     useEffect(() => {
@@ -104,10 +106,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
                 // console.log(`setExpandedExerciseId(null);`);
                 setIsExpanded(true)
                 setExpandedExerciseId(null);
-
-                console.log(`setTimeout(() => setExpandedExerciseId(exercise.id), 300);`);
                 setTimeout(() => setExpandedExerciseId(exercise.id), 300);
-            //     isExpanded = true;
             }
 
 
@@ -142,6 +141,9 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
             } finally {
                 setLoading(false);
             }
+            
+            const id = clickedLi?.id ? `${clickedLi.id}` : null;
+            setLogExererciseId(id);
         }
     };
 
@@ -186,16 +188,28 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
         );
     }
 
+    const launchPopupLog = (e: React.MouseEvent<HTMLButtonElement>) => {
+        console.log(logExerciseId);
+
+        e.stopPropagation();
+        e.preventDefault();
+        console.log(e.target);
+
+        const clickedLi = (e.target as HTMLElement).closest('li');
+        setLogPopup(true);
+    }
+
 
     return (
-        <li className={`exercise-card ${exercise.category}`} onClick={handleClick}>
+        <li id={`${exercise.id}`} className={`exercise-card ${exercise.category}`} onClick={handleClick}>
             <div className="exe-card-top">
 
                 <div className="exe-card-left">
                     <h2 className="exercise-list text-xl">{toTitleCase(exercise.name)}</h2>
                     {isThisExpanded
                         && <div className="expansion-button-container">
-                            <button className={`${workoutData ? '' : 'disabled'} click-for-more`} onClick={moreClickHandler}>{`${isExpanded2 ? 'Less...' : 'More...'}`}</button>
+                            <button className={`direct-log`} onClick={launchPopupLog}>{`Log`}</button>
+                            <button className={`${workoutData ? '' : 'disabled'} click-for-more`} onClick={moreClickHandler}>{`${isExpanded2 ? 'Less...' : 'Chart...'}`}</button>
                         </div>
                     }
                     <span className="text-[12pt] font-thin">

@@ -102,7 +102,7 @@ export default function History() {
   }
 
   return (
-    <div>
+    <div id="history-page">
       <h1 className="page-header">Workout History</h1>
       {/* Timeframe Selector */}
       <div className="timeframe-filter">
