@@ -3,6 +3,7 @@ import normalizeDate from "../normalizeDate";
 import { DateObj, Workout } from "@/app/types/types";
 import { toTitleCase } from "@/utils/utils";
 
+import WorkoutCardGlance from "./WorkoutCardGlance";
 import WorkoutCardDetails from "./WorkoutCardDetails";
 
 interface Props {
@@ -36,24 +37,16 @@ export default function WorkoutHistoryCard({ date, exercises, workoutDetailsId }
         return dayName;
     }
 
-    const editedDate = normalizeDate(date, false).replace(/,/g, '');
+    // const editedDate = normalizeDate(date, false).replace(/,/g, '');
 
 
     return (
         <li className="workout-card">
             <div className="workout-card-header">
-                <span className="day">{dayOfWeek(date)} {editedDate}</span>
+                <span className="day">{dayOfWeek(date)} {normalizeDate(date, false)}</span>
                 {/* <span className="date">{editedDate}</span> */}
             </div>
-            {atGlance &&
-                <div className="workout-card-glance-body">
-                    <ul>
-                        {exercises.exercises.map((exercise, index, a) => {
-                            return <li key={`${exercise}`} className={`workout-card-exe-name`}>{`${toTitleCase(exercise)}${index === a.length-1 ? '' : ','}`}</li>;
-                        })}
-                    </ul>
-                </div>
-            }
+            {atGlance && <WorkoutCardGlance exercises={exercises} />}
             {workoutDetails && <WorkoutCardDetails exercises={exercises} />}
         </li>
     );

@@ -1,7 +1,9 @@
 import { toTitleCase } from "@/utils/utils";
 
+import { DateObj } from "@/app/types/types";
+
 interface Props {
-    exercises: string[];
+    exercises: DateObj;
 }
 
 export default function WorkoutCardDetails({ exercises }: Props) {
@@ -16,7 +18,7 @@ export default function WorkoutCardDetails({ exercises }: Props) {
                             <span className="workout-card-exe-name workout-detail-exercise">{toTitleCase(exercise)}</span>
                             <ul className="workout-detail-exercise-sets">
                                 {
-                                    exercises[exercise].map(set => {
+                                    exercises[exercise].map((set: string[]) => {
                                         console.log(set);
                                         const order = set[0] + (set[0] == 1 ? 'st' : (set[0] == 2 ? 'nd' : (set[0] == 3 ? 'rd' : 'th')));
                                         const weight = set[1] + ' lbs';

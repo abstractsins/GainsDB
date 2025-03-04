@@ -1,7 +1,10 @@
-export default function workoutProcessing(workoutArray) {
+import exerciseCategorizer from './exerciseCatagories.js';
 
-    console.log('workoutArray');
-    console.log(workoutArray);
+export default function workoutProcessing(workoutArray) {
+    
+    // console.log('workoutArray');
+    workoutArray = exerciseCategorizer(workoutArray);
+    // console.log(workoutArray);
 
     let workoutObj = {
         dates: [],
@@ -22,8 +25,9 @@ export default function workoutProcessing(workoutArray) {
         workoutArray.forEach(entry => {
             if (entry['workout_date'].toLocaleDateString() === date ) {
                 dateObj.id = entry['workout_id'];
-                if (!dateObj.exercises.includes(entry['exercise_name'])) {
-                    dateObj.exercises.push(entry['exercise_name']);
+                console.log(...dateObj.exercises)
+                if (!dateObj.exercises.flat().includes(entry['exercise_name'])) {
+                    dateObj.exercises.push([entry['exercise_name'], entry['category']]);
                 }
             }
         });
