@@ -133,10 +133,7 @@ export default function History() {
       {loading ? (
         <Loading />
       ) : (
-        // <Loading />
-        <WorkoutHistoryList 
-          workoutsObj={workoutsObj}
-        />
+        <WorkoutHistoryList workoutsObj={workoutsObj} />
       )
       }
 

@@ -315,8 +315,7 @@ p.field-subtitle {
 form#new-set-form {
   border-radius: 10px;
   background-color: var(--darkGray);
-  padding: 35px;
-  margin-top: 30px;
+  padding: 0 30px 20px 30px;
   width: fit-content;
 }
 
@@ -378,7 +377,6 @@ button.new-workout-button {
   width: 200px;
   height: 80px;
   font-size: 16pt;
-  margin: 30px 10px;
   padding: 15px 20px;
   justify-self: center;
   transition: background-color 150ms ease-out;
@@ -461,7 +459,7 @@ div.form-xl-row {
     width: 250px;
     height: 100px;
     margin: 30px 15px;
-    font-size: 22pt;
+    /* font-size: 22pt; */
   }
 
   button.new-workout-button.active:hover {
@@ -470,8 +468,8 @@ div.form-xl-row {
 
   select.new-workout-field {
     width: 100%;
-    font-size: 24pt;
-    padding: 0 20px;
+    /* font-size: 24pt; */
+    /* padding: 0 20px; */
   }
   div.form-xxl-row {
     display: flex;
@@ -480,12 +478,12 @@ div.form-xl-row {
   }
   input#input-weight {
     width: 250px;
-    font-size: 26pt;
-    padding: 0 30px;
+    /* font-size: 26pt; */
+    /* padding: 0 30px; */
   }
   input#input-reps {
-    font-size: 26pt;
-    padding: 0 20px;
+    /* font-size: 26pt; */
+    /* padding: 0 20px; */
     width: 200px;
   }
 }
@@ -719,6 +717,17 @@ div#new-exercise-popup {
   filter: drop-shadow(20px 20px 10px #0000009f);
 }
 
+#new-workout-popup {
+  height: max-content;  
+  width: max-content;
+  top: 20%;
+  left: 33%;
+  background-color: #1f2421;
+  border-radius: 20px;
+  filter: drop-shadow(20px 20px 10px #0000009f);
+}
+
+
 input.new-exercise-name {
   font-size: 16pt;
   color: black;
@@ -835,22 +844,30 @@ li.workout.active {
   /* height: 600px; */
 }
 
-div.workout-card {
+li.workout-card {
+  background-color: rgb(14, 137, 179);
+  border-radius: 10px;
+  padding: 15px;
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  flex-direction: column;
+  align-items: space-between;
+  width: 500px;
+  height: 200px;
+  margin: 15px;
 }
 
 div.workout-card-header {
-  width: 40%;
+  display: flex;
+  align-items: center;
+  /* width: 40%; */
 }
 
-div.workout-card-header h2 {
+div.workout-card-header span.day {
   font-family: "Oswald";
-  font-size: 18pt;
+  font-size: 24pt;
 }
 
-div.workout-card-header span {
+div.workout-card-header span.date {
   font-size: 14pt;
 }
 
@@ -860,37 +877,41 @@ div.workout-card-header span {
 }
 
 div.workout-card-glance-body {
-  background-color: var(--darkGray);
+  /* background-color: var(--darkGray); */
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: center;
-  width: 85%;
+  /* flex-direction: column; */
+  /* justify-content: center; */
   height: 100%;
   border-radius: 10px;
-  padding: 10px 15px;
 }
 
 div.workout-card-details-body {
   background-color: var(--darkGray);
   display: flex;
   flex-direction: column;
-  /* width: 75%; */
   height: 100%;
   border-radius: 10px;
   padding: 10px 15px;
-  width: 85%;
+  width: 100%;
 }
 
 div.workout-card-glance-body ul {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: flex-start;
-  height: 100%;
+  flex-wrap: wrap;
+  /* height: 100%; */
+  height: fit-content;
+  margin: 5px;
 }
 
 div.workout-card-glance-body ul li {
-  padding: 5px 0;
+  display: flex;
+  padding: 0;
+  font-size: 14pt;
+  margin: 0px 4px;
+  /* font-weight: normal; */
 }
 
 
@@ -1206,6 +1227,7 @@ div.about-section-skeleton {
 
 #p1 .left {
   display: flex;
+  align-items: center;
   width: 110%;
   padding: 50px;
   line-height: 1.75;
@@ -1300,6 +1322,19 @@ div.about-section-skeleton {
   height: 100%;
   justify-content: space-between;
 }
+
+
+#new-workout-popup h2 {
+  font-family: "oswald";
+  font-size: 32pt;
+  padding: 30px;
+}
+
+#new-set-form.xxl {
+  padding: 30px;
+  margin-top: 30px;
+}
+
 
 /* 
 html {

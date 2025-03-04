@@ -4,12 +4,12 @@ import { RiCloseLargeFill } from "react-icons/ri";
 import { useSession } from "next-auth/react";
 import { ReactHTMLElement, useState } from "react";
 
-interface NewExercisePopupProps {
+interface Props {
     visible: boolean;
     onClose: () => void;
 }
 
-export default function NewExercisePopup({ visible, onClose }: NewExercisePopupProps) {
+export default function NewExercisePopup({ visible, onClose }: Props) {
     if (!visible) return null;
     const { data: session, status } = useSession();
     const [ error, setError ] = useState();
@@ -69,9 +69,9 @@ export default function NewExercisePopup({ visible, onClose }: NewExercisePopupP
                 <input type="text" className="new-exercise-name" required autoFocus placeholder="exercise name..." onChange={inputHandler} />
             </form>
             <div className="popup-footer">
-                <button className={`${entryValue?'active':''} popup-button`} id="submit-button" disabled={entryValue?false:true} onClick={submitNewExercise}>Submit</button>
+                <button type="button" className={`${entryValue?'active':''} popup-button`} id="submit-button" disabled={entryValue?false:true} onClick={submitNewExercise}>Submit</button>
             </div>
-            <button className="popup-button" id="cancel-button" onClick={onClose}><RiCloseLargeFill /></button>
+            <button type="button" className="popup-button" id="cancel-button" onClick={onClose}><RiCloseLargeFill /></button>
         </div>
     );
 }

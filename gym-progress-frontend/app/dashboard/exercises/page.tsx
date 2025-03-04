@@ -1,8 +1,10 @@
 "use client";
 
 import { GiWeightLiftingUp } from "react-icons/gi";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+
+import LogWorkoutPopup from "@/app/components/exercises/LogWorkoutPopup";
 import ExercisesLegend from "@/app/components/ExercisesLegend";
 import NewExercisePopup from "@/app/components/NewExercisePopup";
 import ExerciseCards from "@/app/components/ExerciseCards";
@@ -30,6 +32,15 @@ export default function Exercises() {
   const [expandedExerciseId, setExpandedExerciseId] = useState(null);
 
   // Popup Log trial
+  const [popupLog, setPopupLog] = useState<boolean>(false);
+  const [logExeId, setLogExeId] = useState<string>('0');
+
+  const handlePopupLog = (popup: boolean, id: string) => {
+    setPopupLog(popup);
+    setLogExeId(id);
+    console.log('Log was clicked for ' + id);
+    console.log('popupLog is ' + popupLog);
+  }
 
   const refreshContent = () => setDataUpdated(prev => prev + 1);
 
@@ -148,6 +159,8 @@ export default function Exercises() {
   }
 
   const closeFunctions = () => {
+    console.warn('Close Functions');
+    setPopupLog(false);
     setPopupVisible(false);
     refreshContent();
   }
@@ -190,10 +203,12 @@ export default function Exercises() {
           exercises={filteredExercises}
           onNewExercise={newExerciseHandler}
           resetInnerExpansion={resetInnerExpansion}
+          popupData={handlePopupLog}
         />
       )}
 
       {popupVisible && <NewExercisePopup visible={popupVisible} onClose={closeFunctions} />}
+      {popupLog && <LogWorkoutPopup visible={popupLog} exeId={logExeId} onClose={closeFunctions} />}
 
     </div>
   );

@@ -12,9 +12,10 @@ interface Props {
   exercises: ExerciseCard[];
   onNewExercise: () => void;
   resetInnerExpansion: boolean;
+  popupData: (popup: boolean, id: string) => void;
 }
 
-const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise, resetInnerExpansion }) => {
+const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise, resetInnerExpansion, popupData }) => {
 
   const [expandedExerciseId, setExpandedExerciseId] = useState<number | null>(null);
   const [expandedExercise, setExpandedExercise] = useState<string | null>(null);
@@ -46,11 +47,11 @@ const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise, resetInnerExp
         exercises.map((exercise, index) => (
           <ExerciseCard 
             key={index} 
-            id={exercise.id}
             exercise={exercise} 
             isExpanded={expandedExerciseId === exercise.id}
             setExpandedExerciseId={setExpandedExerciseId}
             resetInnerExpansion={expandedExerciseId !== exercise.id}
+            popupData={popupData}
             onClick={() => toggleExpand(exercise.id)}
           />
         ))

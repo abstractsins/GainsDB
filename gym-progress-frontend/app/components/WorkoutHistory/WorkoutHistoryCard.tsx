@@ -3,28 +3,30 @@ import normalizeDate from "../normalizeDate";
 import { DateObj, Workout } from "@/app/types/types";
 import { toTitleCase } from "@/utils/utils";
 
+import WorkoutCardDetails from "./WorkoutCardDetails";
+
 interface Props {
-    dateObj: DateObj;
+    id: string;
     date: string;
     exercises: DateObj;
     index: number;
-    workoutDetailsId: number;
+    workoutDetailsId: string | null;
+    onClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-export default function WorkoutHistoryCard({ exercises: dateObj, date, exercises, index, workoutDetailsId }: Props) {
+export default function WorkoutHistoryCard({ date, exercises, workoutDetailsId }: Props) {
     const [atGlance, setAtGlance] = useState(true);
     const [workoutDetails, setWorkoutDetails] = useState(false);
 
     useEffect(() => {
-        if (Number(workoutDetailsId) === Number(dateObj.id)) {
-            console.log('WE HAVE A MATCH');
+        if (Number(workoutDetailsId) === Number(exercises.id)) {
             setAtGlance(false);
             setWorkoutDetails(true);
         } else {
             setAtGlance(true);
             setWorkoutDetails(false);
         }
-    }, [workoutDetailsId, dateObj.id]);
+    }, [workoutDetailsId, exercises.id]);
 
     const dayOfWeek = (date: string) => {
         const newDate = new Date(date);
@@ -38,55 +40,21 @@ export default function WorkoutHistoryCard({ exercises: dateObj, date, exercises
 
 
     return (
-        <div className="workout-card">
+        <li className="workout-card">
             <div className="workout-card-header">
-                <h2>{dayOfWeek(date)}</h2>
-                <span>{editedDate}</span>
+                <span className="day">{dayOfWeek(date)} {editedDate}</span>
+                {/* <span className="date">{editedDate}</span> */}
             </div>
             {atGlance &&
                 <div className="workout-card-glance-body">
                     <ul>
-                        {
-                            exercises.exercises.map(exercise => {
-                                return <li key={`${exercise}`} className={`workout-card-exe-name`}>{toTitleCase(exercise)}</li>;
-                            })
-                        }
+                        {exercises.exercises.map((exercise, index, a) => {
+                            return <li key={`${exercise}`} className={`workout-card-exe-name`}>{`${toTitleCase(exercise)}${index === a.length-1 ? '' : ','}`}</li>;
+                        })}
                     </ul>
                 </div>
             }
-            {workoutDetails &&
-                <div className="workout-card-details-body">
-                    <ul>
-                        {
-                            exercises.exercises.map(exercise => {
-                                console.log(exercise)
-                                return (
-                                    <li className="exe-card-exe-container" key={exercise}>
-                                        <span className="workout-card-exe-name workout-detail-exercise">{toTitleCase(exercise)}</span>
-                                        <ul className="workout-detail-exercise-sets">
-                                            {
-                                                exercises[exercise].map(set => {
-                                                    console.log(set);
-                                                    const order = set[0] + (set[0] == 1 ? 'st' : (set[0] == 2 ? 'nd' : (set[0] == 3 ? 'rd' : 'th')));
-                                                    const weight = set[1] + ' lbs';
-                                                    const reps = set[2];
-                                                    return <li key={set[0]} className="exe-card-set">
-                                                        <span className="order">
-                                                            {`${order}: `}
-                                                        </span>
-                                                        <span>{`${weight}`}</span>
-                                                        <span>{` x ${reps} reps`}</span>
-                                                    </li>
-                                                })
-                                            }
-                                        </ul>
-                                    </li>
-                                );
-                            })
-                        }
-                    </ul>
-                </div>
-            }
-        </div>
+            {workoutDetails && <WorkoutCardDetails exercises={exercises} />}
+        </li>
     );
 }

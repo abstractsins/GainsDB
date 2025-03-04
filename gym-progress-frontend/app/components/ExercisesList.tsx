@@ -3,18 +3,18 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
 
-interface ExercisesListProps {
+interface Props {
     value: string;
     name: string;
     onChange: (value: string) => void;
   }
 
-export default function ExercisesList({ value, onChange }: ExercisesListProps) {
+export default function ExercisesList({ value, name, onChange }: Props) {
     const { data: session, status } = useSession(); // Get authentication session
     const [exercises, setExercises] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
     const userId = session?.user.id || localStorage.getItem("userId");
-    
+
     useEffect(() => {
         if (status === "authenticated" && session?.user.authToken) {
             fetchExercises();
@@ -79,7 +79,10 @@ export default function ExercisesList({ value, onChange }: ExercisesListProps) {
             required
             id="exercises-list"
         >
-            <option value="" disabled hidden>Select an exercise</option>    
+            { value === '' 
+                ? (<option value="" disabled hidden>Select an exercise</option>)
+                : (<option value={value} disabled hidden>{value}</option>)
+            }
             {exercises.map((exercise, index) => (
                 <option className="" key={index} value={toTitleCase(exercise.name)}>{toTitleCase(exercise.name)}</option>
             ))}

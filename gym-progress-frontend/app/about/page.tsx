@@ -13,6 +13,8 @@ import AboutLoading from "../components/about/AboutLoading";
 import { useSession } from "next-auth/react";
 
 import { MdDashboard } from "react-icons/md";
+import { AiFillHome } from "react-icons/ai";
+
 
 const tourney = Tourney({
     subsets: ["latin"],
@@ -100,7 +102,7 @@ export default function About() {
             animations.push(animation);
         }, 100);
 
-        // ✅ Parallax effect ScrollTrigger
+        // Parallax effect ScrollTrigger
         const parallaxTrigger = ScrollTrigger.create({
             trigger: scrollContainerRef.current,
             start: "top center",
@@ -146,7 +148,7 @@ export default function About() {
                             </Link>
                         ) : (
                             <Link href="/" className="hover:text-blue-300 flex items-center">
-                                <MdDashboard className="mr-2 text-xl" />
+                                <AiFillHome className="mr-2 text-xl" />
                                 <h2 className={`${oswald.className} text-lg font-bold  text-[12pt] sm:text-[14pt] md:text-[16pt] lg:text-[20pt]`}>Home</h2>
                             </Link>
                         )

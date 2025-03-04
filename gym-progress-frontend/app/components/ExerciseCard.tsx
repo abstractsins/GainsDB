@@ -2,10 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import normalizeDate from "@/app/components/normalizeDate";
+import ExerciseVolumeChart from "./ExerciseVolumeChart";
 import { useSession } from "next-auth/react";
 import { toTitleCase } from "@/utils/utils";
-import ExerciseVolumeChart from "./ExerciseVolumeChart";
-
 
 
 interface Exercise {
@@ -32,6 +31,8 @@ interface Props {
     isExpanded: boolean;
     setExpandedExerciseId: (exerciseId: number | null) => void;
     resetInnerExpansion: boolean;
+    popupData: (popup: boolean, id: string) => void;
+    onClick: () => void;
 }
 
 
@@ -39,7 +40,7 @@ interface Props {
 
 
 
-const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, setExpandedExerciseId, resetInnerExpansion }) => {
+const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, setExpandedExerciseId, resetInnerExpansion, popupData, onClick }: Props) => {
 
     const [workoutData, setWorkoutData] = useState<WorkoutData | null>(null);
     const [loading, setLoading] = useState(false);
@@ -51,11 +52,10 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
     const [moreDisabled, setMoreDisabled] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const [logPopup, setLogPopup] = useState<boolean>(false);
-    const [logExerciseId, setLogExererciseId] = useState<string|null>(null);
+    const [logExerciseId, setLogExererciseId] = useState<string>('0');
 
     
     useEffect(() => {
-        // isThisExpanded = false;
         if (!isThisExpanded) {
             setIsExpanded(false);
             setIsExpanded2(false); // Collapse chart section when this card is collapsed
@@ -73,7 +73,8 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
 
     const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
         console.log(`${exercise.name} clicked`);
-        console.log(isThisExpanded);
+
+
 
         if ((e.target as HTMLElement).closest('.exe-card-bottom')) {
             e.stopPropagation(); // Prevent collapsing
@@ -92,6 +93,9 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
             setLoading(true);
 
             const clickedLi = e.currentTarget;
+
+            const name = clickedLi?.getAttribute('name') ? `${clickedLi.getAttribute('name')}` : 'null';
+            setLogExererciseId(name);
 
             clickedLi.classList.remove('expand2');
 
@@ -141,9 +145,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
             } finally {
                 setLoading(false);
             }
-            
-            const id = clickedLi?.id ? `${clickedLi.id}` : null;
-            setLogExererciseId(id);
+
         }
     };
 
@@ -189,19 +191,14 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
     }
 
     const launchPopupLog = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(logExerciseId);
-
         e.stopPropagation();
         e.preventDefault();
-        console.log(e.target);
-
-        const clickedLi = (e.target as HTMLElement).closest('li');
-        setLogPopup(true);
+        popupData(true, logExerciseId);
     }
 
 
     return (
-        <li id={`${exercise.id}`} className={`exercise-card ${exercise.category}`} onClick={handleClick}>
+        <li id={`${exercise.id}`} name={`${exercise.name.replace(/\s/g, '-')}`} className={`exercise-card ${exercise.category}`} onClick={handleClick}>
             <div className="exe-card-top">
 
                 <div className="exe-card-left">
