@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import normalizeDate from "@/app/components/normalizeDate";
+import { normalizeDate } from "@/utils/utils";
 import ExerciseVolumeChart from "./ExerciseVolumeChart";
 import { useSession } from "next-auth/react";
 import { toTitleCase } from "@/utils/utils";

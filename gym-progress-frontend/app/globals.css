@@ -7,6 +7,12 @@
   --foreground: #171717;
   --darkGray: #1f2421;
   --black: rgb(10, 10, 10);
+
+  --upper-body: #00af54;
+  --lower-body: #007cbe;
+  --core: #ffd639;
+  --cardio: #ffa3af;
+  --other: #712f79;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,7 +41,7 @@ input {
 }
 
 .splash-container {
-  background-image: url('/bg3.jpg');
+  background-image: url("/bg3.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -50,7 +56,7 @@ div.image-container-coming-soon {
 span.coming-soon {
   display: flex;
   justify-content: center;
-  font-family: 'Tourney';
+  font-family: "Tourney";
   margin: 50px;
   font-size: 4em;
 }
@@ -83,14 +89,13 @@ button.disabled:hover {
   m-1
   pr-6
   pl-4
-  font-light
+  font-light;
 }
 
 .dashboard-link {
-  @apply
-  text-[12pt]
+  @apply text-[12pt]
   md:text-[14pt]
-  lg:text-[16pt]
+  lg:text-[16pt];
 }
 
 h1.page-header {
@@ -191,12 +196,8 @@ footer.footer {
 }
 
 .skeleton-row {
-  border-bottom: 5px solid rgb(64, 64, 64);;
+  border-bottom: 5px solid rgb(64, 64, 64);
 }
-
-
-
-
 
 #history-page,
 #exercises-page,
@@ -207,13 +208,6 @@ footer.footer {
 .dashboard-body {
   padding: 20px;
 }
-
-
-
-
-
-
-
 
 /** REGISTRATION */
 div.non-dash-page {
@@ -255,11 +249,11 @@ div.registration-body li {
   list-style: disc;
 }
 
-div.registration-form-module  div.module-label span {
+div.registration-form-module div.module-label span {
   font-size: 18pt;
 }
 
-div.registration-form-module  div.module-label {
+div.registration-form-module div.module-label {
   /* margin: 10px 0 5px 0; */
 }
 
@@ -311,6 +305,14 @@ p.field-subtitle {
 
 
 
+
+
+
+
+
+
+
+
 /** NEW SET */
 form#new-set-form {
   border-radius: 10px;
@@ -333,11 +335,11 @@ div.new-workout-form-container {
   /* width: 95%; */
 }
 
-select.new-workout-field[name='exercise'] {
+select.new-workout-field[name="exercise"] {
   padding-right: 40px;
 }
 
-input[type='date'] {
+input[type="date"] {
   padding: 20px;
 }
 
@@ -352,7 +354,7 @@ input[type='date'] {
 }
 
 button#submit-button.active {
-  background-color: #ADD989;
+  background-color: #add989;
   color: black;
   font-size: 16pt;
 }
@@ -366,8 +368,6 @@ button#submit-button.active:active {
   background-color: whitesmoke;
   color: black;
 }
-
-
 
 button.new-workout-button {
   background-color: lightgray;
@@ -383,7 +383,8 @@ button.new-workout-button {
   -webkit-transition: background-color 150ms ease-out;
   -ms-transition: background-color 150ms ease-out;
   -o-transition: background-color 150ms ease-out;
-  -ms-transition: background-color 150ms ease-out;}
+  -ms-transition: background-color 150ms ease-out;
+}
 
 button.new-workout-button.active {
   background-color: rgb(0, 128, 0);
@@ -446,7 +447,7 @@ div.form-xl-row {
   margin: 20px 0;
 }
 
-@media (min-width: 1700px) { 
+@media (min-width: 1700px) {
   #new-set-form {
     display: flex;
     padding: 10px;
@@ -488,13 +489,6 @@ div.form-xl-row {
   }
 }
 
-
-
-
-
-
-
-
 /** Exercises Page */
 div.exercises-legend {
   margin: 5px 0;
@@ -518,9 +512,10 @@ li.exercise-card {
   margin: 15px;
   cursor: pointer;
   border: 3px solid transparent;
-  transition: border 300ms ease,
-              width 300ms ease,
-              height 300ms ease;
+  transition:
+    border 300ms ease,
+    width 300ms ease,
+    height 300ms ease;
 }
 
 li.exercise-card.active {
@@ -538,7 +533,6 @@ div.exe-card-left {
   width: 264px;
 }
 
-
 li.exercise-card.active.expand2 {
   height: 630px;
 }
@@ -549,7 +543,8 @@ div.expanded-lvl-1 {
   padding-left: 15px;
 }
 
-div.expanded-lvl-1 ul {}
+div.expanded-lvl-1 ul {
+}
 
 div.expanded-lvl-1 li {
   width: fit-content;
@@ -574,7 +569,6 @@ div.lvl-1-exe-data {
 div.lvl-1-exe-data span {
   letter-spacing: 1.25;
 }
-
 
 .exercise-placeholder {
   position: fixed;
@@ -674,25 +668,25 @@ h2.new-exercise-button-header {
 
 li.upper-body,
 div#upper-body-square {
-  background-color: #00AF54;
+  background-color: #00af54;
 }
 li.lower-body,
 div#lower-body-square {
-  background-color: #007CBE;
+  background-color: #007cbe;
 }
 li.core,
 div#core-square {
-  background-color: #FFD639;
+  background-color: #ffd639;
   color: black;
 }
 li.cardio,
 div#cardio-square {
-  background-color: #FFA3AF;
+  background-color: #ffa3af;
   color: black;
 }
 li.other,
 div#other-square {
-  background-color: #712F79;
+  background-color: #712f79;
   color: whitesmoke;
 }
 div#all-square {
@@ -718,7 +712,7 @@ div#new-exercise-popup {
 }
 
 #new-workout-popup {
-  height: max-content;  
+  height: max-content;
   width: max-content;
   top: 20%;
   left: 33%;
@@ -726,7 +720,6 @@ div#new-exercise-popup {
   border-radius: 20px;
   filter: drop-shadow(20px 20px 10px #0000009f);
 }
-
 
 input.new-exercise-name {
   font-size: 16pt;
@@ -760,7 +753,7 @@ button.direct-log:hover {
   border: 2px solid white;
 }
 
-div.exe-card-bottom{
+div.exe-card-bottom {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -801,7 +794,18 @@ div.exe-card-top {
 
 
 
+
 /** WORKOUT HISTORY */
+#history-page h1.page-header {
+  display: inline-flex;
+  margin-right: 30px;
+}
+
+#history-page .page-header {
+  display: flex;
+  align-items: center;
+}
+
 div.timeframe-filter {
   margin: 30px 0 10px 0;
 }
@@ -820,46 +824,16 @@ ul.history {
   flex-wrap: wrap;
 }
 
-li.workout {
-  display: flex;
-  /* flex-direction: column; */
-  background-color: #007cbe;
-  cursor: pointer;
-  color: whitesmoke;
-  font-size: 16pt;
-  padding: 15px;
-  margin: 20px;
-  /* border: 2px solid whitesmoke; */
-  border-radius: 10px;
-  width: 450px;
-  /* height: 180px; */
-  /* height: 150px; */
-  height: fit-content;
-  min-height: 200px;
-  transition: height 300ms ease, width 300ms ease;
-}
-
-li.workout.active {
-  /* height: 400px !important; */
-  /* height: 600px; */
-}
-
 li.workout-card {
-  background-color: rgb(14, 137, 179);
+  position: relative;
+  background-color: var(--darkGray);
   border-radius: 10px;
   padding: 15px;
   display: flex;
   flex-direction: column;
-  align-items: space-between;
-  width: 550px;
+  width: 514px;
   height: 275px;
   margin: 15px;
-}
-
-div.workout-card-header {
-  display: flex;
-  align-items: center;
-  /* width: 40%; */
 }
 
 div.workout-card-header span.day {
@@ -887,16 +861,6 @@ div.workout-card-glance-body {
   border-radius: 10px;
 }
 
-div.workout-card-details-body {
-  background-color: var(--darkGray);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border-radius: 10px;
-  padding: 10px 15px;
-  width: 100%;
-}
-
 div.workout-card-glance-body ul {
   display: flex;
   /* flex-direction: column; */
@@ -904,7 +868,7 @@ div.workout-card-glance-body ul {
   flex-wrap: wrap;
   /* height: 100%; */
   height: fit-content;
-  margin: 5px;
+  margin: 2px;
 }
 
 div.workout-card-glance-body ul li {
@@ -917,11 +881,17 @@ div.workout-card-glance-body ul li {
   display: flex;
   flex-wrap: wrap;
   width: 150px;
-  background-color: black;
   border-radius: 5px;
   font-size: 16px;
   height: 85px;
   padding: 5px 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 300ms ease;
+}
+
+.glance-exe:hover {
+  border: 2px solid whitesmoke;
 }
 
 button.pagination {
@@ -938,8 +908,8 @@ li.workout.skeleton {
   display: flex;
   border-radius: 10px;
   background-color: black;
-  width: 300px;
-  height: 200px;
+  width: 514px;
+  height: 275px;
   margin: 15px;
 }
 
@@ -959,6 +929,67 @@ li.workout.skeleton {
 span.order {
   color: lightgray;
   padding-right: 10px;
+}
+
+.workout-card-details-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+  max-height: 185px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.workout-card-details-body #cancel-button {
+  top: 5px;
+  right: 5px;
+}
+
+
+ul.workout-detail-exercise-sets {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-height: 80%;
+}
+
+li.set {
+  display: flex;
+  width: 50%;
+  font-size: 12pt;
+  padding: 2px 0 0 5px;
+  /* border: 1px solid white !important; */
+}
+
+li.set span.unit,
+span.set-weight,
+span.set-reps,
+span.x {
+  margin-right: 6px;
+  letter-spacing: 1.5;
+}
+
+li.set span.unit {
+  color: lightgray;
+}
+
+
+span.set-order {
+  margin-right: 12px;
+}
+
+
+span.set-order {
+  color: lightcyan;
+}
+
+span.exercise-name {
+  font-size: 14pt;
+  font-style: italic;
+  margin-bottom: 5px;
 }
 
 
@@ -984,15 +1015,15 @@ span.order {
 header.nav-header {
   background-color: var(--darkGray);
   color: whitesmoke;
-  display: flex; 
-  justify-content: space-between; 
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 20px 60px 20px 20px;
   height: 65px;
 }
 div.dashboard-body {
   height: calc(100vh - 65px);
-  background-image: url('/bg5.jpg');
+  background-image: url("/bg5.jpg");
   background-size: cover;
   background-repeat: repeat;
   background-position: center;
@@ -1101,14 +1132,6 @@ span.app-name {
   font-size: 1.25em;
 }
 
-
-
-
-
-
-
-
-
 /* * ABOUT PAGE */
 div#about-page {
   height: 100vh;
@@ -1149,10 +1172,10 @@ div.about-body-skeleton {
   position: fixed;
   top: 0;
   left: 0;
-  width: 200vw; 
+  width: 200vw;
   height: 100vh;
-  background-image: url('/bg1.jpg');
-  background-size: 120% auto; 
+  background-image: url("/bg1.jpg");
+  background-size: 120% auto;
   background-repeat: no-repeat;
   background-position: bottom;
   z-index: -10;
@@ -1332,7 +1355,6 @@ div.about-section-skeleton {
   justify-content: space-between;
 }
 
-
 #new-workout-popup h2 {
   font-family: "oswald";
   font-size: 32pt;
@@ -1343,6 +1365,47 @@ div.about-section-skeleton {
   padding: 30px;
   margin-top: 30px;
 }
+
+
+
+
+
+
+
+
+.lower-body {
+  background-color: var(--lower-body);
+}
+.upper-body {
+  background-color: var(--upper-body);
+}
+.core {
+  background-color: var(--core);
+  color: black;
+}
+.core span.set-order,
+.core span.unit,
+.core span.x,
+.cardio span.unit,
+.cardio span.x,
+.cardio span.set-order {
+  color: var(--darkGray) !important;
+}
+.cardio {
+  background-color: var(--cardio);
+  color: black;
+}
+.other {
+  background-color: var(--other);
+}
+
+.core #cancel-button,
+.cardio #cancel-button {
+  color: rgb(10, 10, 10);
+}
+
+
+
 
 
 /* 
@@ -1362,10 +1425,6 @@ html, body {
   margin: 0;
 } */
 
-
-
 * {
   /* border: 1px solid red; */
 }
-
-

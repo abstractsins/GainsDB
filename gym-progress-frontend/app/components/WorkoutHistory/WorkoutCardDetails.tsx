@@ -1,43 +1,60 @@
 import { toTitleCase } from "@/utils/utils";
 
-import { DateObj } from "@/app/types/types";
+import { RiCloseFill } from "react-icons/ri";
+
+import { DateObj, Sets } from "@/app/types/types";
 
 interface Props {
-    exercises: DateObj;
+    exerciseName: string | null;
+    exerciseData: Sets[] | null;
+    exerciseCategory: string | null;
+    onClose: () => void;
 }
 
-export default function WorkoutCardDetails({ exercises }: Props) {
+export default function WorkoutCardDetails({ exerciseName, exerciseData, exerciseCategory, onClose }: Props) {
+
     return (
-        <div className="workout-card-details-body">
-        <ul>
-            {
-                exercises.exercises.map(exercise => {
-                    console.log(exercise)
-                    return (
-                        <li className="exe-card-exe-container" key={exercise}>
-                            <span className="workout-card-exe-name workout-detail-exercise">{toTitleCase(exercise)}</span>
-                            <ul className="workout-detail-exercise-sets">
-                                {
-                                    exercises[exercise].map((set: string[]) => {
-                                        console.log(set);
-                                        const order = set[0] + (set[0] == 1 ? 'st' : (set[0] == 2 ? 'nd' : (set[0] == 3 ? 'rd' : 'th')));
-                                        const weight = set[1] + ' lbs';
-                                        const reps = set[2];
-                                        return <li key={set[0]} className="exe-card-set">
-                                            <span className="order">
-                                                {`${order}: `}
-                                            </span>
-                                            <span>{`${weight}`}</span>
-                                            <span>{` x ${reps} reps`}</span>
-                                        </li>
-                                    })
-                                }
-                            </ul>
-                        </li>
-                    );
-                })
-            }
-        </ul>
-    </div>
+        <div className={`workout-card-details-body ${exerciseCategory}`}>
+            <span className="exercise-name"> {toTitleCase(exerciseName || undefined)} </span>
+            <button type="button" id="cancel-button" onClick={onClose}><RiCloseFill /></button>
+            {/* <button onClick={onClose}>close</button> */}
+            <ul className="workout-detail-exercise-sets">
+                {
+                    exerciseData?.map(set => {
+
+                        const order = set[0];
+                        const weight = set[1];
+                        const weightUnit = ' lbs';
+                        const reps = set[2];
+                        const repUnit = ` rep${set[2] != '1' ? 's' : ''}`;
+
+                        return (
+                            <li className="set" key={set[0]}>
+                                <span className="set-order">{order + (order == '1' ? 'st' : (order == '2' ? 'nd' : (order == '3' ? 'rd' : 'th')))}:</span>
+                                <span className="set-weight">{weight}</span><span className="unit">{weightUnit}</span> 
+                                <span className="x">x</span> 
+                                <span className="set-reps">{reps}</span><span className="unit">{repUnit}</span>
+                            </li>
+                        )
+                    })
+                }
+            </ul>
+        </div>
     )
 }
+
+
+
+
+
+
+
+// console.log(set);
+
+// return <li key={set[0]} className="exe-card-set">
+//     <span className="order">
+//         {`${order}: `}
+//     </span>
+//     <span>{`${weight}`}</span>
+//     <span>{` x ${reps} reps`}</span>
+// </li>

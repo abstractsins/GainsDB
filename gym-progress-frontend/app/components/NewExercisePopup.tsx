@@ -2,7 +2,7 @@
 
 import { RiCloseLargeFill } from "react-icons/ri";
 import { useSession } from "next-auth/react";
-import { ReactHTMLElement, useState } from "react";
+import { ChangeEvent, ReactEventHandler, ReactHTMLElement, useState } from "react";
 
 interface Props {
     visible: boolean;
@@ -12,19 +12,19 @@ interface Props {
 export default function NewExercisePopup({ visible, onClose }: Props) {
     if (!visible) return null;
     const { data: session, status } = useSession();
-    const [ error, setError ] = useState();
-    const [ entryValue, setEntryValue ] = useState<string>("");
+    const [error, setError] = useState();
+    const [entryValue, setEntryValue] = useState<string>("");
     const userId = session?.user?.id || localStorage.getItem("userId");
 
-    const submitNewExercise = async() => {
+    const submitNewExercise = async () => {
 
         const token = session?.user?.authToken || localStorage.getItem("token");
-    
+
         if (!token) {
             setError("No authentication session found. Please log in.");
             return;
         }
-    
+
         try {
             const body = {
                 "name": entryValue,
@@ -38,14 +38,14 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
                 },
                 body: JSON.stringify(body)
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || "Failed to post exercise");
             }
 
             onClose();
-    
+
         } catch (error: any) {
             console.error("Error fetching exercises:", error.message);
             setError(error.message);
@@ -53,7 +53,7 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
 
     }
 
-    const inputHandler = (e: ReactHTMLElement<HTMLInputElement>) => {
+    const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEntryValue(e.target.value);
     }
 
@@ -69,7 +69,7 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
                 <input type="text" className="new-exercise-name" required autoFocus placeholder="exercise name..." onChange={inputHandler} />
             </form>
             <div className="popup-footer">
-                <button type="button" className={`${entryValue?'active':''} popup-button`} id="submit-button" disabled={entryValue?false:true} onClick={submitNewExercise}>Submit</button>
+                <button type="button" className={`${entryValue ? 'active' : ''} popup-button`} id="submit-button" disabled={entryValue ? false : true} onClick={submitNewExercise}>Submit</button>
             </div>
             <button type="button" className="popup-button" id="cancel-button" onClick={onClose}><RiCloseLargeFill /></button>
         </div>

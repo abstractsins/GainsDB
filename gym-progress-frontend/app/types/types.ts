@@ -1,27 +1,23 @@
 export interface WorkoutListContainer {
-    workouts: WorkoutsObj,
+    workouts: WorkoutsObj;
     totalWorkouts: number;
     totalPages: number;
     currentPage: number;
 }
 
-export interface WorkoutsObj {
+export interface WorkoutsMap {
+    [key: `${number}/${number}/${number}`]: DateObj;
+}
+
+export interface WorkoutsObj extends WorkoutsMap {
     dates: string[];
-    [key: string]: DateObj | string[];
 }
 
 export interface DateObj {
-    id: number | string;
-    exercises: string[];
-    [key: string]: string[] | number[] | number | string;
-}
-
-export interface Workout {
-    workout_date: string;
+    id: string;
     exercises: Array<string>;
+    sets: number[][];
 }
-
-
 
 
 
@@ -43,7 +39,7 @@ export interface LoggedExe {
 export interface MostWeight {
     exercise_id: number;
     exercise_name: string;
-    max_weight: string; 
+    max_weight: string;
 }
 
 export interface VolumeChange {
