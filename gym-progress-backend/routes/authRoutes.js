@@ -40,6 +40,7 @@ router.post("/register", async (req, res) => {
 });
 
 
+
 //* Login User (Generate JWT)
 router.post("/login", async (req, res) => {
   console.log("Attempting login");

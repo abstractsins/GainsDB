@@ -871,7 +871,7 @@ div.workout-card-glance-body ul {
   justify-content: flex-start;
   flex-wrap: wrap;
   /* height: 100%; */
-  height: fit-content;
+  height: 100%;
   margin: 2px;
 }
 
@@ -884,10 +884,10 @@ div.workout-card-glance-body ul li {
 .glance-exe {
   display: flex;
   flex-wrap: wrap;
-  width: 150px;
+  width: 152px;
   border-radius: 5px;
   font-size: 16px;
-  height: 85px;
+  height: 89px;
   padding: 5px 10px;
   cursor: pointer;
   border: 2px solid transparent;
@@ -1408,6 +1408,49 @@ div.about-section-skeleton {
   color: rgb(10, 10, 10);
 }
 
+
+
+
+
+
+
+
+
+
+
+/** SETTINGS */
+#settings-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
+  position: relative;
+}
+
+div.settings-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 50px;
+}
+
+div.settings-module {
+  margin: 20px 0;
+}
+
+div.settings-footer {
+  display: flex;
+  margin-top: auto;
+}
+
+div.settings-module-header h2 {
+  text-transform: uppercase;
+  color: lightcyan;
+}
+
+span.app-signature {
+  font-size: 16pt;
+  font-family: monospace;
+}
 
 
 

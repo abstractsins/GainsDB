@@ -13,6 +13,7 @@ export default function Profile() {
     const { data: session, status } = useSession();
     const [error, setError] = useState<string | null>(null);
     const [customUsername, setCustomName] = useState<string | undefined>(undefined);
+    const [joinedDate, setJoinedDate] = useState<string|undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
@@ -49,6 +50,7 @@ export default function Profile() {
             const profileData = await res.json();
             console.log(profileData)
             setCustomName(profileData[0]['custom_name']);
+            setJoinedDate(profileData[0]['created_on'].split('T')[0]);
 
         } catch (err: unknown) {
             console.log(err);
@@ -72,6 +74,14 @@ export default function Profile() {
 
                 <div className="greeting">
                     <h2 className="greeting">Hi, {customUsername ? customUsername : username}!</h2>
+                </div>
+
+                <div className="joined">
+                    <p className="joined">Joined: {joinedDate}</p>
+                </div>
+
+                <div className="username">
+                    <p className="username">username: {username}</p>
                 </div>
 
             </div>
