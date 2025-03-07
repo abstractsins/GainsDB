@@ -1,51 +1,61 @@
 import exerciseCategorizer from './exerciseCatagories.js';
 
 export default function workoutProcessing(workoutArray) {
-    
+
     // console.log('workoutArray');
     workoutArray = exerciseCategorizer(workoutArray);
     // console.log(workoutArray);
 
-    let workoutObj = {
+    let workoutsObj = {
         dates: [],
     }
-    
+
     workoutArray.forEach(workout => {
-        if (!workoutObj.dates.includes(workout['workout_date'].toLocaleDateString())) {
-            workoutObj.dates.push(workout['workout_date'].toLocaleDateString());
+        if (!workoutsObj.dates.includes(workout['workout_date'].toLocaleDateString())) {
+            workoutsObj.dates.push(workout['workout_date'].toLocaleDateString());
         }
     })
-    
-    workoutObj.dates.forEach(date => {
+
+    workoutsObj.dates.forEach(date => {
         let dateObj = {
             id: null,
             exercises: []
         }
-        
+
         workoutArray.forEach(entry => {
-            if (entry['workout_date'].toLocaleDateString() === date ) {
+            if (entry['workout_date'].toLocaleDateString() === date) {
                 dateObj.id = entry['workout_id'];
-                console.log(...dateObj.exercises)
+                // console.log(...dateObj.exercises)
                 if (!dateObj.exercises.flat().includes(entry['exercise_name'])) {
                     dateObj.exercises.push([entry['exercise_name'], entry['category']]);
                 }
             }
         });
-        
+
+        // console.log('\n\n>>>>>>>>>>>> dateObj <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+        // console.dir(dateObj, { depth: null, colors: true });
+        // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+
+        dateObj.sets = {};
         dateObj.exercises.forEach(exercise => {
-            let sets = [];
+            // console.log(exercise);
             workoutArray.forEach(entry => {
-                if (entry['workout_date'].toLocaleDateString() === date ) {
-                    if (entry['exercise_name'] === exercise) {
-                        sets.push([entry['set_order'], Number(entry['weight']), entry['reps']]);
+                if (entry['workout_date'].toLocaleDateString() === date) {
+                    if (entry['exercise_name'] === exercise[0]) {
+                        if (dateObj.sets[entry['exercise_name']] === undefined) {
+                            dateObj.sets[entry['exercise_name']] = [];
+                        }
+                        dateObj.sets[entry['exercise_name']].push([entry['set_order'], Number(entry['weight']), entry['reps']]);
                     }
                 }
             })
-            dateObj[exercise] = sets;
+            // dateObj.sets[exercise[0]] = sets;
         });
-        workoutObj[date] = dateObj;
+        workoutsObj[date] = dateObj;
     })
 
-    return workoutObj;
+    console.dir(workoutsObj, {depth: null, colors: true});
+
+    return workoutsObj;
 
 }

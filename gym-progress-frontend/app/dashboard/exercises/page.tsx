@@ -1,7 +1,6 @@
 "use client";
 
-import { GiWeightLiftingUp } from "react-icons/gi";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import LogWorkoutPopup from "@/app/components/exercises/LogWorkoutPopup";
@@ -29,7 +28,6 @@ export default function Exercises() {
   const [dataUpdated, setDataUpdated] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [resetInnerExpansion, setResetInnerExpansion] = useState(false);
-  const [expandedExerciseId, setExpandedExerciseId] = useState(null);
 
   // Popup Log trial
   const [popupLog, setPopupLog] = useState<boolean>(false);
@@ -72,7 +70,6 @@ export default function Exercises() {
     }
 
 
-    setExpandedExerciseId(null);
     setResetInnerExpansion(true);
 
     setTimeout(() => {
@@ -159,14 +156,12 @@ export default function Exercises() {
   }
 
   const closeFunctions = () => {
-    console.warn('Close Functions');
     setPopupLog(false);
     setPopupVisible(false);
     refreshContent();
   }
 
   const handleResetExpansions = () => {
-    setExpandedExerciseId(null);
     setResetInnerExpansion(true);
     setTimeout(() => setResetInnerExpansion(false), 100);
   };
@@ -178,7 +173,7 @@ export default function Exercises() {
 
       <div className="exe-header flex items-center">
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center header-left">
           <h1 className="page-header">Your Exercises</h1>
           <span className="w-[100%]">Total exercises logged: {exercises.length}</span>
         </div>
@@ -195,6 +190,7 @@ export default function Exercises() {
       <ExercisesLegend
         onCategorySelect={handleCategorySelect}
         onResetExpansion={handleResetExpansions}
+        activeCategoryOverride={null}
       />
       {loading ? (
         <Loading />

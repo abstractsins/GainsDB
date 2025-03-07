@@ -198,14 +198,14 @@ const exerciseCateragorizer = (exercisesArr) => {
         'cardio': [
             'treadmill',
             'elliptical',
-            'stairs'
+            'stairs',
+            'stair machine'
         ],
     }
 
     var catKeys = Object.keys(categories);
 
     exercisesArr.forEach(exe => {
-        console.log(exe);
         exe.category = "other";
         for (let i = 0; i < catKeys.length; i++) {
             var key = catKeys[i];

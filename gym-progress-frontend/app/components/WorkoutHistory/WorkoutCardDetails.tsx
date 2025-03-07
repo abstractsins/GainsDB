@@ -2,11 +2,11 @@ import { toTitleCase } from "@/utils/utils";
 
 import { RiCloseFill } from "react-icons/ri";
 
-import { DateObj, Sets } from "@/app/types/types";
+import { SetArr } from "@/app/types/types";
 
 interface Props {
     exerciseName: string | null;
-    exerciseData: Sets[] | null;
+    exerciseData: SetArr | null;
     exerciseCategory: string | null;
     onClose: () => void;
 }
@@ -26,11 +26,11 @@ export default function WorkoutCardDetails({ exerciseName, exerciseData, exercis
                         const weight = set[1];
                         const weightUnit = ' lbs';
                         const reps = set[2];
-                        const repUnit = ` rep${set[2] != '1' ? 's' : ''}`;
+                        const repUnit = ` rep${set[2] != 1 ? 's' : ''}`;
 
                         return (
                             <li className="set" key={set[0]}>
-                                <span className="set-order">{order + (order == '1' ? 'st' : (order == '2' ? 'nd' : (order == '3' ? 'rd' : 'th')))}:</span>
+                                <span className="set-order">{order + (order == 1 ? 'st' : (order == 2 ? 'nd' : (order == 3 ? 'rd' : 'th')))}:</span>
                                 <span className="set-weight">{weight}</span><span className="unit">{weightUnit}</span> 
                                 <span className="x">x</span> 
                                 <span className="set-reps">{reps}</span><span className="unit">{repUnit}</span>
@@ -42,19 +42,3 @@ export default function WorkoutCardDetails({ exerciseName, exerciseData, exercis
         </div>
     )
 }
-
-
-
-
-
-
-
-// console.log(set);
-
-// return <li key={set[0]} className="exe-card-set">
-//     <span className="order">
-//         {`${order}: `}
-//     </span>
-//     <span>{`${weight}`}</span>
-//     <span>{` x ${reps} reps`}</span>
-// </li>

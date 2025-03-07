@@ -1,35 +1,33 @@
 import WorkoutHistoryCard from "./WorkoutHistoryCard";
-import { DateObj, WorkoutsObj } from "@/app/types/types";
+import { WorkoutsObj } from "@/app/types/types";
 
 interface Props {
     workoutsObj: WorkoutsObj | undefined;
 }
 
 export default function WorkoutHistoryList({ workoutsObj }: Props) {
+    if (!workoutsObj || !workoutsObj.dates.length) {
+        return <p>No workouts found! Get to the gym!</p>;
+    }
 
+    const renderWorkoutCards = () => {
+        return workoutsObj.dates.map((date, i) => {
 
-    return (
-        <>
-            {workoutsObj?.dates.length ? (
-                <ul className="history">
-                    {workoutsObj?.dates.map((date: string, i: number) => {
-                        
-                        const workout: DateObj = workoutsObj[date as `${number}/${number}/${number}`];
+            const workout = workoutsObj[date];
 
-                        return (
-                            <WorkoutHistoryCard
-                                key={workout?.id}
-                                id={workout?.id}
-                                date={date}
-                                workout={workout}
-                                index={i}
-                            />
-                        );
-                    })}
-                </ul>
-            ) : (
-                <p>No workouts found! Get to the gym!</p>
-            )}
-        </>
-    );
+            if (!workout || typeof workout !== "object" || !("id" in workout)) return null;
+            
+            return (
+                <WorkoutHistoryCard
+                    key={workout.id}
+                    id={workout.id}
+                    date={date}
+                    workout={workout}
+                    index={i}
+                />
+            );
+        });
+    };
+
+    return <ul className="history">{renderWorkoutCards()}</ul>;
 }

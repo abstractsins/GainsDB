@@ -494,6 +494,10 @@ div.exercises-legend {
   margin: 5px 0;
 }
 
+div.exe-header .header-left {
+  margin-right: 20px;
+}
+
 .exe-header {
   display: flex;
   /* flex-direction: column; */
@@ -969,7 +973,7 @@ span.set-weight,
 span.set-reps,
 span.x {
   margin-right: 6px;
-  letter-spacing: 1.5;
+  letter-spacing: 1.25;
 }
 
 li.set span.unit {

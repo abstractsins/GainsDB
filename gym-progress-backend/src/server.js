@@ -159,7 +159,6 @@ app.get("/api/user/:userId/dashboard", authMiddleware, async (req, res) => {
   }
 
   res.json(dashboardObj);
-  // res.json({ message: "Welcome to the dashboard", user: (req).user });
 });
 
 
@@ -194,7 +193,7 @@ app.get("/api/user/:userId/exercises", authMiddleware, async (req, res) => {
 
     result.rows = exerciseCategorizer(result.rows);
 
-    console.log(result.rows)
+    // console.log(result.rows)
 
     res.json(result.rows);
   } catch (error) {
@@ -325,7 +324,7 @@ app.get("/api/user/:userId/history", authMiddleware, async (req, res) => {
       totalWorkouts = parseInt(totalResult.rows[0].count);
       totalPages = Math.ceil(totalWorkouts / limit);
     } else {
-      console.log(result.rows);
+      // console.log(result.rows);
       totalWorkouts = workoutsRefined.dates.length;
     }
 
@@ -334,7 +333,7 @@ app.get("/api/user/:userId/history", authMiddleware, async (req, res) => {
     }
 
 
-    console.dir(workoutsRefined, { depth: null, colors: true });
+    // console.dir(workoutsRefined, { depth: null, colors: true });
 
     res.json({
       workouts: workoutsRefined,
@@ -632,7 +631,7 @@ app.post("/api/login", async (req, res) => {
       sameSite: "strict" // Protects against CSRF attacks
     });
 
-    res.json({ id: user.id, username: user.username, token }); // ✅ Ensure token is returned
+    res.json({ id: user.id, username: user.username, token }); 
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });

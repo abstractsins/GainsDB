@@ -1,3 +1,4 @@
+//* WORKOUT HISTORY
 export interface WorkoutListContainer {
     workouts: WorkoutsObj;
     totalWorkouts: number;
@@ -5,23 +6,26 @@ export interface WorkoutListContainer {
     currentPage: number;
 }
 
-export interface WorkoutsMap {
-    [key: `${number}/${number}/${number}`]: DateObj;
-}
-
-export interface WorkoutsObj extends WorkoutsMap {
-    dates: string[];
+export interface WorkoutsObj {
+  dates: string[]; // Explicitly allow an array of dates
+  [date: string]: DateObj | string[]; // Allow other properties as DateObj
 }
 
 export interface DateObj {
     id: string;
-    exercises: Array<string>;
-    sets: number[][];
+    exercises: string[];
+    sets: Sets;
 }
 
+export interface Sets {
+    [exercise: string]: SetArr;
+}
+
+export type SetArr = number[][];
 
 
 
+//* DASHBOARD
 export interface DashboardData {
     totalWorkouts: number;
     totalWeeks: number;

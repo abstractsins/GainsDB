@@ -6,6 +6,7 @@ declare module "next-auth" {
     user?: {
       id: number;
       username: string;
+      authToken?: string;
     };
   }
 
