@@ -32,9 +32,6 @@ export default function workoutProcessing(workoutArray) {
             }
         });
 
-        // console.log('\n\n>>>>>>>>>>>> dateObj <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
-        // console.dir(dateObj, { depth: null, colors: true });
-        // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 
         dateObj.sets = {};
         dateObj.exercises.forEach(exercise => {
@@ -49,7 +46,6 @@ export default function workoutProcessing(workoutArray) {
                     }
                 }
             })
-            // dateObj.sets[exercise[0]] = sets;
         });
         workoutsObj[date] = dateObj;
     })

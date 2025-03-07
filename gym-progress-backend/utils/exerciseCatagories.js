@@ -1,4 +1,4 @@
-const exerciseCateragorizer = (exercisesArr) => {
+const exerciseCategorizer= (exercisesArr) => {
 
     // OBJECT:
     // [
@@ -220,4 +220,4 @@ const exerciseCateragorizer = (exercisesArr) => {
     return exercisesArr;
 }
 
-export default exerciseCateragorizer;
+export default exerciseCategorizer;
