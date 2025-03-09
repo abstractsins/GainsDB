@@ -16,22 +16,26 @@ export default function Navbar() {
 
     // Until Profile page is released in version
     const profile = false;
-    
+
     return (
         <header className="nav-header">
 
-        <Link href="/dashboard" className="hover:text-blue-300 flex items-center">
-            <MdDashboard className="mr-2 text-xl" />
-            <h2 className={`${oswald.className} text-lg font-bold  text-[12pt] sm:text-[14pt] md:text-[16pt] lg:text-[20pt]`}>Dashboard</h2>
-        </Link>
-        
-        {profile ? (<Link href="/dashboard/profile" className="hover:text-blue-300 flex items-center">
-            <FaUser className="mr-2 text-xl" />
-            Profile
-        </Link>) : (
-            <span>Hi, {username}!</span>
-        )}
-      </header>
+            <Link href="/dashboard" className="hover:text-blue-300 flex items-center">
+                <MdDashboard className="mr-2 text-xl" />
+                <h2 className={`${oswald.className} text-lg font-bold  text-[12pt] sm:text-[14pt] md:text-[16pt] lg:text-[20pt]`}>Dashboard</h2>
+            </Link>
 
-    )   
+            {profile
+                ? (
+                    <Link href="/dashboard/profile" className="hover:text-blue-300 flex items-center">
+                        <FaUser className="mr-2 text-xl" />
+                        Profile
+                    </Link>)
+                : (
+                    <span>Hi, {username}!</span>
+                )
+            }
+        </header>
+
+    )
 }

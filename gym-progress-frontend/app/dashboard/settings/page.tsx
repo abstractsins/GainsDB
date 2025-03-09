@@ -1,7 +1,7 @@
 export default function Settings() {
 
-    const version = process.env.VERSION;
-    const releaseDate = process.env.RELEASE_DATE;
+    const version = process.env.NEXT_PUBLIC_VERSION;
+    const releaseDate = process.env.NEXT_PUBLIC_RELEASE_DATE;
 
     return (
         <div id="settings-page">

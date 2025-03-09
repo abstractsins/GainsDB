@@ -31,6 +31,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   // UNTIL SETTINGS IS RELEASED
   const settings = false;
+  const charts = false;
+  const comingSoon = true;
 
 
   useEffect(() => {
@@ -66,8 +68,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/dashboard/new-workout" className="dashboard-link hover:bg-gray-700 p-2 rounded">💪 Log Workout</Link>
           <Link href="/dashboard/history" className="dashboard-link hover:bg-gray-700 p-2 rounded">📜 Workout History</Link>
           <Link href="/dashboard/exercises" className="dashboard-link hover:bg-gray-700 p-2 rounded">🏋️‍♂️ Exercises</Link>
-          <Link href="/dashboard/charts" className="dashboard-link hover:bg-gray-700 p-2 rounded">📈 Charts</Link>
+          {charts && <Link href="/dashboard/charts" className="dashboard-link hover:bg-gray-700 p-2 rounded">📈 Charts</Link>}
           {settings && <Link href="/dashboard/settings" className="dashboard-link hover:bg-gray-700 p-2 rounded">⚙️ Settings</Link>}
+          {comingSoon && <Link href="/dashboard/coming-soon" className="dashboard-link hover:bg-gray-700 p-2 rounded">✨ Coming Soon...</Link>}
         </nav>
       </aside>
 

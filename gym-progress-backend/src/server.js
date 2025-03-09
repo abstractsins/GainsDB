@@ -8,6 +8,7 @@ import workoutRoutes from "../routes/workoutRoutes.js";
 import exerciseRoutes from "../routes/exerciseRoutes.js";
 import dashboardRoutes from "../routes/dashboardRoutes.js";
 import profileRoutes from "../routes/profileRoutes.js";
+import suggestionRoutes from "../routes/suggestionRoutes.js"
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 //* API Routes
-app.use("/api", authRoutes);
+app.use("/api", authRoutes, suggestionRoutes);
 app.use("/api/user", [workoutRoutes, exerciseRoutes, dashboardRoutes, profileRoutes]); 
 
 //* Test Route

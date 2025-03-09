@@ -205,6 +205,7 @@ footer.footer {
 #charts-page,
 #settings-page,
 #profile-page,
+#coming-soon-page,
 .dashboard-body {
   padding: 20px;
 }
@@ -298,20 +299,6 @@ p.field-subtitle {
   font-style: italic;
   height: 20px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /** NEW SET */
 form#new-set-form {
@@ -789,16 +776,6 @@ div.exe-card-top {
   display: none;
 }
 
-
-
-
-
-
-
-
-
-
-
 /** WORKOUT HISTORY */
 #history-page h1.page-header {
   display: inline-flex;
@@ -952,7 +929,6 @@ span.order {
   right: 5px;
 }
 
-
 ul.workout-detail-exercise-sets {
   display: flex;
   flex-direction: column;
@@ -980,11 +956,9 @@ li.set span.unit {
   color: lightgray;
 }
 
-
 span.set-order {
   margin-right: 12px;
 }
-
 
 span.set-order {
   color: lightcyan;
@@ -995,19 +969,6 @@ span.exercise-name {
   font-style: italic;
   margin-bottom: 5px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /** DASHBOARD */
 #dashboard-page {
@@ -1370,13 +1331,6 @@ div.about-section-skeleton {
   margin-top: 30px;
 }
 
-
-
-
-
-
-
-
 .lower-body {
   background-color: var(--lower-body);
 }
@@ -1407,16 +1361,6 @@ div.about-section-skeleton {
 .cardio #cancel-button {
   color: rgb(10, 10, 10);
 }
-
-
-
-
-
-
-
-
-
-
 
 /** SETTINGS */
 #settings-page {
@@ -1452,7 +1396,221 @@ span.app-signature {
   font-family: monospace;
 }
 
+/** Coming Soon */
+#coming-soon-page {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+}
 
+.coming-soon-page-body {
+  display: flex;
+  width: 100%;
+  /* flex: 1; */
+}
+
+.coming-soon-module {
+  background-color: var(--darkGray);
+  width: 100%;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.coming-soon-module h2 {
+  font-size: 18pt;
+  font-family: "Oswald";
+}
+
+.features-half {
+  width: 40%;
+}
+
+.features-half,
+.suggestions-half {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  margin-right: 30px;
+}
+
+.coming-soon-module input,
+.coming-soon-module textarea {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: black;
+}
+
+.coming-soon-module input.suggestion-name {
+  width: 230px;
+}
+
+.coming-soon-module textarea.suggestion-text {
+  height: 125px;
+  display: flex;
+  width: 100%;
+}
+
+.suggestions-half input.submit {
+  background-color: lightgray;
+  color: gray;
+  display: flex;
+  border-radius: 8px;
+  width: 100px;
+  height: 50px;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 300ms ease;
+}
+
+.suggestions-half input.submit.valid {
+  background-color: lightgreen;
+  color: black;
+  cursor: pointer;
+}
+
+.suggestions-half input.submit.valid:hover {
+  background-color: lightseagreen;
+}
+
+.suggestions-half input.submit.valid:active {
+  background-color: seagreen;
+}
+
+.suggestions-half input.clear-button {
+  background-color: lightblue;
+  color: Black;
+  display: flex;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 100px;
+  height: 50px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.suggestions-half input.clear-button:hover {
+  background-color: lightskyblue;
+  transition: background-color 300ms ease;
+}
+
+.suggestions-half input.clear-button:active {
+  background-color: rgb(67, 183, 230);
+  outline: none;
+}
+
+.suggestions-half form {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-container {
+  background-color: rgb(10, 10, 10);
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  width: 400px;
+  height: 170px;
+  margin: 5px 20px;
+  padding: 20px;
+  border-radius: 10px;
+  overflow: scroll;
+}
+
+.suggestion-body p {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.suggestion-board-container {
+  position: relative;
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 30px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.suggestion-board-container-header {
+  display: flex;
+  width: 100%;
+}
+
+.suggestion-board-container h3 {
+  margin: 10px 0;
+}
+
+.suggestion-board-container .nav-button{
+  position: absolute;
+  font-size: 18pt;
+  top: 50%;
+  cursor: pointer;
+}
+
+.suggestion-board-container .nav-button:active{ 
+  color: gray;
+}
+
+.suggestion-board-container .nav-button#left {
+  /* left: 15px; */
+  left: 10px;
+}
+
+.suggestion-board-container .nav-button#right {
+  /* right: 15px; */
+  right: 10px;
+}
+
+
+.suggestion-board {
+  /* position: relative; */
+  /* border-radius: 10px; */
+  /* background-color: rebeccapurple; */
+  display: flex;
+  /* flex-direction: row-reverse; */
+  /* align-items: flex-start; */
+  overflow: scroll;
+  justify-content: space-evenly;
+  /* height: 100%; */
+  /* padding: 0 30px; */
+  width: 430px;
+}
+
+.suggestion-board-track {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.suggestion-container .header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.suggestion-container .date {
+  font-size: 10pt;
+  color: lightgray;
+  font-style: italic;
+}
+
+.suggestion-container .username {
+  color: lightcyan;
+}
+
+.coming-soon-module#suggestions {
+  width: 570px;
+  height: 570px;
+}
 
 
 /* 
