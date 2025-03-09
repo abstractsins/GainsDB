@@ -1428,13 +1428,20 @@ div.about-section-skeleton {
 
 div.settings-body {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   flex: 1;
   padding: 50px;
 }
 
 div.settings-module {
-  margin: 20px 0;
+  background-color: var(--darkGray);
+  position: relative;
+  width: 50%;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  min-height: 125px;
+  max-height: max-content;
 }
 
 div.settings-footer {
@@ -1445,14 +1452,37 @@ div.settings-footer {
 div.settings-module-header h2 {
   text-transform: uppercase;
   color: lightcyan;
+  font-size: 18pt;
 }
 
 span.app-signature {
-  font-size: 16pt;
+  font-size: 12pt;
   font-family: monospace;
 }
 
+div.toggle-slider {
+  /* display: flex; */
+  /* width: 100px; */
+}
 
+div.theme-selection-container,
+div.units-selection-container {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+}
+
+span.option-text {
+  margin: 0 10px;
+  font-size: 16pt;
+}
+
+p.coming-soon {
+  font-style: italic;
+  position: absolute;
+  top: 25px;
+  right: 75px;
+}
 
 
 /* 

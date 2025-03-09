@@ -43,23 +43,28 @@ export default function Home() {
 
 
     if (res?.error) {
-      alert("Invalid login credentials");
+      alert("Invalid login credentials, " + res.error);
       return;
     }
 
     const session = await fetch("/api/auth/session").then(res => res.json());
-
+    console.log(session);
+    console.log(session.user);
     if (session?.user.id) {
       localStorage.setItem("userId", session.user.id);
     }
 
-    if (session?.token) {
-      localStorage.setItem("token", session.token); // ✅ Store token in localStorage
+    if (session?.user.authToken) {
+      localStorage.setItem("token", session.user.authToken);
+    }
+
+    if (session?.user.preferences) {
+      localStorage.setItem("preferences", JSON.stringify(session.user.preferences)); 
     }
 
     console.log("Going to /dashboard");
 
-    router.refresh(); // Force session update
+    router.refresh();
     router.push("/dashboard");
   }
 

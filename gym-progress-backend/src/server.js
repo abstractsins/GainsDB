@@ -8,6 +8,7 @@ import workoutRoutes from "../routes/workoutRoutes.js";
 import exerciseRoutes from "../routes/exerciseRoutes.js";
 import dashboardRoutes from "../routes/dashboardRoutes.js";
 import profileRoutes from "../routes/profileRoutes.js";
+import settingsRoutes from "../routes/settingsRoutes.js";
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.use(cookieParser());
 
 //* API Routes
 app.use("/api", authRoutes);
-app.use("/api/user", [workoutRoutes, exerciseRoutes, dashboardRoutes, profileRoutes]); 
+app.use("/api/user", [workoutRoutes, exerciseRoutes, dashboardRoutes, profileRoutes, settingsRoutes]); 
 
 //* Test Route
 app.get("/", (req, res) => res.send("Server is running!"));

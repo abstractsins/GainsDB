@@ -53,3 +53,17 @@ export interface VolumeChange {
     max_volume: string;
     volume_change: string;
 }
+
+
+
+//* SETTINGS
+export interface User {
+    id: number;
+    username: string;
+    preferences: UserSettings;
+}
+
+export interface UserSettings {
+    theme: string;
+    unit: string;
+}
