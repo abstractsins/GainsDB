@@ -29,7 +29,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const pathname = usePathname();
 
-  // console.log(pathname);
+  // UNTIL SETTINGS IS RELEASED
+  const settings = false;
+
 
   useEffect(() => {
     // console.log("🔍 Debug - Session Status:", status);
@@ -65,7 +67,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/dashboard/history" className="dashboard-link hover:bg-gray-700 p-2 rounded">📜 Workout History</Link>
           <Link href="/dashboard/exercises" className="dashboard-link hover:bg-gray-700 p-2 rounded">🏋️‍♂️ Exercises</Link>
           <Link href="/dashboard/charts" className="dashboard-link hover:bg-gray-700 p-2 rounded">📈 Charts</Link>
-          <Link href="/dashboard/settings" className="dashboard-link hover:bg-gray-700 p-2 rounded">⚙️ Settings</Link>
+          {settings && <Link href="/dashboard/settings" className="dashboard-link hover:bg-gray-700 p-2 rounded">⚙️ Settings</Link>}
         </nav>
       </aside>
 
