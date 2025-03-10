@@ -39,8 +39,14 @@ export default function NewWorkout() {
     <div id="new-workout-page">
       <h1 className="page-header">Record a Set!</h1>
 
-      <NewWorkoutFormContainer isMobile={isMobile} isXXLarge={isXXLarge}/>
-      
+      <NewWorkoutFormContainer
+        visible={true}
+        onClose={null}
+        exerciseName={null}
+        isMobile={isMobile}
+        isXXLarge={isXXLarge}
+      />
+
     </div>
   );
 }

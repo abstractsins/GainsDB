@@ -2,16 +2,14 @@ import { ChangeEvent, FormEvent, useState, useEffect, MouseEventHandler } from "
 import { useSession } from "next-auth/react"; // Import NextAuth session
 import { toTitleCase } from "@/utils/utils";
 import ExercisesList from "@/app/components/ExercisesList";
-import { RiCloseLargeFill } from "react-icons/ri";
-import { on } from "events";
 
 
 interface Props {
     visible: boolean;
     isMobile: boolean;
     isXXLarge: boolean;
-    exerciseName: string;
-    onClose: () => void;
+    exerciseName: string | null;
+    onClose: null | (() => void);
 }
 
 interface FormData {
@@ -40,11 +38,12 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
         reps: ""
     });
 
-    const userId = session?.user.id || localStorage.getItem("userId");
+    const userId = session?.user?.id || localStorage.getItem("userId");
 
-    exerciseName = exerciseName?.replace(/-/g, ' ');
-    exerciseName = toTitleCase(exerciseName);
-
+    if (typeof exerciseName === 'string') {
+        exerciseName = exerciseName?.replace(/-/g, ' ');
+        exerciseName = toTitleCase(exerciseName);
+    }
 
 
     //* On Change
@@ -65,10 +64,15 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const token = session?.user.authToken || localStorage.getItem("token");
-
+        const token = session?.user?.authToken || localStorage.getItem("token");
+        
         if (!token) {
             alert("User not authenticated.");
+            return;
+        }
+
+        if (Number(formData.weight) <= 0 || Number(formData.reps) <= 0) {
+            alert("Weight and reps must be greater than zero!");
             return;
         }
 
@@ -95,7 +99,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
         if (res.ok) {
             alert("Workout logged. Keep it going!");
             setFormData({ date: formData.date, exercise: formData.exercise, weight: "", reps: "" });
-            if (visible) {
+            if (visible && onClose !== null) {
                 onClose();
             }
         } else {
@@ -104,8 +108,15 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
     };
 
 
-    const formComplete = (formData: FormData): boolean => Object.values(formData).every(value => value.trim() !== "");
-
+    const formComplete = (formData: FormData): boolean => {
+        return (
+            formData.date.trim() !== "" &&
+            formData.exercise.trim() !== "" &&
+            Number(formData.weight) > 0 &&  // Ensures weight is positive
+            Number(formData.reps) > 0       // Ensures reps are positive
+        );
+    };
+    
 
 
     return (
@@ -142,9 +153,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
                 </form>
             }
 
-            {/* { isMobile && } */}
-
-            {!isMobile && !isXXLarge &&
+            {(!isXXLarge || isMobile )&&
                 <form onSubmit={handleSubmit} id="new-set-form" className="flex flex-col items-center w-[100%] md:w-[80%] lg:w-[65%] p-8">
 
                     <div className="form-xl-row">
@@ -160,8 +169,8 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
                     </div>
 
                     <div className="form-xl-row" id="weight-reps">
-                        <input className="new-workout-field" type="number" name="weight" id="input-weight" placeholder="Weight (lb)" value={formData.weight} onChange={handleChange} required />
-                        <input className="new-workout-field" type="number" name="reps" id="input-reps" placeholder="Reps" value={formData.reps} onChange={handleChange} required />
+                        <input className="new-workout-field" type="number" name="weight" id="input-weight" placeholder="Weight (lb)" min="1" value={formData.weight} onChange={handleChange} required />
+                        <input className="new-workout-field" type="number" name="reps" id="input-reps" placeholder="Reps" min="1" value={formData.reps} onChange={handleChange} required />
                     </div>
 
                     <div className="form-xl-row" id="footer">

@@ -8,11 +8,16 @@ import ExercisesLegend from "@/app/components/ExercisesLegend";
 import Pagination from "@/app/components/WorkoutHistory/Pagination";
 import { applyCategoryFilter } from "@/utils/utils";
 
+import { toTitleCase } from "@/utils/utils";
+
+
 export default function History() {
   const { page, setPage, timeframe, HRTimeframe, activeCategoryWorkouts, setActiveCategoryWorkouts, isCatFiltered, setIsCatFiltered, onTimeChange } = useHistoryState();
   const { workoutsObj, totalPages, totalWorkouts, loading, error } = useFetchWorkouts(page, timeframe);
 
   const filteredWorkoutsObj = (activeCategoryWorkouts !== null && activeCategoryWorkouts !== 'all')  ? applyCategoryFilter(activeCategoryWorkouts, workoutsObj) : workoutsObj;
+
+  const totalFilteredWorkouts = filteredWorkoutsObj?.dates.length;
   
   if (error) {
     return <p className="error-message">{error}</p>;
@@ -41,7 +46,7 @@ export default function History() {
           </select>
           <span className="timeframe">
             {timeframe !== "all"
-              ? `You logged ${totalWorkouts || 0} workout${totalWorkouts !== 1 ? "s" : ""} in the last ${HRTimeframe || "2 weeks"}!`
+              ? `You logged ${totalFilteredWorkouts || 0} workout${totalFilteredWorkouts !== 1 ? "s" : ""} ${activeCategoryWorkouts && activeCategoryWorkouts !== 'all' ? 'with ' + toTitleCase(activeCategoryWorkouts.replace(/-/g, ' ')) + ' exercises' : ''} in the last ${HRTimeframe || "2 weeks"}!`
               : `Total workouts logged: ${totalWorkouts}`}
           </span>
         </div>

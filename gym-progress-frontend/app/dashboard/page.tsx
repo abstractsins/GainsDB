@@ -15,8 +15,8 @@ import { toTitleCase } from "@/utils/utils";
 import { DashboardData } from "../types/types";
 
 
-export default function DashboardPage() {
 
+export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [data2, setData2] = useState<DashboardData | null>();
   const [error, setError] = useState<string | null>(null);
@@ -66,6 +66,8 @@ export default function DashboardPage() {
   }
 
   if (loading) return <p>Loading...</p>
+
+
 
   return (
     <div id="dashboard-page">

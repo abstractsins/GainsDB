@@ -13,7 +13,8 @@ export default function ExercisesList({ value, name, onChange }: Props) {
     const { data: session, status } = useSession(); // Get authentication session
     const [exercises, setExercises] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const userId = session?.user.id || localStorage.getItem("userId");
+    const userId = session?.user?.id || localStorage.getItem("userId");
+    const server = process.env.NEXT_PUBLIC_BACKEND;
 
     useEffect(() => {
         if (status === "authenticated" && session?.user.authToken) {
@@ -33,7 +34,7 @@ export default function ExercisesList({ value, name, onChange }: Props) {
 
 
         try {
-            const response = await fetch(`http://localhost:5000/api/user/${userId}/exercises`, {
+            const response = await fetch(`${server}/api/user/${userId}/exercises`, {
                 method: "GET",
                 headers: { 
                     "Content-Type": "application/json",
@@ -54,9 +55,11 @@ export default function ExercisesList({ value, name, onChange }: Props) {
             }
 
             setExercises(data);
-        } catch (error: any) {
-            console.error("Error fetching exercises:", error.message);
-            setError(error.message);
+        } catch (error: unknown) {
+            if (error?.message) {
+                console.error("Error fetching exercises:", error?.message);
+                setError(error?.message);
+            }
         }
     };
 

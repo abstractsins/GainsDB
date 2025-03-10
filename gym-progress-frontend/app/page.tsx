@@ -130,6 +130,7 @@ export default function Home() {
         </div>)}
 
       <style jsx>{`
+
         .splash-container {
           display: flex;
           flex-direction: column;
@@ -189,7 +190,7 @@ export default function Home() {
           transform: translateY(-60%);
         }
         div.form-container.exposed {
-          transform: translateY(0);
+          transform: translateY(-5%);
         }
         
         .login-form {
@@ -284,10 +285,32 @@ export default function Home() {
           }
         }
 
-        @media (max-width: 531px) {
-          .popup {
-            padding: 25px 25px 0;
+        @media (max-width: 412px) { 
+
+          .splash-container {
+            padding-top: 50px;
+            justify-content: flex-start;
           }
+  
+          h1 {
+            font-size: 3em;
+          }
+
+          h2 {
+            padding: 15px;
+            font-size: 16pt;
+          }
+
+          div.popup {
+            padding: 15px 15px 0;
+            max-height: 30%;
+          }
+
+          .popup, 
+          #login-drawer {
+            min-width: 75%;
+          }
+  
         }
         
         @media (min-width: 1200px) {

@@ -6,7 +6,7 @@ export default function FeaturesModule() {
             <div className="coming-soon-module">
                 <h2>⚙️ Settings</h2>
                 <li>Choose between themes like light mode and dark mode</li>
-                <li>Choose what kind of units to use, like Lbs or Kgs</li>
+                <li>Choose your preferred unit system (e.g., lbs or kgs)</li>
             </div>
 
             <div className="coming-soon-module">

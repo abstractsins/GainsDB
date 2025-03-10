@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useIsMobile } from "@/contexts/MobileContext";
+import { MdOutlineSort } from "react-icons/md";
+import { clear } from "console";
+
 
 interface ExerciseLegendProps {
     activeCategoryOverride: string | null;
@@ -8,6 +12,10 @@ interface ExerciseLegendProps {
 
 export default function ExercisesLegend({ activeCategoryOverride, onCategorySelect, onResetExpansion }: ExerciseLegendProps) {
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
+    const [isLegendVisible, setLegendVisible] = useState(false);
+    const isMobile = useIsMobile();
+    const legendRef = useRef<HTMLDivElement>(null);
+
     const categories = ["Upper Body", "Lower Body", "Core", "Cardio", "Other", "All"];
 
     useEffect(() => {
@@ -27,22 +35,69 @@ export default function ExercisesLegend({ activeCategoryOverride, onCategorySele
             el.classList.remove("active");
         });
         onResetExpansion();
+        setLegendVisible(false);
     };
 
+    const sortMenu = () => {
+        setLegendVisible(prev => prev === true ? false : true);
+    }
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (legendRef.current && !legendRef.current.contains(event.target as Node)) {
+                setLegendVisible(false);
+            }
+        }
+
+        // Add event listener when menu is open
+        if (isLegendVisible) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isLegendVisible]);
 
     return (
         <div className="exercises-legend">
-            {categories.map((category) => (
-                <div
-                    key={category}
-                    id={`${normalizedCategory(category)}-legend`}
-                    className={`exercises-legend-filter ${activeCategory === normalizedCategory(category) ? "active" : ""}`}
-                    onClick={() => handleClick(category)}
-                >
-                    <div className="exercises-legend-square" id={`${normalizedCategory(category)}-square`}></div>
-                    <div className="legend-label">{category}</div>
-                </div>
-            ))}
+            {isMobile
+                ? (
+                    <div className="mobile-legend">
+                        <label className="sort" onClick={sortMenu}>Sort by Category<MdOutlineSort className="m-2 text-[18pt]" /></label>
+                        <input onClick={() => handleClick('all')} className="clear-button" type="button" value="Clear" />
+                        <div
+                            className={`${isLegendVisible ? 'active' : ''} mobile-legend-popout`}
+                            ref={legendRef}
+                        >
+                            {categories.map((category) => (
+                                <div
+                                    key={category}
+                                    id={`${normalizedCategory(category)}-legend`}
+                                    className={`exercises-legend-filter ${activeCategory === normalizedCategory(category) ? "active" : ""}`}
+                                    onClick={() => handleClick(category)}
+                                >
+                                    <div className="exercises-legend-square" id={`${normalizedCategory(category)}-square`}></div>
+                                    <div className="legend-label">{category}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ) : (
+                    categories.map((category) => (
+                        <div
+                            key={category}
+                            id={`${normalizedCategory(category)}-legend`}
+                            className={`exercises-legend-filter ${activeCategory === normalizedCategory(category) ? "active" : ""}`}
+                            onClick={() => handleClick(category)}
+                        >
+                            <div className="exercises-legend-square" id={`${normalizedCategory(category)}-square`}></div>
+                            <div className="legend-label">{category}</div>
+                        </div>
+                    ))
+
+                )
+            }
         </div>
     );
 }
