@@ -4,6 +4,8 @@ import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { Session } from "next-auth";
 
+const server = process.env.NEXT_PUBLIC_BACKEND || `http://localhost:5000`;
+
 export const authOptions: NextAuthOptions = {
     providers: [
       CredentialsProvider({
