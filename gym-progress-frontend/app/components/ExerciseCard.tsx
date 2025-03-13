@@ -1,11 +1,16 @@
+// TODO
+// hook up WorkoutCardDetails component
+
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import { normalizeDate } from "@/utils/utils";
 import ExerciseVolumeChart from "./ExerciseVolumeChart";
 import { useSession } from "next-auth/react";
 import { toTitleCase } from "@/utils/utils";
 
+import WorkoutCardDetails from "./WorkoutHistory/WorkoutCardDetails";
+import { SetArr } from "../types/types";
 
 interface Exercise {
     id: number;
@@ -32,15 +37,10 @@ interface Props {
     setExpandedExerciseId: (exerciseId: number | null) => void;
     resetInnerExpansion: boolean;
     popupData: (popup: boolean, id: string) => void;
-    onClick: () => void;
 }
 
 
-
-
-
-
-const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, setExpandedExerciseId, resetInnerExpansion, popupData, onClick }: Props) => {
+const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, setExpandedExerciseId, resetInnerExpansion, popupData }: Props) => {
 
     const [workoutData, setWorkoutData] = useState<WorkoutData | null>(null);
     const [loading, setLoading] = useState(false);
@@ -51,33 +51,39 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
     const server = process.env.NEXT_PUBLIC_BACKEND;
     const [moreDisabled, setMoreDisabled] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
-    const [logPopup, setLogPopup] = useState<boolean>(false);
     const [logExerciseId, setLogExererciseId] = useState<string>('0');
+    const [formattedData, setFormattedData] = useState<SetArr | null>([]);
 
-    
+
     useEffect(() => {
         if (!isThisExpanded) {
             setIsExpanded(false);
-            setIsExpanded2(false); // Collapse chart section when this card is collapsed
+            setIsExpanded2(false);
         } else {
             setIsExpanded(true);
         }
     }, [isThisExpanded]);
+
+
+    useEffect(() => {
+        if (workoutData && workoutData.sets) {
+            setFormattedData([...workoutData.sets.map((set: WorkoutSet) => [set.set_order, set.weight, set.reps])]);
+        }
+    }, [workoutData]);
     
-    
+
     const token = session?.user?.authToken || localStorage.getItem("token");
     if (!token) {
         setError("No authentication session found. Please log in.");
         return;
     }
 
+
     const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
         console.log(`${exercise.name} clicked`);
 
-
-
         if ((e.target as HTMLElement).closest('.exe-card-bottom')) {
-            e.stopPropagation(); // Prevent collapsing
+            e.stopPropagation(); 
             return;
         }
 
@@ -93,6 +99,10 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
             setLoading(true);
 
             const clickedLi = e.currentTarget;
+
+            setTimeout(function () {
+                clickedLi.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 300);
 
             const name = clickedLi?.getAttribute('name') ? `${clickedLi.getAttribute('name')}` : 'null';
             setLogExererciseId(name);
@@ -120,7 +130,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
             if (Number(setExpandedExerciseId) == exercise.id) {
                 setExpandedExerciseId(null);
                 clickedLi.classList.remove('active');
-                return; // Collapse the card
+                return;
             } else {
                 clickedLi.classList.add('active');
             }
@@ -135,7 +145,9 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
                 });
                 if (!response.ok) console.error("Failed to fetch workout data");
                 const data = await response.json();
+                console.log(data);
                 setWorkoutData(data.length ? data : null);
+                setFormattedData(data?.map((set: WorkoutSet) => [set.set_order, set.weight, set.reps]));
                 if (workoutData !== null) {
                     setMoreDisabled(true);
                 }
@@ -170,7 +182,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
                 return;
             } else {
                 setExpandedExerciseId(exercise.id);
-                setTimeout(() => setIsExpanded2(true), 300); // Expand the clicked card
+                setTimeout(() => setIsExpanded2(true), 300);
             }
         }
     }
@@ -198,7 +210,11 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
 
 
     return (
-        <li id={`${exercise.id}`} name={`${exercise.name.replace(/\s/g, '-')}`} className={`exercise-card ${exercise.category}`} onClick={handleClick}>
+        <li
+            id={`${exercise.id}`} name={`${exercise.name.replace(/\s/g, '-')}`}
+            className={`exercise-card ${exercise.category}`}
+            onClick={handleClick}
+        >
             <div className="exe-card-top">
 
                 <div className="exe-card-left">
@@ -220,35 +236,52 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
                             <SkeletonLoader />
                             // <Loading />
                         ) : workoutData ? (
-                            <div className="lvl-1-exe-data">
-                                <ul>
-                                    {workoutData.map((set, index) => (
-                                        <li key={index}>
-                                            <span className="order">{set.set_order +  (set.set_order == 1 ? 'st' : (set.set_order == 2 ? 'nd' : (set.set_order == 3 ? 'rd' : 'th')))}:</span>
-                                            <span>{Math.floor(Number(set.weight))} lbs x {set.reps} rep{`${Number(set.reps) > 1 ? 's' : ''}`}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ) : (
-                            <p>No recent workout found for this exercise.</p>
-                        )}
-                    </div>
-                )}
-            </div>
-            {isExpanded2 &&
-                <div key={isExpanded2 ? "open" : "closed"} className="exe-card-bottom">
-                    <div className="exe-card-bottom-header">
-                    </div>
-                    <div className="exe-card-bottom-body">
-                        <div className="greater-chart-area">
-                            <ExerciseVolumeChart
-                                exerciseId={exercise.id}
+                        <>
+                            {
+                                console.log("Rendering ExerciseCard - formattedData:", formattedData)
+                            }
+                            <WorkoutCardDetails
+                                key={JSON.stringify(formattedData)}
+                                exerciseName={toTitleCase(exercise.name)}
+                                exerciseData={formattedData}
+                                exerciseCategory={null}
+                                onClose={() => { }}
                             />
+
+                        </>
+
+                            // <div className="lvl-1-exe-data">
+                            //     <ul>
+                            //         {workoutData.map((set: WorkoutSet, index: number) => (
+                            //             <li key={index}>
+                            //                 <span className="order">{set.set_order + (set.set_order == 1 ? 'st' : (set.set_order == 2 ? 'nd' : (set.set_order == 3 ? 'rd' : 'th')))}:</span>
+                            //                 <span>{Math.floor(Number(set.weight))} lbs x {set.reps} rep{`${Number(set.reps) > 1 ? 's' : ''}`}</span>
+                            //             </li>
+                            //         ))}
+                            //     </ul>
+                            // </div>
+
+
+
+                        ): (
+                                <p>No recent workout found for this exercise.</p>
+                        )}
+                        </div>
+                )}
+                    </div>
+            {isExpanded2 &&
+                    <div key={isExpanded2 ? "open" : "closed"} className="exe-card-bottom">
+                        <div className="exe-card-bottom-header">
+                        </div>
+                        <div className="exe-card-bottom-body">
+                            <div className="greater-chart-area">
+                                <ExerciseVolumeChart
+                                    exerciseId={exercise.id}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
         </li>
     );
 };

@@ -7,8 +7,8 @@ export interface WorkoutListContainer {
 }
 
 export interface WorkoutsObj {
-  dates: string[]; // Explicitly allow an array of dates
-  [date: string]: DateObj | string[]; // Allow other properties as DateObj
+    dates: string[]; // Explicitly allow an array of dates
+    [date: string]: DateObj | string[]; // Allow other properties as DateObj
 }
 
 export interface DateObj {
@@ -22,6 +22,14 @@ export interface Sets {
 }
 
 export type SetArr = number[][];
+
+export interface ExerciseCard {
+    id: number;
+    name: string;
+    category: string;
+    last_logged_date: string;
+}
+
 
 
 

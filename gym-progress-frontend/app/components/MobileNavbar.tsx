@@ -1,9 +1,11 @@
-import { FaUser } from "react-icons/fa"; // FontAwesome icons
-import { MdDashboard } from "react-icons/md"; // Material Icons
-import { Oswald } from "next/font/google";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
-import HamburgerMenu from "./HamburgerMenu";
+import Link from "next/link";
+
+import { Oswald } from "next/font/google";
+
+import { FaUser } from "react-icons/fa"; // FontAwesome icons
+import { MdDashboard } from "react-icons/md";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 interface SidebarInfo {
     isMenuActive: boolean;
@@ -21,22 +23,25 @@ const oswald = Oswald({
 });
 
 
-export default function Navbar({sidebar}: Props) {
+export default function Navbar({ sidebar }: Props) {
     const { data: session, status } = useSession();
     const username = session?.user?.username;
-    
+
     // Until Profile page is released in version
     const profile = false;
-    
+
     const menuSlide = () => sidebar.isMenuActive ? sidebar.setIsMenuActive(false) : sidebar.setIsMenuActive(true);
-    
+
     return (
         <header className="mobile-nav-header">
 
-            <Link href="/dashboard" className="hover:text-blue-300 flex items-center">
-                <MdDashboard className="mr-2 text-xl" />
-                <h2 className={`${oswald.className} text-lg font-bold  text-[12pt] sm:text-[14pt] md:text-[16pt] lg:text-[20pt]`}>Dashboard</h2>
-            </Link>
+            {username
+                ? <Link href="/dashboard" className="hover:text-blue-300 flex items-center">
+                    <MdDashboard className="mr-2 text-xl" />
+                    <h2 className={`${oswald.className} text-lg font-bold  text-[12pt] sm:text-[14pt] md:text-[16pt] lg:text-[20pt]`}>Dashboard</h2>
+                </Link>
+                : <Link className="link" href="/register">Register</Link>
+            }
 
             {profile
                 ? (
@@ -45,10 +50,15 @@ export default function Navbar({sidebar}: Props) {
                         Profile
                     </Link>)
                 : (
-                    <span>Hi, {username}!</span>
+                    username && <span>Hi, {username}!</span>
                 )
             }
-            <HamburgerMenu clickHandler={menuSlide}/>
+
+            {username
+                ? <div className="hamburger-menu-container" onClick={menuSlide}> <RxHamburgerMenu className="text-[20pt]" /> </div>
+                : <Link className="link" href="/">Login</Link>
+            }
+
         </header>
 
     )

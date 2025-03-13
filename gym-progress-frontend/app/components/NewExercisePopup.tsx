@@ -12,14 +12,13 @@ interface Props {
 export default function NewExercisePopup({ visible, onClose }: Props) {
     if (!visible) return null;
     const { data: session, status } = useSession();
-    const [error, setError] = useState();
+    const [error, setError] = useState<unknown>();
     const [entryValue, setEntryValue] = useState<string>("");
     const userId = session?.user?.id || localStorage.getItem("userId");
 
+
     const submitNewExercise = async () => {
-
         const token = session?.user?.authToken || localStorage.getItem("token");
-
         if (!token) {
             setError("No authentication session found. Please log in.");
             return;

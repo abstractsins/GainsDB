@@ -36,6 +36,7 @@ export default function ExercisesLegend({ activeCategoryOverride, onCategorySele
         });
         onResetExpansion();
         setLegendVisible(false);
+        if (isLegendVisible) setLegendVisible(false);
     };
 
     const sortMenu = () => {
@@ -64,8 +65,11 @@ export default function ExercisesLegend({ activeCategoryOverride, onCategorySele
             {isMobile
                 ? (
                     <div className="mobile-legend">
-                        <label className="sort" onClick={sortMenu}>Sort by Category<MdOutlineSort className="m-2 text-[18pt]" /></label>
-                        <input onClick={() => handleClick('all')} className="clear-button" type="button" value="Clear" />
+                        <label className="sort" onClick={sortMenu}>
+                            Sort by Category
+                            <MdOutlineSort className="m-2 text-[18pt]" />
+                        </label>
+                        <input onClick={() => handleClick('all')} disabled={!activeCategory} className={`${activeCategory && activeCategory !== 'all' ? '' : 'inactive'} clear-button`} type="button" value="Clear" />
                         <div
                             className={`${isLegendVisible ? 'active' : ''} mobile-legend-popout`}
                             ref={legendRef}

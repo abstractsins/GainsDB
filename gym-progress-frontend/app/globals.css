@@ -529,9 +529,28 @@ li.exercise-card.active.expand2 {
 }
 
 div.expanded-lvl-1 {
-  min-width: 50%;
-  max-width: 75%;
-  padding-left: 15px;
+  background-color: var(--darkGray);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  /* max-height: 100%; */
+  height: 100%;
+  font-size: 12pt;
+}
+
+div.workout-card-details-body.null {
+  margin: 0;
+  padding: 0;
+  max-height: unset;
+}
+
+div.workout-card-details-body.null ul {
+  max-height: unset;
 }
 
 div.expanded-lvl-1 ul {
@@ -542,19 +561,6 @@ div.expanded-lvl-1 li {
 }
 
 div.lvl-1-exe-data {
-  background-color: var(--darkGray);
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  color: #fff;
-  padding: 10px;
-  border-radius: 10px;
-  flex-wrap: wrap;
-  /* max-height: 100%; */
-  height: 100%;
-  width: auto;
-  font-size: 12pt;
 }
 
 div.lvl-1-exe-data span {
@@ -631,12 +637,12 @@ div.exercises-legend-filter {
 }
 div.exercises-legend-filter:hover {
   /* text-decoration: overline; */
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: rgb(56, 56, 56);
 }
 div.exercises-legend-filter:active,
 div.exercises-legend-filter.active {
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: darkgray;
   color: black;
 }
@@ -668,7 +674,6 @@ div#lower-body-square {
 li.core,
 div#core-square {
   background-color: #ffd639;
-  color: black;
 }
 li.cardio,
 div#cardio-square {
@@ -688,6 +693,23 @@ div#all-square {
 div#all-legend.active {
   background-color: unset;
   color: whitesmoke;
+}
+
+.workout-card-details-body li.core h2,
+.workout-card-details-body li.core span,
+.workout-card-details-body li.cardio span,
+.workout-card-details-body li.cardio h2 {
+  color: black;
+}
+
+.workout-card-details-body.cardio span.set-weight,
+.workout-card-details-body.core span.set-weight,
+.workout-card-details-body.core span.exercise-name {
+  color: black;
+}
+
+.lvl-1-exe-data span {
+  color: whitesmoke !important;
 }
 
 div#new-exercise-popup {
@@ -856,7 +878,7 @@ div.workout-card-glance-body ul li {
   display: flex;
   flex-wrap: wrap;
   width: calc(33% - 4px);
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
   height: 89px;
   padding: 5px 10px;
@@ -1113,7 +1135,7 @@ div#about-page {
 }
 
 #about-page header {
-  background-color: rgb(10, 10, 10);
+  background-color: var(--black);
   display: flex;
   position: fixed;
   top: 0;
@@ -1348,12 +1370,13 @@ div.about-section-skeleton {
   background-color: var(--core);
   color: black;
 }
-.core span.set-order,
-.core span.unit,
-.core span.x,
-.cardio span.unit,
-.cardio span.x,
-.cardio span.set-order {
+
+.workout-card-details-body.core span.set-order,
+.workout-card-details-body.core span.unit,
+.workout-card-details-body.core span.x,
+.workout-card-details-body.cardio span.unit,
+.workout-card-details-body.cardio span.x,
+.workout-card-details-body.cardio span.set-order {
   color: var(--darkGray) !important;
 }
 .cardio {
@@ -1366,7 +1389,7 @@ div.about-section-skeleton {
 
 .core #cancel-button,
 .cardio #cancel-button {
-  color: rgb(10, 10, 10);
+  color: var(--black);
 }
 
 /** SETTINGS */
@@ -1429,6 +1452,8 @@ span.app-signature {
 .coming-soon-module h2 {
   font-size: 18pt;
   font-family: "Oswald";
+  display: flex;
+  align-items: center;
 }
 
 .features-half {
@@ -1498,14 +1523,15 @@ input.clear-button {
   height: 50px;
   font-weight: 600;
   text-align: center;
+  justify-content: center;
 }
 
-input.clear-button:hover {
+input.clear-button:hover :not(.inactive) {
   background-color: lightskyblue;
   transition: background-color 300ms ease;
 }
 
-input.clear-button:active {
+input.clear-button:active :not(.inactive) {
   background-color: rgb(67, 183, 230);
   outline: none;
 }
@@ -1517,8 +1543,17 @@ input.clear-button:active {
   flex-direction: column;
 }
 
+.workout-card-details-body.core #cancel-button,
+.workout-card-details-body.cardio #cancel-button {
+  color: black;
+}
+
+.workout-card-details-body #cancel-button {
+  color: whitesmoke;
+}
+
 .suggestion-container {
-  background-color: rgb(10, 10, 10);
+  background-color: var(--black);
   /* background-color: rgb(17, 24, 39); */
   display: flex;
   flex-direction: column;
@@ -1620,6 +1655,11 @@ input.clear-button:active {
   height: 570px;
 }
 
+div.dashboard-card-icon path,
+header.dashboard-card h3 {
+  color: var(--black);
+}
+
 /* 
 html {
   overflow-y: scroll;
@@ -1639,59 +1679,45 @@ html, body {
 
 * {
   /* border: 1px solid red; */
+  /* color: whitesmoke; */
 }
 
 /** MOBILE */
-.hamburger-container {
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-  width: 46px;
-  height: 40px;
-  justify-content: center;
-  cursor: pointer;
-  padding: 5px 8px;
-}
 
-.hamburger-container:active {
-  background-color: gray;
-}
-
-.hamburger-line {
-  border-bottom: 2px solid silver;
-  margin: 4px 0;
-}
-
-/* Sidebar - Start Off-Screen */
 aside.mobile {
-  background-color: rgba(17, 24, 39, 0.98);
-  position: fixed; /* Keep it fixed so it doesn't shift the page */
+  background-color: rgba(17, 24, 39, 0.95);
+  position: fixed;
   top: 0;
-  right: -100%; /* Start completely off-screen */
-  width: 14rem; /* Sidebar width */
+  right: -100%;
+  width: 14rem;
   height: 100vh;
   z-index: 100;
-  transition: right 500ms ease-in-out; /* Animate sliding */
+  transition: right 500ms ease-in-out;
 }
 
-/* Active State - Slide In */
 aside.mobile.active {
-  right: 0; /* Bring into view */
+  right: 0;
 }
 
 aside.mobile h2 {
   font-size: 2em;
 }
 
-.mobile-legend {
+.hamburger-menu-container {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 8px;
+}
 
+.hamburger-menu-container:active {
+  background-color: gray;
 }
 
 .mobile-legend label {
   background-color: rgb(31, 41, 55);
   display: flex;
   padding: 0px 10px;
-  border-radius: 5px;
+  border-radius: 8px;
   justify-content: space-between;
   font-size: 14pt;
   align-items: center;
@@ -1707,6 +1733,15 @@ aside.mobile h2 {
     overflow: hidden;
   }
 
+  header.mobile-nav-header {
+    padding: 10px 15px;
+    height: fit-content;
+  }
+
+  h1.page-header {
+    font-size: 1.75em;
+  }
+
   .dashboard-body {
     width: 100%;
     padding: 0;
@@ -1716,7 +1751,7 @@ aside.mobile h2 {
   ul.dashboard-list {
     justify-content: center;
     width: 100%;
-    padding-bottom: 100px;
+    padding-bottom: 150px;
     padding-top: 30px;
   }
 
@@ -1744,6 +1779,10 @@ aside.mobile h2 {
   .new-workout-field#input-weight {
     width: 50%;
   }
+  .new-workout-field#input-weight::placeholder,
+  .new-workout-field#input-reps::placeholder {
+    font-size: 12pt;
+  }
   .new-workout-field#input-reps {
     width: 33%;
   }
@@ -1751,6 +1790,7 @@ aside.mobile h2 {
   select.new-workout-field {
     max-width: unset;
     font-size: 14pt;
+    padding: 15px;
   }
 
   select option {
@@ -1761,6 +1801,12 @@ aside.mobile h2 {
     width: 100% !important;
   }
 
+  button.new-workout-button {
+    font-size: 12pt;
+    width: 150px;
+    height: 75px;
+  }
+
   div.form-xl-row {
     flex-wrap: wrap;
     margin: 10px 0;
@@ -1769,7 +1815,8 @@ aside.mobile h2 {
   #history-page {
     width: 100vw;
     overflow: hidden;
-    padding-bottom: 100px;
+    padding: 5px;
+    padding-bottom: 150px;
   }
 
   #history-page div.page-header {
@@ -1777,7 +1824,7 @@ aside.mobile h2 {
     align-items: flex-start;
   }
 
-  div.timeframe-filter span.timeframe{
+  div.timeframe-filter span.timeframe {
     display: block;
     margin: 20px 0 0 0;
   }
@@ -1787,17 +1834,13 @@ aside.mobile h2 {
     height: fit-content;
   }
 
-  .workout-card-glance-body {
-
-  }
-
   .workout-card-glance-body ul {
     gap: 8px;
     display: flex;
     width: 100%;
     flex-wrap: wrap;
   }
-  
+
   .glance-exe {
     flex: 1 1 calc(50% - 4px);
     max-width: calc(50% - 4px);
@@ -1815,19 +1858,20 @@ aside.mobile h2 {
   .mobile-legend {
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 16px;
   }
 
   .mobile-legend-popout {
     background-color: rgb(60 60 60);
-    border-radius: 10px;
+    border-radius: 8px;
     display: none;
     padding: 10px;
     flex-direction: column;
     position: absolute;
-    /* height: 200px; */
-    /* width: 200px; */
     z-index: 10;
+    left: 0px;
+    top: 50px;
   }
 
   .mobile-legend-popout.active {
@@ -1836,8 +1880,8 @@ aside.mobile h2 {
 
   label.sort {
     font-size: 12pt;
+    position: relative;
   }
-
 
   label.sort:active {
     background-color: darkgray;
@@ -1848,6 +1892,422 @@ aside.mobile h2 {
     min-height: 150px;
   }
 
+  #coming-soon-page {
+    width: 100vw;
+    padding-bottom: 100px;
+  }
+
+  .coming-soon-page-body {
+    flex-direction: column;
+  }
+
+  .features-half,
+  .suggestions-half {
+    width: 100%;
+  }
+
+  .features-half div {
+    margin: 10px 0;
+  }
+
+  .coming-soon-module#suggestions {
+    width: 100%;
+    height: unset;
+    max-height: 1000px;
+    margin: 10px 0;
+  }
+
+  .coming-soon-module#suggestions form {
+    padding: 0;
+  }
+
+  .coming-soon-module#suggestions form > div {
+    flex-wrap: wrap;
+  }
+
+  .settings-footer {
+    padding-bottom: 100px;
+  }
+
+  span.app-signature {
+    font-size: 12pt;
+  }
+
+  div.suggestions-half input.submit,
+  div.suggestions-half input.clear-button {
+    font-size: 10pt;
+    height: 40px;
+    width: 80px;
+    margin: 5px 5px 5px 10px;
+  }
+
+  .suggestion-board-container {
+    position: unset;
+    padding: unset;
+  }
+
+  .suggestion-board-container-header {
+    width: 100%;
+  }
+
+  .suggestion-board {
+    width: 100%;
+    max-height: 500px;
+  }
+
+  .suggestion-container {
+    width: 100%;
+    margin: unset;
+    padding: 10px;
+    /* margin: 8px 0; */
+    /* height: 100%; */
+    height: unset;
+    min-height: 100px;
+  }
+
+  .suggestion-board-container .nav-button {
+    display: none;
+    font-size: 16pt;
+    bottom: 0;
+  }
+
+  .suggestion-board-container .nav-button#left {
+    left: 8%;
+  }
+
+  .suggestion-board-container .nav-button#right {
+    right: 8%;
+  }
+
+  .suggestion-board-track {
+    align-items: baseline;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    gap: 10px;
+  }
+
+  .coming-soon-module h2 {
+    font-size: 14pt;
+  }
+
+  .coming-soon-module li {
+    font-size: 12pt;
+  }
+
+  #exercises-page {
+    background-color: var(--black);
+    padding: unset;
+    padding-bottom: 150px;
+    width: 100vw;
+  }
+
+  .exe-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 15px;
+    height: unset;
+    position: relative;
+  }
+
+  div.exercises-legend {
+    margin: 10px 20px;
+  }
+
+  .exe-header .header-left {
+    align-items: flex-start;
+  }
+
+  input.exe-search {
+    margin: 10px auto;
+  }
+
+  ul.exercises-ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    padding-bottom: 150px;
+  }
+
+  li.exercise-card {
+    /* width: 100%; */
+    margin: unset;
+    height: 120px;
+    min-height: 100px;
+    max-width: unset;
+    width: 100%;
+    padding: 10px;
+  }
+
+  div.workout-card-header span.day {
+    font-size: 20pt;
+  }
+
+  li.exercise-card.active {
+    width: 100%;
+    height: fit-content;
+    flex-wrap: wrap;
+  }
+
+  div.workout-card-details-body.null {
+    padding: 10px;
+  }
+
+  li.exercise-card.active.expand2 {
+    flex-direction: column;
+    height: unset;
+    min-height: 600px;
+  }
+
+  div.exe-card-bottom {
+    height: 400px;
+  }
+
+  div.exe-card-left {
+    max-height: unset;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    /* height: 200px; */
+  }
+
+  div.exe-card-top {
+    flex-direction: column;
+    max-height: unset;
+  }
+
+  div.expanded-lvl-1 {
+    background-color: var(--darkGray);
+    border-radius: 10px;
+    display: flex;
+    padding: unset;
+    justify-content: center;
+    min-width: unset;
+    max-width: unset;
+    width: 100%;
+  }
+
+  div.lvl-1-exe-data {
+    width: 100%;
+    padding: 10px 20px;
+    align-items: flex-start;
+    max-width: unset;
+  }
+
+  li.exercise-card h2 {
+    font-size: 22pt;
+  }
+
+  li#add-exercise-card {
+    display: flex;
+    justify-content: center;
+    width: 160px;
+    height: 60px;
+    border-color: whitesmoke;
+    min-height: unset;
+    padding: unset;
+  }
+
+  li#add-exercise-card h2 {
+    font-family: "Oswald";
+    font-size: 1.25em;
+  }
+
+  div.popup#new-workout-popup {
+    position: fixed;
+    width: 100vw;
+    bottom: -20%;
+    left: 0;
+    height: fit-content;
+  }
+
+  div.popup#new-workout-popup h2 {
+    font-size: 2em;
+    padding-bottom: 0;
+  }
+
+  form#new-set-form {
+    margin: 10px;
+  }
+
+  input.exe-search {
+    font-size: 16pt;
+    margin-top: 20px;
+  }
+
+  .exe-header .clear-button {
+    position: absolute;
+    right: 60px;
+    top: 75%;
+    color: black;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .click-block {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .popup#new-exercise-popup {
+    width: 100vw;
+    left: 0;
+  }
+
+  .clear-button.inactive {
+    background-color: lightgray;
+    color: gray;
+  }
+
+  input.new-exercise-name {
+    width: 100%;
+  }
+
+  button.popup-button#submit-button {
+    font-size: 14pt;
+    width: 140px;
+    height: 70px;
+  }
+
+  div#about-page {
+    width: 100vw;
+    height: unset;
+    overflow: scroll;
+  }
+
+  div.about-body {
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    /* overflow: scroll; */
+  }
+
+  div.about-track {
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px 200px 20px;
+    height: 550vh;
+    gap: 300px;
+  }
+
+  div.about-body-skeleton {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    height: 400vh;
+    width: 100vw;
+  }
+
+  div.about-body ul.about-list {
+    margin: unset;
+  }
+
+  div.about-track-skeleton {
+    flex-direction: column;
+    padding: 15px;
+    width: 100%;
+    gap: 100px;
+  }
+
+  div.about-section {
+    width: 90vw;
+    height: fit-content;
+    margin: unset;
+    padding: 30px 15px;
+    flex-direction: column;
+  }
+
+  .parallax-bg {
+    width: 100vw;
+    height: 150vh;
+    background-size: 400% auto;
+    background-position: top;
+  }
+
+  div#about-page header {
+    padding: 0;
+  }
+
+  #p1 .left,
+  #p1 .right,
+  #p2 .left,
+  #p2 .right,
+  #p3 .left,
+  #p3 .right,
+  #p4 .left,
+  #p4 .right,
+  #p5 .left,
+  #p5 .right {
+    width: unset;
+    padding: unset;
+    padding: 10px 0;
+    font-size: 12pt;
+  }
+
+  #p5 {
+    margin-bottom: 300px;
+  }
+
+  #p5 .body,
+  .about-list li {
+    font-size: 12pt;
+  }
+
+  #p5 .body {
+    padding: unset;
+  }
+
+  .about-body .img-app-window,
+  .about-body .img-notes-app {
+    margin: 0px;
+  }
+
+  div.non-dash-page h1.page-header {
+    font-size: 2em !important;
+  }
+
+  div.registration-body {
+    width: 90vw;
+    padding: 15px;
+  }
+
+  .registration-form-module input {
+    font-size: 1.25em !important;
+    width: 90% !important;
+  }
+
+  div.registration-form-module div.module-label span {
+    font-size: 14pt;
+  }
+
+  button.register-button {
+    width: 150px;
+    font-size: 14pt;
+  }
+
+  div.non-dash-page {
+    padding-bottom: 150px;
+    overflow: scroll;
+  }
+
+  .link:active {
+    color: lightblue;
+    text-decoration: underline;
+  }
 }
 
 /* Small tablets (iPads, large phones in landscape) */

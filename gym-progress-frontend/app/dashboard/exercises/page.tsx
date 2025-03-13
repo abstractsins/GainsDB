@@ -1,5 +1,8 @@
 "use client";
 
+import { RiCloseLargeFill } from "react-icons/ri";
+import { IoClose } from "react-icons/io5";
+
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
@@ -9,18 +12,15 @@ import NewExercisePopup from "@/app/components/NewExercisePopup";
 import ExerciseCards from "@/app/components/ExerciseCards";
 import Loading from "./loading";
 
-interface Exercise {
-  name: string,
-  category: string;
-  last_logged_date: string;
-}
+import { ExerciseCard } from "@/app/types/types";
+
 const server = process.env.NEXT_PUBLIC_BACKEND;
 
 export default function Exercises() {
   const { data: session, status } = useSession();
-  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [exercises, setExercises] = useState<ExerciseCard[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [filteredExercises, setFilteredExercises] = useState<Exercise[]>([]);
+  const [filteredExercises, setFilteredExercises] = useState<ExerciseCard[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [popupVisible, setPopupVisible] = useState<boolean>(false);
@@ -32,6 +32,8 @@ export default function Exercises() {
   // Popup Log trial
   const [popupLog, setPopupLog] = useState<boolean>(false);
   const [logExeId, setLogExeId] = useState<string>('0');
+
+  const [inputValue, setInputValue] = useState("");
 
   const handlePopupLog = (popup: boolean, id: string) => {
     setPopupLog(popup);
@@ -81,57 +83,57 @@ export default function Exercises() {
 
 
   useEffect(() => {
+    const fetchExercises = async () => {
+      if (status === "loading") return;
+
+      setLoading(true);
+
+      const token = session?.user?.authToken || localStorage.getItem("token");
+
+      if (!token) {
+        setError("No authentication session found. Please log in.");
+        return;
+      }
+
+      try {
+        console.log('server: ' + server);
+        const response = await fetch(`${server}/api/user/${userId}/exercises`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to fetch exercises");
+        }
+
+        const data: ExerciseCard[] = await response.json();
+        if (!Array.isArray(data)) throw new Error("API did not return an array");
+
+        const sortedExercises = [...data].sort((a, b) => a.name.localeCompare(b.name));
+
+        setExercises(sortedExercises);
+        setFilteredExercises(sortedExercises);
+      } catch (error: any) {
+        console.error("Error fetching exercises:", error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (status === "authenticated" && session?.user?.authToken) {
       fetchExercises();
     }
-  }, [session, status, dataUpdated]);
 
-
-
-  const fetchExercises = async () => {
-    if (status === "loading") return;
-
-    setLoading(true);
-
-    const token = session?.user?.authToken || localStorage.getItem("token");
-
-    if (!token) {
-      setError("No authentication session found. Please log in.");
-      return;
-    }
-
-    try {
-      console.log('server: ' + server);
-      const response = await fetch(`${server}/api/user/${userId}/exercises`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to fetch exercises");
-      }
-
-      const data: Exercise[] = await response.json();
-      if (!Array.isArray(data)) throw new Error("API did not return an array");
-
-      const sortedExercises = [...data].sort((a, b) => a.name.localeCompare(b.name));
-
-      setExercises(sortedExercises);
-      setFilteredExercises(sortedExercises);
-    } catch (error: any) {
-      console.error("Error fetching exercises:", error.message);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [session, status, dataUpdated, userId]);
 
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
     const input = e.target.value.toLowerCase();
     setSearchTerm(input);
 
@@ -150,6 +152,12 @@ export default function Exercises() {
 
     setFilteredExercises(sortedExercises);
   }
+
+  const handleClearSearch = () => {
+    setInputValue(""); // Clears input field
+    setSearchTerm(""); // Clears search term
+    setFilteredExercises(exercises); // Resets exercises to original list
+  };
 
   const newExerciseHandler = () => {
     setPopupVisible(true);
@@ -180,11 +188,21 @@ export default function Exercises() {
 
         <input
           type="text"
+          value={inputValue}
           id="exe-search"
           placeholder="search exercises..."
           className="exe-search text-[18pt] p-2 m-4"
           onChange={handleSearch}
-        ></input>
+        />
+        {inputValue && (
+          <button
+            onClick={handleClearSearch}
+            className="clear-button"
+          >
+            <IoClose className="text-lg" />
+          </button>
+        )}
+
 
       </div>
       <ExercisesLegend
@@ -203,8 +221,8 @@ export default function Exercises() {
         />
       )}
 
-      {popupVisible && <NewExercisePopup visible={popupVisible} onClose={closeFunctions} />}
-      {popupLog && <LogWorkoutPopup visible={popupLog} exeId={logExeId} onClose={closeFunctions} />}
+      {popupVisible && <div className="click-block"><NewExercisePopup visible={popupVisible} onClose={closeFunctions} /></div>}
+      {popupLog && <div className="click-block"><LogWorkoutPopup visible={popupLog} exeId={logExeId} onClose={closeFunctions} /></div>}
 
     </div>
   );

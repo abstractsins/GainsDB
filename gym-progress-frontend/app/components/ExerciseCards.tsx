@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ExerciseCard from "./ExerciseCard";
+import { ExerciseCard as ExerciseCardType } from "@/app/types/types";
 
-interface ExerciseCard {
-  id: number;
-  name: string;
-  category: string;
-  last_logged_date: string;
-}
 
 interface Props {
-  exercises: ExerciseCard[];
+  exercises: ExerciseCardType[];
   onNewExercise: () => void;
   resetInnerExpansion: boolean;
   popupData: (popup: boolean, id: string) => void;
@@ -52,7 +47,6 @@ const ExerciseList: React.FC<Props> = ({ exercises, onNewExercise, resetInnerExp
             setExpandedExerciseId={setExpandedExerciseId}
             resetInnerExpansion={expandedExerciseId !== exercise.id}
             popupData={popupData}
-            onClick={() => toggleExpand(exercise.id)}
           />
         ))
       ) : (

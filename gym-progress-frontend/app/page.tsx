@@ -1,3 +1,10 @@
+// TODO
+// coming soon midsize/small format
+// about page formatting (between mobile and xxl)
+// exercise cat legend midsize color boxes
+// exercise cat legend small size popout
+
+
 "use client"; // Required for state & interactivity in Next.js App Router
 
 import { useRef, useEffect, useState } from "react";
@@ -31,8 +38,6 @@ export default function Home() {
 
 
 
-
-
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     const res = await signIn("credentials", {
@@ -54,7 +59,7 @@ export default function Home() {
     }
 
     if (session?.token) {
-      localStorage.setItem("token", session.token); // ✅ Store token in localStorage
+      localStorage.setItem("token", session.token);
     }
 
     console.log("Going to /dashboard");
@@ -66,12 +71,10 @@ export default function Home() {
 
 
 
-
-
   function dropDown(show: boolean) {
-    setShowLogin(show); // Only update state, let React handle class updates
+    setShowLogin(show); 
     if (usernameRef.current) {
-      usernameRef.current.focus(); // Auto-focus the input field
+      usernameRef.current.focus(); 
     }
   }
 

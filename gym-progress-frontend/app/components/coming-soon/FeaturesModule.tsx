@@ -10,7 +10,7 @@ export default function FeaturesModule() {
             </div>
 
             <div className="coming-soon-module">
-                <h2><FaUser className="inline mr-2 text-xl" /> Profile Page</h2>
+                <h2><FaUser className="inline mr-2" /> Profile Page</h2>
                 <li>Change password</li>
                 <li>Set a custom nickname</li>
                 <li>State goals and reflect on progress</li>
