@@ -6,7 +6,7 @@ interface Props {
     id: string;
 }
   
-const InfoCard: React.FC<InfoCardProps> = ({ icon, title, value, description, id }: Props) => {
+const InfoCard = ({ icon, title, value, description, id }: Props) => {
 
     const textLength = value.toString().length;
     const style = { "--char-count": textLength } as React.CSSProperties;  
