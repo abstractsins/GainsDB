@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
+import { LoggedExe } from "../types/types";
+
+interface ExercisesList {
+    name: string;
+}
 
 interface Props {
     value: string;
@@ -11,7 +16,7 @@ interface Props {
 
 export default function ExercisesList({ value, name, onChange }: Props) {
     const { data: session, status } = useSession(); // Get authentication session
-    const [exercises, setExercises] = useState<string[]>([]);
+    const [exercises, setExercises] = useState<ExercisesList[]>([]);
     const [error, setError] = useState<string | null>(null);
     const userId = session?.user?.id || localStorage.getItem("userId");
     const server = process.env.NEXT_PUBLIC_BACKEND;
@@ -74,9 +79,7 @@ export default function ExercisesList({ value, name, onChange }: Props) {
     return (
         <select
             className="new-workout-field"
-            // list="exercises-list"
             name="exercise"
-            // placeholder="Choose an exercise"
             value={value}
             onChange={handleSelect}
             required
