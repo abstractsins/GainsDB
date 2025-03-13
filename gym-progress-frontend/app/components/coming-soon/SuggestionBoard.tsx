@@ -38,7 +38,7 @@ export default function SuggestionBoard({ trigger }: Props) {
         if (!board || containers.length === 0) return;
     
         // Get positions of each SuggestionLI
-        const positions = Array.from(containers).map((container) => container.offsetLeft);
+        const positions = Array.from(containers).map((container) => (container as HTMLElement).offsetLeft);
     
         let newIndex = direction === "right" ? currentIndex + 1 : currentIndex - 1;
     
