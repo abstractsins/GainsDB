@@ -8,9 +8,12 @@ interface VolumeHistory {
     total_volume: string;
 }
 
+interface Props {
+    exerciseId: number;
+}
 
 
-export default function ExerciseVolumeChart({ exerciseId }: props) {
+export default function ExerciseVolumeChart({ exerciseId }: Props) {
     const { data: session } = useSession(); // Ensure this is defined before use
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -73,7 +76,7 @@ export default function ExerciseVolumeChart({ exerciseId }: props) {
     }
 
     const shortenedDate = (date: string) => {
-        let dateArr = date.split('T')[0].split('-');
+        const dateArr = date.split('T')[0].split('-');
         const year = dateArr[0].slice(-2);
         const month = dateArr[1];
         const day = dateArr[2];
@@ -81,7 +84,7 @@ export default function ExerciseVolumeChart({ exerciseId }: props) {
         return `${month}/${day}/${year}`;
     }
 
-    const findMaxValue = (data: Array) => {
+    const findMaxValue = (data: VolumeHistory[]) => {
         let value = 0;
         data.forEach((entry: VolumeHistory) => {
             if (Number(entry.total_volume) > value) {
@@ -92,7 +95,7 @@ export default function ExerciseVolumeChart({ exerciseId }: props) {
     }
 
 
-    const findMinValue = (data: Array) => {
+    const findMinValue = (data: VolumeHistory[]) => {
         let value = 100000;
         data.forEach((entry: VolumeHistory) => {
             if (Number(entry.total_volume) < value) {
