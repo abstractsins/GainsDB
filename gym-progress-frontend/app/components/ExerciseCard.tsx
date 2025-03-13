@@ -104,7 +104,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
                 clickedLi.scrollIntoView({ behavior: "smooth", block: "start" });
             }, 300);
 
-            const name = clickedLi?.getAttribute('name') ? `${clickedLi.getAttribute('name')}` : 'null';
+            const name = clickedLi?.getAttribute('data-name') ? `${clickedLi.getAttribute('data-name')}` : 'null';
             setLogExererciseId(name);
 
             clickedLi.classList.remove('expand2');
@@ -211,7 +211,8 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
 
     return (
         <li
-            id={`${exercise.id}`} name={`${exercise.name.replace(/\s/g, '-')}`}
+            id={`${exercise.id}`} 
+            data-name={`${exercise.name.replace(/\s/g, '-')}`}
             className={`exercise-card ${exercise.category}`}
             onClick={handleClick}
         >
