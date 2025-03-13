@@ -17,7 +17,7 @@ export default function ExercisesList({ value, name, onChange }: Props) {
     const server = process.env.NEXT_PUBLIC_BACKEND;
 
     useEffect(() => {
-        if (status === "authenticated" && session?.user.authToken) {
+        if (status === "authenticated" && session?.user?.authToken) {
             fetchExercises();
         }
     }, [session, status]);
