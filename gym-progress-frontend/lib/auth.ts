@@ -84,7 +84,8 @@ export const authOptions = {
                     username: token.username,
                     authToken: token.authToken,
                 };
-            return session;
+                return session;
+            }
         },
-    },
+    }
 };
