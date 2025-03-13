@@ -56,9 +56,9 @@ export default function ExercisesList({ value, name, onChange }: Props) {
 
             setExercises(data);
         } catch (error: unknown) {
-            if (error?.message) {
-                console.error("Error fetching exercises:", error?.message);
-                setError(error?.message);
+            if (error) {
+                console.error("Error fetching exercises:", error);
+                setError("Error fetching exercises:" + error);
             }
         }
     };
