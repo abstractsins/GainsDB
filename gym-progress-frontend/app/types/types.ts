@@ -61,3 +61,13 @@ export interface VolumeChange {
     max_volume: string;
     volume_change: string;
 }
+
+
+
+export interface User {
+    test: boolean;
+}
+
+export interface UserSettings {
+    theme: boolean;
+}
