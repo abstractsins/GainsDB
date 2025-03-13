@@ -90,21 +90,27 @@ export default function DashboardPage() {
             <InfoCard icon={<IoRibbon />}
               title="Most Logged"
               value={toTitleCase(data2?.mostLoggedExe[0]['exercise_name']) || "N/A"}
-              description={`${data2?.mostLoggedExe[0]['log_count']} workouts`} />
+              description={`${data2?.mostLoggedExe[0]['log_count']} workouts`}
+              id="most-logged"
+            />
           </li>
 
           <li className="dashboard-list">
             <InfoCard icon={<BsExclamationTriangle />}
               title="Least Logged"
               value={toTitleCase(data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['exercise_name']) || "N/A"}
-              description={`${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count']} workout${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count'] == '1' ? '' : 's'}`} />
+              description={`${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count']} workout${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count'] == '1' ? '' : 's'}`}
+              id="least-logged"
+            />
           </li>
 
           <li className="dashboard-list">
             <InfoCard icon={<FaWeightHanging />}
               title="Most Weight"
               value={`${Number(data2?.theMostWeight[0]['max_weight'])} lbs`}
-              description={toTitleCase(data2?.theMostWeight[0]['exercise_name']) || "N/A"} />
+              description={toTitleCase(data2?.theMostWeight[0]['exercise_name']) || "N/A"}
+              id="most-weight"
+            />
           </li>
 
           <li className="dashboard-list">
@@ -112,6 +118,7 @@ export default function DashboardPage() {
               title="Gained Most Volume"
               value={toTitleCase(data2?.mostVolumeChange[0]['exercise_name']) || "N/A"}
               description={toTitleCase(`${Number(data2?.mostVolumeChange[0]['min_volume'])} -> ${Number(data2?.mostVolumeChange[0]['max_volume'])}`) || "N/A"}
+              id="gained-most-volume"
             />
           </li>
         </ul>
