@@ -20,6 +20,7 @@ const allowedOrigins = [
     'https://gainsDB.com',
     'https://www.gainsDB.com',
     'https://gymprogress-development.up.railway.app',
+    'https://gainsdb-prod.up.railway.app',
     'http://localhost:3000',
     'http://10.0.0.116:3000',
     'http://10.0.0.107:3000' // Your phone's IP
