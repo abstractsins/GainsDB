@@ -30,11 +30,15 @@ app.use(cors({
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
-            console.log('not allowed by CORS');
+            console.error(`❌ CORS Blocked: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
-    }
+    },
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+    allowedHeaders: "Content-Type,Authorization"
 }));
+
 
 app.use(express.json());
 app.use(cookieParser());
