@@ -25,7 +25,7 @@ const oswald = Oswald({
 
 export default function Navbar({ sidebar }: Props) {
     const { data: session, status } = useSession();
-    const username = session?.user?.username;
+    const username = session?.user?.name;
 
     // Until Profile page is released in version
     const profile = false;

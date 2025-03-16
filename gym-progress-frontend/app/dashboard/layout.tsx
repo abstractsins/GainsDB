@@ -82,7 +82,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="flex h-screen">
       {/* Sidebar */}
       <aside ref={menuRef} onBlur={closeMenu} className={`${isMobile ? "mobile" : ""} ${isMenuActive ? "active" : ""} w-64 bg-gray-900 text-white p-5 flex flex-col space-y-4`}>
-        <h2 className={`${tourney.className} text-[12pt] sm:text-[14pt] md:text-[18pt] lg:text-[22pt] xl:text-[28pt]`}>GainsDB</h2>
+        <h2 className={`${tourney.className} text-[12pt] sm:text-[18pt] md:text-[22pt] lg:text-[28pt] xl:text-[28pt]`}>GainsDB</h2>
         <nav className="flex flex-col space-y-2">
           <Link href="/dashboard/new-workout" className="dashboard-link hover:bg-gray-700 p-2 rounded">💪 Log Workout</Link>
           <Link href="/dashboard/history" className="dashboard-link hover:bg-gray-700 p-2 rounded">📜 Workout History</Link>

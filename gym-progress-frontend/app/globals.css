@@ -94,8 +94,8 @@ button.disabled:hover {
 
 .dashboard-link {
   @apply text-[12pt]
-  md:text-[14pt]
-  lg:text-[16pt];
+  md:text-[12pt]
+  lg:text-[14pt];
 }
 
 h1.page-header {
@@ -1722,6 +1722,59 @@ aside.mobile h2 {
   font-size: 14pt;
   align-items: center;
 }
+
+@media (max-width: 1320px) {
+  .coming-soon-page-body {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .features-half {
+    width: 100%;
+    align-items: center;
+  }
+
+  .suggestions-half,
+  .features-half {
+    margin-right: 0;
+  }
+
+  .coming-soon-module {
+    width: 56%;
+    min-width: 568px;
+  }
+}
+
+@media (max-width: 900px) {
+  #coming-soon-page {
+    width: 640px;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+  ul.dashboard-list {
+    justify-content: center;
+  }
+
+  #coming-soon-page {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 639px) {
+  .coming-soon-module {
+    /* width: 100%; */
+    /* min-width: 320px; */
+    /* max-width: 80%; */
+  }
+
+}
+
+
 
 /* Large phones (Samsung S21 Ultra, iPhone 12-15 Pro Max) */
 @media (max-width: 412px) {

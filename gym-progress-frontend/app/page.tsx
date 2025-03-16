@@ -27,6 +27,7 @@ export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
+
   // Redirect authenticated users to the dashboard
   useEffect(() => {
     if (status === "authenticated" && session?.user?.authToken) {
@@ -36,11 +37,11 @@ export default function Home() {
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-    
+
     const res = await signIn("credentials", {
       username,
       password,
-      redirect: false, 
+      redirect: false,
     });
 
     if (res?.error) {
@@ -49,7 +50,7 @@ export default function Home() {
     }
 
     console.log("✅ Login successful, redirecting to dashboard...");
-    router.replace("/dashboard"); 
+    router.replace("/dashboard");
   }
 
   function dropDown(show: boolean) {
@@ -68,7 +69,7 @@ export default function Home() {
     <div className="splash-container">
       {/* POPUP CONTAINER */}
       <div className="popup">
-        <h1 className={oswald.className}>GainsDB</h1>
+        <h1 className={tourney.className}>GainsDB</h1>
         <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>
       </div>
 
@@ -131,7 +132,6 @@ export default function Home() {
         /* POPUP STYLES */
         .popup {
           background-color: var(--black);
-          background-color: var(--darkGray);
           padding: 50px 50px 0 50px;
           border-radius: 10px 10px 0 0;
           min-height: 25%;
@@ -157,7 +157,6 @@ export default function Home() {
         }
         .login-fields-container {
           display: flex;
-          flex-direction: column;
           align-items: center;
         }
         form {
@@ -167,14 +166,13 @@ export default function Home() {
         }
         div.form-container {
           background-color: var(--black);
-          background-color: var(--darkGray);
           display: flex;
           flex-direction: column;
           align-items: center;
           width: 48%;
           border-radius: 0 0 10px 10px;
           transition: transform 500ms;
-          transform: translateY(-60%);
+          transform: translateY(-37%);
         }
         div.form-container.exposed {
           transform: translateY(-5%);
@@ -241,12 +239,44 @@ export default function Home() {
         }
 
         h1 {
-          font-size: 5em;
+          font-size: 8em;
           font-family: "Tourney";
         }
 
         h2 {
-          font-size: 1.35em;
+          font-size: 2.5em;
+        }
+
+        @media (max-width: 1699px) {
+          h1 {
+            font-size: 6em;
+          }
+          h2 {
+            font-size: 2em;
+          }
+          div.form-container {
+            max-height: 30%;
+            transform: translateY(-50%);
+          }
+          div.popup {
+            padding: 15px
+          }
+        }
+
+        @media (max-width: 1199px) {
+          h1 {
+            font-size: 4.5em;
+          }
+          h2 {
+            font-size: 1.5em;
+          }
+          .login-fields-container {
+            flex-direction: column;
+          }
+
+          .popup {
+            max-height: 20%;
+          }
         }
 
         @media (max-width: 848px) {
@@ -254,17 +284,33 @@ export default function Home() {
             font-size: 4em;
           }
           h2 {
-            font-size: 1.25em;
+            font-size: 1.5em;
           }
+          .login-fields-container {
+            flex-direction: column;
+          }
+
+          .login-fields-container input {
+            font-size: 1em;
+          }
+
         }
+
 
         @media (max-width: 753px) {
           .popup, 
           #login-drawer {
-            min-width: 90%;
+            min-width: 243px;
+            width: 60%;
+          }
+          h1 {
+            font-size: 3.25em;
           }
           h2 {
-            font-size: 1.25em;
+            font-size: 1.33em;
+          }
+          .login-fields-container {
+            flex-direction: column;
           }
         }
       `}</style>
