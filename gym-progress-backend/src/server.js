@@ -25,6 +25,8 @@ const allowedOrigins = [
     'http://10.0.0.107:3000' // Your phone's IP
 ];
 
+app.options("*", cors()); // Automatically handle preflight requests
+
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
