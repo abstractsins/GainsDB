@@ -4,8 +4,7 @@ import { Geist, Geist_Mono, Inter, Roboto } from "next/font/google";
 import ClientLoader from "./components/ClientLoader";
 import Footer from "./components/Footer"; 
 import "./globals.css";
-import { SessionProvider } from "next-auth/react";
-import AuthProvider from "@/app/components/SessionProvider";
+import AuthProvider from "./components/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

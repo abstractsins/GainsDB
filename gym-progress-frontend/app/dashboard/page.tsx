@@ -2,128 +2,135 @@
 
 import React, { useState, useEffect } from "react";
 import InfoCard from "../components/DashboardCard";
-import { env } from "process";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import { IoRibbon } from "react-icons/io5";
-import { FaClipboardList } from "react-icons/fa";
-import { FaWeightHanging } from "react-icons/fa";
-import { BsGraphUpArrow } from "react-icons/bs";
-import { BsExclamationTriangle } from "react-icons/bs";
+import { FaClipboardList, FaWeightHanging } from "react-icons/fa";
+import { BsGraphUpArrow, BsExclamationTriangle } from "react-icons/bs";
 
 import { toTitleCase } from "@/utils/utils";
 import { DashboardData } from "../types/types";
 
-
-
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
-  const [data2, setData2] = useState<DashboardData | null>();
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const { data: session } = useSession();
-  const userId = session?.user?.id || localStorage.getItem("userId");
-  const server = process.env.NEXT_PUBLIC_BACKEND || 'http://localhost:5000';
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const server = process.env.NEXT_PUBLIC_BACKEND || "http://localhost:5000";
 
   useEffect(() => {
-    if (userId) {
-      fetchData();
-    }
-  }, [userId, session]);
+    console.log("🔄 Session Status:", status);
+    console.log("👤 Session Data:", session);
 
-  const fetchData = async () => {
     if (status === "loading") return;
 
-    const token = session?.user?.authToken || localStorage.getItem("token");
-
-    if (!token) {
-      setError("No authentication session found. Please log in.");
+    if (status === "unauthenticated" || !session?.user?.authToken) {
+      console.warn("🚨 No valid session found, redirecting...");
+      if (typeof window !== "undefined") {
+        router.replace("/");
+      }
       return;
     }
 
-    setLoading(true);
+    fetchData();
+  }, [status, session?.user?.authToken]);
+
+  const fetchData = async () => {
+    const token = session?.user?.authToken;
+    const userId = session?.user?.id;
+
+    if (!token || !userId) return;
+
+    console.log("🛠 Sending Authorization Header:", `Bearer ${token}`);
 
     try {
-
       const response = await fetch(`${server}/api/user/${userId}/dashboard`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      if (!response.ok) console.error("Failed to fetch workout data");
-      const dashboardData: DashboardData = await response.json();
-      console.log(dashboardData);
-      setData2(dashboardData.totalWorkouts ? dashboardData : null);
+      if (!response.ok) {
+        throw new Error("Failed to fetch workout data");
+      }
+
+      const data: DashboardData = await response.json();
+      console.log("📊 Received Data:", data);
+      setDashboardData(data.totalWorkouts ? data : null);
     } catch (error) {
-      console.error("Error fetching workout data:", error);
-      setData2(null);
+      console.error("❌ Error fetching dashboard data:", error);
+      setError("Failed to load dashboard data.");
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  if (loading) return <p>Loading...</p>
-
-
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div id="dashboard-page">
-      {/* <div>
-        <h1 className="page-header">Check out your stats!</h1>
-      </div> */}
       <div className="dashboard-body">
-
         <ul className="dashboard-list">
           <li className="dashboard-list">
-            <InfoCard icon={<FaClipboardList />}
+            <InfoCard
+              icon={<FaClipboardList />}
               title="Logged Workouts"
-              value={data2?.totalWorkouts || "N/A"}
-              description={`over ${data2?.totalWeeks || 0} weeks`}
+              value={dashboardData?.totalWorkouts || "N/A"}
+              description={`over ${dashboardData?.totalWeeks || 0} weeks`}
               id="logged-workouts"
             />
           </li>
 
           <li className="dashboard-list">
-            <InfoCard icon={<IoRibbon />}
+            <InfoCard
+              icon={<IoRibbon />}
               title="Most Logged"
-              value={toTitleCase(data2?.mostLoggedExe[0]['exercise_name']) || "N/A"}
-              description={`${data2?.mostLoggedExe[0]['log_count']} workouts`}
+              value={toTitleCase(dashboardData?.mostLoggedExe?.[0]?.exercise_name) || "N/A"}
+              description={`${dashboardData?.mostLoggedExe?.[0]?.log_count || 0} workouts`}
               id="most-logged"
             />
           </li>
 
           <li className="dashboard-list">
-            <InfoCard icon={<BsExclamationTriangle />}
+            <InfoCard
+              icon={<BsExclamationTriangle />}
               title="Least Logged"
-              value={toTitleCase(data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['exercise_name']) || "N/A"}
-              description={`${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count']} workout${data2?.mostLoggedExe[data2?.mostLoggedExe.length - 1]['log_count'] == '1' ? '' : 's'}`}
+              value={toTitleCase(dashboardData?.mostLoggedExe?.slice(-1)[0]?.exercise_name) || "N/A"}
+              description={`${dashboardData?.mostLoggedExe?.slice(-1)[0]?.log_count || 0} workouts`}
               id="least-logged"
             />
           </li>
 
           <li className="dashboard-list">
-            <InfoCard icon={<FaWeightHanging />}
+            <InfoCard
+              icon={<FaWeightHanging />}
               title="Most Weight"
-              value={`${Number(data2?.theMostWeight[0]['max_weight'])} lbs`}
-              description={toTitleCase(data2?.theMostWeight[0]['exercise_name']) || "N/A"}
+              value={`${Number(dashboardData?.theMostWeight?.[0]?.max_weight).toFixed() || 0} lbs`}
+              description={toTitleCase(dashboardData?.theMostWeight?.[0]?.exercise_name) || "N/A"}
               id="most-weight"
             />
           </li>
 
           <li className="dashboard-list">
-            <InfoCard icon={<BsGraphUpArrow />}
+            <InfoCard
+              icon={<BsGraphUpArrow />}
               title="Gained Most Volume"
-              value={toTitleCase(data2?.mostVolumeChange[0]['exercise_name']) || "N/A"}
-              description={toTitleCase(`${Number(data2?.mostVolumeChange[0]['min_volume'])} -> ${Number(data2?.mostVolumeChange[0]['max_volume'])}`) || "N/A"}
+              value={toTitleCase(dashboardData?.mostVolumeChange?.[0]?.exercise_name) || "N/A"}
+              description={toTitleCase(
+                `${dashboardData?.mostVolumeChange?.[0]?.min_volume || 0} -> ${dashboardData?.mostVolumeChange?.[0]?.max_volume || 0
+                }`
+              )}
               id="gained-most-volume"
             />
           </li>
         </ul>
       </div>
     </div>
-
   );
 }

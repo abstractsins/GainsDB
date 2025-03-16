@@ -1,84 +1,63 @@
-// TODO
-// coming soon midsize/small format
-// about page formatting (between mobile and xxl)
-// exercise cat legend midsize color boxes
-// exercise cat legend small size popout
-
-
 "use client"; // Required for state & interactivity in Next.js App Router
 
 import { useRef, useEffect, useState } from "react";
-import { Oswald } from "next/font/google";
-import { Tourney } from "next/font/google";
+import { Oswald, Tourney } from "next/font/google";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const oswald = Oswald({
   subsets: ["latin"],
   weight: ["400", "700"],
-  display: "swap"
+  display: "swap",
 });
 
 const tourney = Tourney({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700"],
-  display: "swap"
+  display: "swap",
 });
 
-
 export default function Home() {
-
-  const { data: session, status } = useSession();
   const [showLogin, setShowLogin] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const { data: session, status } = useSession();
   const router = useRouter();
 
-
-
+  // Redirect authenticated users to the dashboard
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.authToken) {
+      router.replace("/dashboard");
+    }
+  }, [status, session, router]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+    
     const res = await signIn("credentials", {
       username,
       password,
-      redirect: false,
-    })
-
+      redirect: false, 
+    });
 
     if (res?.error) {
       alert("Invalid login credentials");
       return;
     }
 
-    const session = await fetch("/api/auth/session").then(res => res.json());
-
-    if (session?.user.id) {
-      localStorage.setItem("userId", session.user.id);
-    }
-
-    if (session?.token) {
-      localStorage.setItem("token", session.token);
-    }
-
-    console.log("Going to /dashboard");
-
-    router.refresh(); // Force session update
-    router.push("/dashboard");
+    console.log("✅ Login successful, redirecting to dashboard...");
+    router.replace("/dashboard"); 
   }
-
-
-
 
   function dropDown(show: boolean) {
-    setShowLogin(show); 
+    setShowLogin(show);
     if (usernameRef.current) {
-      usernameRef.current.focus(); 
+      usernameRef.current.focus();
     }
   }
-
-  const usernameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -93,7 +72,7 @@ export default function Home() {
         <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>
       </div>
 
-      {isClient && (
+      {isClient && status !== "authenticated" && (
         <div id="login-drawer" className={showLogin ? "form-container exposed" : "form-container"}>
           <form method="get" onSubmit={handleLogin}>
             {/* SLIDING LOGIN FORM (Only Appears When Clicked) */}
@@ -104,36 +83,41 @@ export default function Home() {
                 type="text"
                 placeholder="Username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value.trim())} required
+                onChange={(e) => setUsername(e.target.value.trim())}
+                required
               />
               <input
                 className="login-field"
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)} required
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
             <div className="login-container">
               {showLogin ? (
-                <button type="submit" key="submit" className="submit-button">SUBMIT</button>
+                <button type="submit" key="submit" className="submit-button">
+                  SUBMIT
+                </button>
               ) : (
                 <button
                   className="login-button"
                   key="login"
                   onClick={(e) => {
                     e.preventDefault();
-                    dropDown(true)
-                  }}>
+                    dropDown(true);
+                  }}
+                >
                   LOGIN
                 </button>
               )}
             </div>
           </form>
-        </div>)}
+        </div>
+      )}
 
       <style jsx>{`
-
         .splash-container {
           display: flex;
           flex-direction: column;
@@ -194,9 +178,6 @@ export default function Home() {
         }
         div.form-container.exposed {
           transform: translateY(-5%);
-        }
-        
-        .login-form {
         }
 
         /* SLIDING LOGIN FORM */
@@ -277,7 +258,6 @@ export default function Home() {
           }
         }
 
-
         @media (max-width: 753px) {
           .popup, 
           #login-drawer {
@@ -287,59 +267,6 @@ export default function Home() {
             font-size: 1.25em;
           }
         }
-
-        @media (max-width: 412px) { 
-
-          .splash-container {
-            padding-top: 50px;
-            justify-content: flex-start;
-          }
-  
-          h1 {
-            font-size: 3em;
-          }
-
-          h2 {
-            padding: 15px;
-            font-size: 16pt;
-          }
-
-          div.popup {
-            padding: 15px 15px 0;
-            max-height: 30%;
-          }
-
-          .popup, 
-          #login-drawer {
-            min-width: 75%;
-          }
-  
-        }
-        
-        @media (min-width: 1200px) {
-
-          h1 {
-            font-size: 8em;
-            font-weight: 400;
-          }
-          h2 {
-            font-size: 1.75em;
-          }
-          button {
-            font-size: 2em;
-          }
-          .login-fields-container {
-            flex-direction: row;
-            padding: 20px 0;
-          }
-          div.form-container {
-            transform: translateY(-50%);
-          }
-
-        }
-
-
-
       `}</style>
     </div>
   );

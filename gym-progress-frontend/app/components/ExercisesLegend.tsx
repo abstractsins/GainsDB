@@ -1,7 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useIsMobile } from "@/contexts/MobileContext";
 import { MdOutlineSort } from "react-icons/md";
-import { clear } from "console";
 
 
 interface ExerciseLegendProps {
@@ -13,7 +11,7 @@ interface ExerciseLegendProps {
 export default function ExercisesLegend({ activeCategoryOverride, onCategorySelect, onResetExpansion }: ExerciseLegendProps) {
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
     const [isLegendVisible, setLegendVisible] = useState(false);
-    const isMobile = useIsMobile();
+    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
     const legendRef = useRef<HTMLDivElement>(null);
 
     const categories = ["Upper Body", "Lower Body", "Core", "Cardio", "Other", "All"];
