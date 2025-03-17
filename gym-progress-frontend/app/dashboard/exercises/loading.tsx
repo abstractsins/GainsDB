@@ -1,21 +1,21 @@
 export default function Loading() {
     return (
-        <ul className="animate-pulse history">
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
-            <li className="workout skeleton"></li>
+        <ul className="history">
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
+            <li className="animate-pulse exercise-card skeleton"></li>
         </ul>
     );
 }

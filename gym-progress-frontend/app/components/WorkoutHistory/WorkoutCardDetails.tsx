@@ -37,7 +37,7 @@ export default function WorkoutCardDetails({ exerciseName, exerciseData, exercis
                         return (
                             <li className="set" key={order}>
                                 <span className="set-order">{order + (order == 1 ? 'st' : (order == 2 ? 'nd' : (order == 3 ? 'rd' : 'th')))}:</span>
-                                <span className="set-weight">{weight}</span><span className="unit">{weightUnit}</span> 
+                                <span className="set-weight">{Number(weight)}</span><span className="unit">{weightUnit}</span> 
                                 <span className="x">x</span> 
                                 <span className="set-reps">{reps}</span><span className="unit">{repUnit}</span>
                             </li>

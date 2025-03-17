@@ -37,6 +37,7 @@ export default function Home() {
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+    setShowLogin(true);
 
     const res = await signIn("credentials", {
       username,
@@ -73,7 +74,7 @@ export default function Home() {
         <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>
       </div>
 
-      {isClient && status !== "authenticated" && (
+      {isClient && (
         <div id="login-drawer" className={showLogin ? "form-container exposed" : "form-container"}>
           <form method="get" onSubmit={handleLogin}>
             {/* SLIDING LOGIN FORM (Only Appears When Clicked) */}
@@ -123,7 +124,6 @@ export default function Home() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: center;
           height: 100vh;
           text-align: center;
           position: relative;
@@ -134,6 +134,7 @@ export default function Home() {
           background-color: var(--black);
           padding: 50px 50px 0 50px;
           border-radius: 10px 10px 0 0;
+          margin-top: 100px;
           min-height: 25%;
           max-height: 40%;
           width: 48%;
@@ -300,9 +301,16 @@ export default function Home() {
         @media (max-width: 753px) {
           .popup, 
           #login-drawer {
-            min-width: 243px;
+            min-width: 300px;
             width: 60%;
+              padding-top: 5px;
           }
+          .login-container {
+            padding-top: 0;
+          }
+          div.form-container.exposed {
+          transform: translateY(-1%);
+        }
           h1 {
             font-size: 3.25em;
           }

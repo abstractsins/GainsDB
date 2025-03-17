@@ -10,7 +10,6 @@ import LogWorkoutPopup from "@/app/components/exercises/LogWorkoutPopup";
 import ExercisesLegend from "@/app/components/ExercisesLegend";
 import NewExercisePopup from "@/app/components/NewExercisePopup";
 import ExerciseCards from "@/app/components/ExerciseCards";
-import Loading from "./loading";
 
 import { ExerciseCard } from "@/app/types/types";
 
@@ -210,16 +209,14 @@ export default function Exercises() {
         onResetExpansion={handleResetExpansions}
         activeCategoryOverride={null}
       />
-      {loading ? (
-        <Loading />
-      ) : (
-        <ExerciseCards
-          exercises={filteredExercises}
-          onNewExercise={newExerciseHandler}
-          resetInnerExpansion={resetInnerExpansion}
-          popupData={handlePopupLog}
-        />
-      )}
+
+      <ExerciseCards
+        loading={loading}
+        exercises={filteredExercises}
+        onNewExercise={newExerciseHandler}
+        resetInnerExpansion={resetInnerExpansion}
+        popupData={handlePopupLog}
+      />
 
       {popupVisible && <div className="click-block"><NewExercisePopup visible={popupVisible} onClose={closeFunctions} /></div>}
       {popupLog && <div className="click-block"><LogWorkoutPopup visible={popupLog} exeId={logExeId} onClose={closeFunctions} /></div>}

@@ -65,7 +65,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
         e.preventDefault();
 
         const token = session?.user?.authToken || localStorage.getItem("token");
-        
+
         if (!token) {
             alert("User not authenticated.");
             return;
@@ -116,7 +116,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
             Number(formData.reps) > 0       // Ensures reps are positive
         );
     };
-    
+
 
 
     return (
@@ -153,7 +153,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
                 </form>
             }
 
-            {(!isXXLarge || isMobile )&&
+            {(!isXXLarge || isMobile) &&
                 <form onSubmit={handleSubmit} id="new-set-form" className="flex flex-col items-center w-[100%] md:w-[80%] lg:w-[65%] p-8">
 
                     <div className="form-xl-row">
@@ -184,7 +184,6 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
                     </div>
 
                 </form>
-
             }
         </div>
     )

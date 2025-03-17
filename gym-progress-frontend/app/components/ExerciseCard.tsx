@@ -32,7 +32,7 @@ interface WorkoutData {
 }
 
 interface Props {
-    exercise: Exercise;
+    exercise: Exercise | null;
     isExpanded: boolean;
     setExpandedExerciseId: (exerciseId: number | null) => void;
     resetInnerExpansion: boolean;
@@ -46,7 +46,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isExpanded2, setIsExpanded2] = useState(false);
-    const { data: session } = useSession(); 
+    const { data: session } = useSession();
     const userId = session?.user?.id || localStorage.getItem("userId");
     const server = process.env.NEXT_PUBLIC_BACKEND;
     const [moreDisabled, setMoreDisabled] = useState(false);
@@ -57,6 +57,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
 
     useEffect(() => {
         if (!isThisExpanded) {
+            setExpandedExerciseId(null);
             setIsExpanded(false);
             setIsExpanded2(false);
         } else {
@@ -70,7 +71,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
             setFormattedData([...workoutData.sets.map((set: WorkoutSet) => [set.set_order, set.weight, set.reps])]);
         }
     }, [workoutData]);
-    
+
 
     const token = session?.user?.authToken || localStorage.getItem("token");
     if (!token) {
@@ -83,7 +84,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
         console.log(`${exercise.name} clicked`);
 
         if ((e.target as HTMLElement).closest('.exe-card-bottom')) {
-            e.stopPropagation(); 
+            e.stopPropagation();
             return;
         }
 
@@ -120,14 +121,14 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
                 // console.log(`setExpandedExerciseId(null);`);
                 setIsExpanded(true)
                 setExpandedExerciseId(null);
-                setTimeout(() => setExpandedExerciseId(exercise.id), 300);
+                if (exercise) setTimeout(() => setExpandedExerciseId(exercise.id), 300);
             }
 
 
             // Remove 'active' class from all sibling <li> elements
             document.querySelectorAll(".exercise-card.active").forEach((el) => el.classList.remove("active"));
 
-            if (Number(setExpandedExerciseId) == exercise.id) {
+            if (exercise && Number(setExpandedExerciseId) == exercise.id) {
                 setExpandedExerciseId(null);
                 clickedLi.classList.remove('active');
                 return;
@@ -181,7 +182,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
                 setIsExpanded2(false);
                 return;
             } else {
-                setExpandedExerciseId(exercise.id);
+                if (exercise) setExpandedExerciseId(exercise.id);
                 setTimeout(() => setIsExpanded2(true), 300);
             }
         }
@@ -211,78 +212,64 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
 
     return (
         <li
-            id={`${exercise.id}`} 
-            data-name={`${exercise.name.replace(/\s/g, '-')}`}
-            className={`exercise-card ${exercise.category}`}
+            id={`${exercise?.id}`}
+            data-name={`${exercise?.name.replace(/\s/g, '-')}`}
+            className={`exercise-card ${exercise?.category}`}
             onClick={handleClick}
         >
             <div className="exe-card-top">
 
                 <div className="exe-card-left">
-                    <h2 className="exercise-list text-xl">{toTitleCase(exercise.name)}</h2>
+                    <h2 className="exercise-list text-xl">{toTitleCase(exercise?.name)}</h2>
                     {isThisExpanded
                         && <div className="expansion-button-container">
                             <button className={`direct-log`} onClick={launchPopupLog}>{`Log`}</button>
                             <button className={`${workoutData ? '' : 'disabled'} click-for-more`} onClick={moreClickHandler}>{`${isExpanded2 ? 'Less...' : 'Chart...'}`}</button>
                         </div>
                     }
-                    <span className="text-[12pt] font-thin">
-                        Last logged: {normalizeDate(exercise.last_logged_date, true)}
-                    </span>
+
+                    {exercise &&
+                        <span className="text-[12pt] font-thin">
+                            Last logged: {normalizeDate(exercise.last_logged_date, true)}
+                        </span>}
+
                 </div>
 
                 {isThisExpanded && (
                     <div className="expanded-lvl-1">
                         {loading ? (
                             <SkeletonLoader />
-                            // <Loading />
                         ) : workoutData ? (
-                        <>
-                            {
-                                console.log("Rendering ExerciseCard - formattedData:", formattedData)
-                            }
-                            <WorkoutCardDetails
-                                key={JSON.stringify(formattedData)}
-                                exerciseName={toTitleCase(exercise.name)}
-                                exerciseData={formattedData}
-                                exerciseCategory={null}
-                                onClose={() => { }}
-                            />
+                            <>
+                                {exercise &&
+                                    <WorkoutCardDetails
+                                        key={JSON.stringify(formattedData)}
+                                        exerciseName={toTitleCase(exercise.name)}
+                                        exerciseData={formattedData}
+                                        exerciseCategory={null}
+                                        onClose={() => { setIsExpanded(false) }}
+                                    />
+                                }
 
-                        </>
+                            </>
 
-                            // <div className="lvl-1-exe-data">
-                            //     <ul>
-                            //         {workoutData.map((set: WorkoutSet, index: number) => (
-                            //             <li key={index}>
-                            //                 <span className="order">{set.set_order + (set.set_order == 1 ? 'st' : (set.set_order == 2 ? 'nd' : (set.set_order == 3 ? 'rd' : 'th')))}:</span>
-                            //                 <span>{Math.floor(Number(set.weight))} lbs x {set.reps} rep{`${Number(set.reps) > 1 ? 's' : ''}`}</span>
-                            //             </li>
-                            //         ))}
-                            //     </ul>
-                            // </div>
-
-
-
-                        ): (
-                                <p>No recent workout found for this exercise.</p>
+                        ) : (
+                            <p>No recent workout found for this exercise.</p>
                         )}
-                        </div>
+                    </div>
                 )}
-                    </div>
+            </div>
             {isExpanded2 &&
-                    <div key={isExpanded2 ? "open" : "closed"} className="exe-card-bottom">
-                        <div className="exe-card-bottom-header">
-                        </div>
-                        <div className="exe-card-bottom-body">
-                            <div className="greater-chart-area">
-                                <ExerciseVolumeChart
-                                    exerciseId={exercise.id}
-                                />
-                            </div>
+                <div key={isExpanded2 ? "open" : "closed"} className="exe-card-bottom">
+                    <div className="exe-card-bottom-header">
+                    </div>
+                    <div className="exe-card-bottom-body">
+                        <div className="greater-chart-area">
+                            {exercise && <ExerciseVolumeChart exerciseId={exercise.id} />}
                         </div>
                     </div>
-                }
+                </div>
+            }
         </li>
     );
 };

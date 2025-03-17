@@ -20,6 +20,10 @@ export default function ExercisesLegend({ activeCategoryOverride, onCategorySele
         if (activeCategoryOverride === null) {
             setActiveCategory(null);
         }
+
+        if (window) {
+            window.addEventListener('resize', () => setIsMobile(window.innerWidth <= 768));
+        }
     }, [activeCategoryOverride]);
 
     const normalizedCategory = (category: string) => category.replace(/\s/g, '-').toLowerCase();

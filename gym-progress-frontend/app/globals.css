@@ -7,6 +7,7 @@
   --foreground: #171717;
   --darkGray: #1f2421;
   --black: rgb(10, 10, 10);
+  --skeleton-gray: rgb(44, 44, 44);
 
   --upper-body: #00af54;
   --lower-body: #007cbe;
@@ -190,6 +191,14 @@ footer.footer {
   @apply animate-pulse;
   justify-content: space-evenly;
   padding: 0 25px;
+}
+
+.exercise-card.skeleton {
+  background-color: var(--skeleton-gray);
+}
+
+.skeleton {
+  @apply animate-pulse;
 }
 
 .set-list-skeleton {
@@ -477,6 +486,12 @@ div.form-xl-row {
 }
 
 /** Exercises Page */
+
+ul.exercises-ul.skeleton > li {
+  @apply animate-pulse;
+  background-color: var(--skeleton-gray);
+}
+
 div.exercises-legend {
   margin: 5px 0;
 }
@@ -905,11 +920,34 @@ span.nav-readout {
 
 li.workout.skeleton {
   display: flex;
+  flex-direction: column;
   border-radius: 10px;
-  background-color: black;
+  background-color: var(--skeleton-gray);
   width: 514px;
   height: 275px;
   margin: 15px;
+  padding: 15px;
+}
+
+li.glance-exe.skeleton {
+  width: calc(33% - 4px);
+  height: 89px;
+  background-color: rgb(78, 78, 78);
+}
+
+.workout-card-header.skeleton {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.workout-card-header.skeleton span {
+  padding: 8px 0 8px 0;
+  width: 60%;
+  height: 40px;
+  display: block;
+  background-color: rgb(78, 78, 78);
+  border-radius: 10px;
 }
 
 .exe-card-exe-container {
@@ -993,6 +1031,10 @@ span.exercise-name {
   display: flex;
   flex-direction: column;
   overflow: scroll;
+}
+
+.dashboard-list.skeleton header.dashboard-card {
+  min-height: 58px;
 }
 
 header.nav-header {
@@ -1746,15 +1788,41 @@ aside.mobile h2 {
   }
 }
 
+@media (max-width: 1285px) {
+  ul.exercises-ul {
+    justify-content: center;
+  }
+}
+
+
+@media (max-width: 1100px) {
+  #history-page div.page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 1000px) {
+  div.exercises-legend-filter {
+    font-size: 10pt;
+    padding: 5px 5px;
+  }
+}
+
 @media (max-width: 900px) {
   #coming-soon-page {
     width: 640px;
   }
-
 }
 
-
 @media (max-width: 768px) {
+
+  input#exe-search {
+    font-size: 14pt;
+  }
+
+
+
   ul.dashboard-list {
     justify-content: center;
   }
@@ -1762,142 +1830,14 @@ aside.mobile h2 {
   #coming-soon-page {
     width: 100%;
   }
-}
-
-
-@media (max-width: 639px) {
-  .coming-soon-module {
-    /* width: 100%; */
-    /* min-width: 320px; */
-    /* max-width: 80%; */
-  }
-
-}
-
-
-
-/* Large phones (Samsung S21 Ultra, iPhone 12-15 Pro Max) */
-@media (max-width: 412px) {
-  body {
-    overflow: hidden;
-  }
-
-  main {
-    overflow: hidden;
-  }
-
-  header.mobile-nav-header {
-    padding: 10px 15px;
-    height: fit-content;
-  }
-
-  h1.page-header {
-    font-size: 1.75em;
-  }
-
-  .dashboard-body {
-    width: 100%;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  ul.dashboard-list {
-    justify-content: center;
-    width: 100%;
-    padding-bottom: 150px;
-    padding-top: 30px;
-  }
-
-  li.dashboard-list {
-    width: 300px;
-  }
-
-  div.dashboard-card {
-    width: unset;
-  }
-
-  form#new-set-form {
-    width: 80vw;
-    margin-top: 20px;
-    margin-bottom: 150px;
-    padding: 10px;
-  }
-
-  form#new-set-form input {
-    width: 100%;
-    font-size: 14pt;
-    padding: 15px;
-  }
-
-  .new-workout-field#input-weight {
-    width: 50%;
-  }
-  .new-workout-field#input-weight::placeholder,
-  .new-workout-field#input-reps::placeholder {
-    font-size: 12pt;
-  }
-  .new-workout-field#input-reps {
-    width: 33%;
-  }
 
   select.new-workout-field {
-    max-width: unset;
-    font-size: 14pt;
-    padding: 15px;
-  }
-
-  select option {
-    font-size: 12pt;
-  }
-
-  .new-workout-field#exercises-list {
-    width: 100% !important;
-  }
-
-  button.new-workout-button {
-    font-size: 12pt;
-    width: 150px;
-    height: 75px;
-  }
-
-  div.form-xl-row {
-    flex-wrap: wrap;
-    margin: 10px 0;
-  }
-
-  #history-page {
-    width: 100vw;
-    overflow: hidden;
-    padding: 5px;
-    padding-bottom: 150px;
+    max-width: 80vw;
   }
 
   #history-page div.page-header {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  div.timeframe-filter span.timeframe {
-    display: block;
-    margin: 20px 0 0 0;
-  }
-
-  li.workout-card {
-    margin: 15px 8px;
-    height: fit-content;
-  }
-
-  .workout-card-glance-body ul {
-    gap: 8px;
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-  }
-
-  .glance-exe {
-    flex: 1 1 calc(50% - 4px);
-    max-width: calc(50% - 4px);
-    font-size: 11pt;
   }
 
   div.exercises-legend {
@@ -1914,21 +1854,21 @@ aside.mobile h2 {
     justify-content: center;
     gap: 16px;
   }
-
+  
   .mobile-legend-popout {
     background-color: rgb(60 60 60);
     border-radius: 8px;
     display: none;
     padding: 10px;
-    flex-direction: column;
+    flex-direction: row;
     position: absolute;
     z-index: 10;
-    left: 0px;
-    top: 50px;
+    left: 100px;
+    top: 60px;
   }
 
   .mobile-legend-popout.active {
-    display: flex;
+    display: inline-flex;
   }
 
   label.sort {
@@ -1940,27 +1880,27 @@ aside.mobile h2 {
     background-color: darkgray;
   }
 
-  .workout-card-details-body {
-    max-height: unset;
-    min-height: 150px;
+  ul.history {
+    justify-content: center;
   }
 
-  #coming-soon-page {
-    width: 100vw;
-    padding-bottom: 100px;
+  .clear-button.inactive {
+    background-color: lightgray;
+    color: gray;
   }
 
-  .coming-soon-page-body {
-    flex-direction: column;
+  ul.exercises-ul {
+    justify-content: center;
   }
 
-  .features-half,
-  .suggestions-half {
-    width: 100%;
-  }
 
-  .features-half div {
-    margin: 10px 0;
+}
+
+@media (max-width: 640px) {
+
+  .coming-soon-module {
+    min-width: 400px;
+    width: 90vw;
   }
 
   .coming-soon-module#suggestions {
@@ -1977,13 +1917,17 @@ aside.mobile h2 {
   .coming-soon-module#suggestions form > div {
     flex-wrap: wrap;
   }
-
-  .settings-footer {
+  #coming-soon-page {
+    width: 100vw;
     padding-bottom: 100px;
   }
 
-  span.app-signature {
-    font-size: 12pt;
+  .coming-soon-page-body {
+    flex-direction: column;
+  }
+
+  .features-half div {
+    margin: 10px 0;
   }
 
   div.suggestions-half input.submit,
@@ -2039,6 +1983,191 @@ aside.mobile h2 {
     height: 100%;
     gap: 10px;
   }
+
+}
+
+@media (max-width: 580px) {
+
+  div.exe-header {
+    flex-direction: column;
+    align-items: flex-start;
+    height: fit-content;
+  }
+
+  #history-page {
+    width: 100vw;
+    overflow: hidden;
+    padding: 5px;
+    padding-bottom: 150px;
+  }
+
+  div.exercises-legend {
+    position: relative;
+    min-width: unset;
+    max-width: 100vw;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .mobile-legend {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .mobile-legend-popout {
+    flex-direction: column;
+    position: absolute;
+    left: 5%;
+    top: 50px;
+  }
+
+  .mobile-legend-popout.active {
+    display: flex;
+  }
+
+
+
+  li.workout-card {
+    margin: 15px 8px;
+    height: fit-content;
+  }
+
+  .workout-card-glance-body ul {
+    gap: 8px;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .glance-exe {
+    flex: 1 1 calc(50% - 4px);
+    max-width: calc(50% - 4px);
+    font-size: 11pt;
+  }
+
+
+
+  .workout-card-details-body {
+    max-height: unset;
+    min-height: 150px;
+  }
+
+
+}
+
+@media (max-width: 512px) {
+  .new-workout-field#input-weight {
+    width: 50%;
+  }
+  .new-workout-field#input-weight::placeholder,
+  .new-workout-field#input-reps::placeholder {
+    font-size: 12pt;
+  }
+  .new-workout-field#input-reps {
+    width: 33%;
+  }
+
+  select.new-workout-field {
+    max-width: unset;
+    font-size: 14pt;
+    padding: 15px;
+  }
+
+  select option {
+    font-size: 12pt;
+  }
+
+  .new-workout-field#exercises-list {
+    width: 100% !important;
+  }
+
+  button.new-workout-button {
+    font-size: 12pt;
+    width: 150px;
+    height: 75px;
+  }
+
+  form#new-set-form {
+    width: 80vw;
+    margin-top: 20px;
+    margin-bottom: 150px;
+    padding: 10px;
+  }
+
+  form#new-set-form input {
+    width: 100%;
+    font-size: 14pt;
+    padding: 15px;
+  }
+}
+
+/* Large phones (Samsung S21 Ultra, iPhone 12-15 Pro Max) */
+@media (max-width: 512px) {
+  body {
+    overflow: hidden;
+  }
+
+  main {
+    overflow: hidden;
+  }
+
+  header.mobile-nav-header {
+    padding: 10px 15px;
+    height: fit-content;
+  }
+
+  h1.page-header {
+    font-size: 1.75em;
+  }
+
+  .dashboard-body {
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  ul.dashboard-list {
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 150px;
+    padding-top: 30px;
+  }
+
+  li.dashboard-list {
+    width: 300px;
+  }
+
+  div.dashboard-card {
+    width: unset;
+  }
+
+  div.form-xl-row {
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+
+
+
+
+  div.timeframe-filter span.timeframe {
+    display: block;
+    margin: 20px 0 0 0;
+  }
+
+
+
+
+  .settings-footer {
+    padding-bottom: 100px;
+  }
+
+  span.app-signature {
+    font-size: 12pt;
+  }
+
+  
 
   .coming-soon-module h2 {
     font-size: 14pt;
@@ -2221,10 +2350,6 @@ aside.mobile h2 {
     left: 0;
   }
 
-  .clear-button.inactive {
-    background-color: lightgray;
-    color: gray;
-  }
 
   input.new-exercise-name {
     width: 100%;
