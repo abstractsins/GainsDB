@@ -18,7 +18,9 @@ const app = express();
 
 const allowedOrigins = [
     'https://gainsDB.com',
+    'https://gainsdb.com',
     'https://www.gainsDB.com',
+    'https://www.gainsdb.com',
     'https://gymprogress-development.up.railway.app',
     'https://gainsdb-prod.up.railway.app',
     'http://localhost:3000',
