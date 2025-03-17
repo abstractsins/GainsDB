@@ -81,7 +81,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
 
 
     const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
-        console.log(`${exercise.name} clicked`);
+        console.log(`${exercise?.name} clicked`);
 
         if ((e.target as HTMLElement).closest('.exe-card-bottom')) {
             e.stopPropagation();
@@ -137,20 +137,23 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
             }
 
             try {
-                const response = await fetch(`${server}/api/user/${userId}/exercises/${exercise.id}/latest-workout`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
+                if (exercise) {
+
+                    const response = await fetch(`${server}/api/user/${userId}/exercises/${exercise.id}/latest-workout`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        }
+                    });
+                    if (!response.ok) console.error("Failed to fetch workout data");
+                    const data = await response.json();
+                    console.log(data);
+                    setWorkoutData(data.length ? data : null);
+                    setFormattedData(data?.map((set: WorkoutSet) => [set.set_order, set.weight, set.reps]));
+                    if (workoutData !== null) {
+                        setMoreDisabled(true);
                     }
-                });
-                if (!response.ok) console.error("Failed to fetch workout data");
-                const data = await response.json();
-                console.log(data);
-                setWorkoutData(data.length ? data : null);
-                setFormattedData(data?.map((set: WorkoutSet) => [set.set_order, set.weight, set.reps]));
-                if (workoutData !== null) {
-                    setMoreDisabled(true);
                 }
             } catch (error) {
                 console.error("Error fetching workout data:", error);
