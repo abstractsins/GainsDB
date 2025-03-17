@@ -16,6 +16,7 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
     const [entryValue, setEntryValue] = useState<string>("");
     const userId = session?.user?.id || localStorage.getItem("userId");
 
+    const server = process.env.NEXT_PUBLIC_BACKEND || `http://localhost:5000`;
 
     const submitNewExercise = async () => {
         const token = session?.user?.authToken || localStorage.getItem("token");
@@ -29,7 +30,7 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
                 "name": entryValue,
                 "userId": userId
             }
-            const response = await fetch(`http://localhost:5000/api/user/${userId}/exercises`, {
+            const response = await fetch(`${server}/api/user/${userId}/exercises`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
