@@ -2539,3 +2539,193 @@ div.popup#demo-creds .close-button:hover {
 }
 
 
+/** ABOUT PAGE MEDIA QUERIES */
+@media screen and (max-width: 2022px) {
+  #p4 .left {
+    font-size: 16pt;
+  }
+}
+
+@media screen and (max-width: 1895px) {
+
+  div#p1 div.right {
+    align-items: center;
+  }
+
+  div#p1 div.right ul.about-list li  {
+    font-size: 14pt;
+  }
+
+  #p1 .left {
+    font-size: 18pt;
+    line-height: 1.5;
+  }
+
+  #p4 .left {
+    padding-right: 15px;
+  }
+  
+}
+
+@media screen and (max-width: 1720px) {
+  #p3 .left {
+    padding-right: 15px;
+    font-size: 16pt;
+  }
+
+  #p3 .right {
+    padding: 0 20px 0 0;
+  }
+  #p3 .right img {
+    margin: 5px;
+  }
+
+  #p4 .left {
+    font-size: 14pt;
+  }
+
+  #p5 .body {
+    padding: 40px;
+    font-size: 16pt;
+    justify-content: space-around;
+
+  }
+
+}
+
+@media screen and (max-width: 1530px) {
+
+  div#p1 div.right ul.about-list li  {
+    font-size: 12pt;
+  }
+
+  #p1 .left {
+    font-size: 16pt;
+    line-height: 1.5;
+    padding-right: 15px;
+  }
+
+  div#p2 .body {
+    align-items: center;
+  }
+
+  div#p2 .body ul{
+    font-size: 14pt;
+  }
+}
+
+
+@media screen and (max-width: 1400px) {
+  #p3 {
+    flex-direction: column;
+  }
+
+  #p3 .left,
+  #p3 .right {
+    width: 100%;
+  }
+
+  #p3 .left {
+    font-size: 14pt;
+    line-height: 1.5;
+    padding: 30px;
+  }
+
+  #p3 .right img {
+    width: 400;
+  }
+
+  #p4 .left {
+    line-height: 1.5;
+  }
+
+  #p4 .right img {
+    margin: 0px
+  }
+
+}
+
+
+
+@media screen and (max-width: 1160px) {
+
+  div#p1 div.right ul.about-list li  {
+    font-size: 10pt;
+  }
+
+  #p1 div.left {
+    font-size: 14pt;
+  }
+
+  #p3 .right img {
+    width: 333;
+  }
+
+  #p4 .left {
+    padding-left: 15px;
+  }
+
+  #p5 .body {
+    line-height: 1.5;
+  }
+
+}
+
+
+
+
+@media screen and (max-width: 950px) {
+  #p1 {
+    flex-direction: column;
+  }
+
+  #p1 div.left {
+    font-size: 12pt;
+    padding: 15px;
+    width: 100%;
+    height: fit-content;
+  }
+  
+  div#p1 div.right {
+    width: 100%;
+    padding: 0px;
+    height: 100%;
+  }
+
+  div#p2 .body ul{
+    font-size: 12pt;
+  }
+
+  #p4 .left {
+    line-height: 1.25;
+  }
+}
+
+@media screen and (max-width: 855px) {
+  #p3 .right img {
+    width: 280;
+  }
+}
+
+
+@media screen and (max-width: 780px) {
+  div.about-section {
+    height: 70vh;
+  }
+
+  #p4 {
+    flex-direction: column;
+  }
+
+  #p4 .left,
+  #p4 .right {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 512px) {
+  #p4 {
+    justify-content: space-around;
+  }  
+}
+

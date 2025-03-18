@@ -104,7 +104,7 @@ async function getOrCreateExercise(userId, exerciseName) {
             exerciseResult = await client.query(
                 `INSERT INTO exercises (name, created_by) 
                  VALUES ($1, $2) 
-                 ON CONFLICT (LOWER(name)) DO NOTHING 
+                 ON CONFLICT DO NOTHING 
                  RETURNING id`,
                 [normalizedName, userId]
             );
