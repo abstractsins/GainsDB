@@ -135,7 +135,7 @@ export default function About() {
             });
             triggers.push(parallaxTrigger);
 
-        } 
+        }
 
         setGsapRan(true);
     }, [sections, isMobile]);

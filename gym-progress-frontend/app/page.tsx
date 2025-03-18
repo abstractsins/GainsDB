@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import { Oswald, Tourney } from "next/font/google";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { RiCloseFill } from "react-icons/ri";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -22,6 +23,7 @@ export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [popup, setPopup] = useState(true);
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const { data: session, status } = useSession();
@@ -66,60 +68,81 @@ export default function Home() {
     setShowLogin(false);
   }, []);
 
+  const closePopup = () => setPopup(false);
+
   return (
-    <div className="splash-container">
-      {/* POPUP CONTAINER */}
-      <div className="popup">
-        <h1 className={tourney.className}>GainsDB</h1>
-        <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>
-      </div>
-
-      {isClient && (
-        <div id="login-drawer" className={showLogin ? "form-container exposed" : "form-container"}>
-          <form method="get" onSubmit={handleLogin}>
-            {/* SLIDING LOGIN FORM (Only Appears When Clicked) */}
-            <div className="login-fields-container">
-              <input
-                ref={usernameRef}
-                className="login-field"
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value.trim())}
-                required
-              />
-              <input
-                className="login-field"
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="login-container">
-              {showLogin ? (
-                <button type="submit" key="submit" className="submit-button">
-                  SUBMIT
-                </button>
-              ) : (
-                <button
-                  className="login-button"
-                  key="login"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dropDown(true);
-                  }}
-                >
-                  LOGIN
-                </button>
-              )}
-            </div>
-          </form>
+    <>
+    {popup && 
+      <div className="popup" id="demo-creds">
+        <div className="demo-creds-body">
+          <header>
+            <span>Checking us out?</span>
+          </header>
+          <div className="creds">
+            <span className="label">user:</span> <span>demo</span>
+            <br></br>
+            <span className="label">pass:</span> <span>DanBerlin!</span>
+          </div>
         </div>
-      )}
+        <div className="close-button" onClick={closePopup}><RiCloseFill /></div>
+      </div>
+      }
 
-      <style jsx>{`
+      <div className="splash-container">
+        {/* POPUP CONTAINER */}
+        <div className="popup">
+          <h1 className={tourney.className}>GainsDB</h1>
+          <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>
+        </div>
+
+        {isClient && (
+          <div id="login-drawer" className={showLogin ? "form-container exposed" : "form-container"}>
+            <form method="get" onSubmit={handleLogin}>
+              {/* SLIDING LOGIN FORM (Only Appears When Clicked) */}
+              <div className="login-fields-container">
+                <input
+                  ref={usernameRef}
+                  className="login-field"
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value.trim())}
+                  required
+                />
+                <input
+                  className="login-field"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="login-container">
+                {showLogin ? (
+                  <button type="submit" key="submit" className="submit-button">
+                    SUBMIT
+                  </button>
+                ) : (
+                  <button
+                    className="login-button"
+                    key="login"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dropDown(true);
+                    }}
+                  >
+                    LOGIN
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+        )}
+
+
+
+        <style jsx>{`
         .splash-container {
           display: flex;
           flex-direction: column;
@@ -322,6 +345,7 @@ export default function Home() {
           }
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }

@@ -792,7 +792,6 @@ Lat raise
 100lb 2x15
 90lb 2x15
 
-
 20250209
 
 Converging chest press 
@@ -821,3 +820,43 @@ Converging chest press
 
 Rear delt
 115lb 3x15
+
+20250302
+
+Ab Coaster 
+10lb 4x20
+
+Converging shoulder press 
+120lb 1x15
+110lb 1x15
+100lb 1x15
+90lb 1x15
+
+Biceps Curl 
+90lb 1x15
+90lb 1x15
+80lb 1x10
+70lb 1x15
+
+20250308
+
+Ab Coaster 
+20lb 4x20
+
+Lateral pulldown 
+150lb 1x15
+135lb 2x15
+120lb 1x15
+
+Rear delt 
+120lb 1x15
+115lb 2x15
+
+20250315
+
+Ab Coaster 
+20lb 4x20
+
+Diverging seated row 
+185lb 3x15
+185lb 1x20

@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 import "./globals.css";
 import AuthProvider from "./components/AuthProvider";
 
+// import { Analytics } from "@vercel/analytics/react"
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -49,6 +51,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
         <AuthProvider >
           <ClientLoader>{children}</ClientLoader>      
           <Footer />
+          {/* <Analytics /> */}
         </AuthProvider>
       </body>
     </html>
