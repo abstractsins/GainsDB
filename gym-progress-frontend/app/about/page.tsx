@@ -1,15 +1,14 @@
 "use client";
 
-import { Tourney } from "next/font/google";
-import { Roboto_Slab } from "next/font/google";
-import { Oswald } from "next/font/google";
+import { Oswald, Tourney, Roboto_Slab } from "next/font/google";
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import AboutLoading from "../components/about/AboutLoading";
+
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import AboutLoading from "../components/about/AboutLoading";
 import { useSession } from "next-auth/react";
 
 import { MdDashboard } from "react-icons/md";
@@ -52,12 +51,13 @@ export default function About() {
 
     const token = session?.user?.authToken || localStorage.getItem("token");
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setWidth(window.innerWidth);
 
         const checkSections = () => {
             // const foundSections = Array.from(document.querySelectorAll(".about-section"));
             const foundSections = Array.from(document.querySelectorAll(".about-section"));
+            console.log(foundSections);
             if (foundSections.length > 0) {
                 setSections(foundSections);
             }
@@ -82,7 +82,7 @@ export default function About() {
 
 
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (sections.length === 0) return;
         if (gsapRan === true) return
 
@@ -136,6 +136,8 @@ export default function About() {
             triggers.push(parallaxTrigger);
 
         } 
+
+        setGsapRan(true);
     }, [sections, isMobile]);
 
 
@@ -157,7 +159,7 @@ export default function About() {
                     {
                         !isMobile &&
                         <header>
-                            <h1 className="page-header">About <span className="app-name">GainsDB</span></h1>
+                            <h1 className="page-header">About <span className={`app-name ${tourney.className}`}>GainsDB</span></h1>
                             {
                                 token ? (
                                     <Link href="/dashboard" className="hover:text-blue-300 flex items-center">
