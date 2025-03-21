@@ -209,7 +209,7 @@ const exerciseCategorizer= (exercisesArr) => {
     exercisesArr.forEach(exe => {
         exe.category = "other";
         for (let i = 0; i < catKeys.length; i++) {
-            var key = catKeys[i];
+            var key = catKeys[i].toLowerCase();
             var list = categories[key];
             var name = exe.name || exe.exercise_name;
             if (list.includes(name.toLowerCase())) {
