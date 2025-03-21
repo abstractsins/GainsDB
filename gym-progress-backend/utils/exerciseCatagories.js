@@ -47,6 +47,7 @@ const exerciseCategorizer= (exercisesArr) => {
             'Seated Cable Row',
             'Machine Row',
             'Face Pull',
+            'Pec Fly',
             'Reverse Fly',
             'Rear Delt Fly',
             'Superman Hold',
