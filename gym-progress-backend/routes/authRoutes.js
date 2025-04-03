@@ -28,7 +28,7 @@ router.post("/register", async (req, res) => {
     );
 
     const userId = result.rows[0].id;
-    const token = jwt.sign({ userId, username: normalizedUsername }, SECRET_KEY, { expiresIn: "3hr" });
+    const token = jwt.sign({ userId, username: normalizedUsername }, SECRET_KEY, { expiresIn: "1m" });
 
     res.cookie("auth_token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "Strict" });
 
@@ -54,7 +54,7 @@ router.post("/login", async (req, res) => {
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) return res.status(401).json({ error: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user.id, username: user.username }, SECRET_KEY, { expiresIn: "3h" });
+    const token = jwt.sign({ id: user.id, username: user.username }, SECRET_KEY, { expiresIn: "1m" });
 
     res.cookie("auth_token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict" });
     res.json({ id: user.id, username: user.username, token });
@@ -63,5 +63,21 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+router.get("/verify-token", (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).send("No token");
+
+  const token = authHeader.split(" ")[1];
+  try {
+    jwt.verify(token, SECRET_KEY);
+    res.send("Token valid");
+    var date = new Date();
+    console.log("Token valid " + date);
+  } catch (err) {
+    res.status(401).send("Token expired or invalid");
+  }
+});
+
 
 export default router;

@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { Oswald, Tourney } from "next/font/google";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { RiCloseFill } from "react-icons/ri";
 
@@ -29,12 +29,46 @@ export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
+  const server = process.env.NEXT_PUBLIC_BACKEND;
 
   // Redirect authenticated users to the dashboard
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.authToken) {
-      router.replace("/dashboard");
-    }
+
+    const checkAuth = async () => {
+      const token = session?.user?.authToken;
+
+      if (!token) {
+        return;
+      }
+
+      try {
+        const res = await fetch(`${server}/api/verify-token`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          signOut();
+          throw new Error("Token invalid");
+        }
+        // Proceed as normal
+      } catch (err) {
+        // Token is invalid or expired
+        console.error(err);
+        localStorage.removeItem("token");
+        return;
+      }
+      
+      if (status === "authenticated" && session?.user?.authToken) {
+        router.replace("/dashboard");
+      }
+
+    };
+
+    checkAuth();
+
+
   }, [status, session, router]);
 
   async function handleLogin(e: React.FormEvent) {

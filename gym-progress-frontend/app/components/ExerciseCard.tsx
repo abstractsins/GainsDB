@@ -103,6 +103,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
 
             setTimeout(function () {
                 clickedLi.scrollIntoView({ behavior: "smooth", block: "start" });
+                // document.body.style.transform = 'translateY(0)';
             }, 300);
 
             const name = clickedLi?.getAttribute('data-name') ? `${clickedLi.getAttribute('data-name')}` : 'null';
