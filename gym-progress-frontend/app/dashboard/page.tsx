@@ -46,8 +46,6 @@ export default function DashboardPage() {
 
     if (!token || !userId) return;
 
-    console.log("🛠 Sending Authorization Header:", `Bearer ${token}`);
-
     try {
       const response = await fetch(`${server}/api/user/${userId}/dashboard`, {
         method: "GET",

@@ -24,6 +24,7 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [popup, setPopup] = useState(true);
+  const [waiting, setWaiting] = useState(false);
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const { data: session, status } = useSession();
@@ -59,7 +60,7 @@ export default function Home() {
         localStorage.removeItem("token");
         return;
       }
-      
+
       if (status === "authenticated" && session?.user?.authToken) {
         router.replace("/dashboard");
       }
@@ -71,8 +72,9 @@ export default function Home() {
 
   }, [status, session, router]);
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleLogin(e: React.BaseSyntheticEvent) {
     e.preventDefault();
+    setWaiting(true);
     setShowLogin(true);
 
     const res = await signIn("credentials", {
@@ -83,6 +85,7 @@ export default function Home() {
 
     if (res?.error) {
       alert("Invalid login credentials");
+      setWaiting(false);
       return;
     }
 
@@ -106,20 +109,20 @@ export default function Home() {
 
   return (
     <>
-    {popup && 
-      <div className="popup" id="demo-creds">
-        <div className="demo-creds-body">
-          <header>
-            <span>Checking us out?</span>
-          </header>
-          <div className="creds">
-            <span className="label">user:</span> <span>demo</span>
-            <br></br>
-            <span className="label">pass:</span> <span>DanBerlin!</span>
+      {popup &&
+        <div className="popup" id="demo-creds">
+          <div className="demo-creds-body">
+            <header>
+              <span>Checking us out?</span>
+            </header>
+            <div className="creds">
+              <span className="label">user:</span> <span>demo</span>
+              <br></br>
+              <span className="label">pass:</span> <span>DanBerlin!</span>
+            </div>
           </div>
+          <div className="close-button" onClick={closePopup}><RiCloseFill /></div>
         </div>
-        <div className="close-button" onClick={closePopup}><RiCloseFill /></div>
-      </div>
       }
 
       <div className="splash-container">
@@ -154,7 +157,7 @@ export default function Home() {
               </div>
               <div className="login-container">
                 {showLogin ? (
-                  <button type="submit" key="submit" className="submit-button">
+                  <button type="submit" key="submit" className={`submit-button ${waiting ? 'disabled' : ''}`} disabled={waiting}>
                     SUBMIT
                   </button>
                 ) : (
@@ -184,6 +187,10 @@ export default function Home() {
           height: 100vh;
           text-align: center;
           position: relative;
+        }
+
+        .disabled {
+          background-color: gray;
         }
 
         /* POPUP STYLES */
