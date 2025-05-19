@@ -25,7 +25,6 @@ export default function DashboardPage() {
 
   useEffect(() => {
     console.log("🔄 Session Status:", status);
-    console.log("👤 Session Data:", session);
 
     if (status === "loading") return;
 
