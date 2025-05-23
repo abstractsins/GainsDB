@@ -5,6 +5,7 @@ import { Oswald, Tourney } from "next/font/google";
 import { signIn, useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { RiCloseFill } from "react-icons/ri";
+import Loader from "@/app/components/Loader";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -109,6 +110,9 @@ export default function Home() {
 
   return (
     <>
+      {waiting &&
+        <Loader></Loader>
+      }
       {popup &&
         <div className="popup" id="demo-creds">
           <div className="demo-creds-body">

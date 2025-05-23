@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState, useEffect, MouseEventHandler } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
 import { toTitleCase } from "@/utils/utils";
+import Loader from "@/app/components/Loader";
 import ExercisesList from "@/app/components/ExercisesList";
 
 
@@ -29,6 +30,7 @@ const getFormattedDate = () => {
 export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, onClose, exerciseName }: Props) {
     const { data: session, status } = useSession(); // Get authentication session
     const [validForm, setValidForm] = useState(false);
+    const [waiting, setWaiting] = useState(false);
     const server = process.env.NEXT_PUBLIC_BACKEND;
 
     const [formData, setFormData] = useState({
@@ -63,16 +65,19 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
     //* SUBMIT
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setWaiting(true);
 
         const token = session?.user?.authToken || localStorage.getItem("token");
 
         if (!token) {
             alert("User not authenticated.");
+            setWaiting(false);
             return;
         }
 
         if (Number(formData.weight) <= 0 || Number(formData.reps) <= 0) {
             alert("Weight and reps must be greater than zero!");
+            setWaiting(false);
             return;
         }
 
@@ -99,11 +104,13 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
         if (res.ok) {
             alert("Workout logged. Keep it going!");
             setFormData({ date: formData.date, exercise: formData.exercise, weight: "", reps: "" });
+            setWaiting(false);
             if (visible && onClose !== null) {
                 onClose();
             }
         } else {
             alert("Error logging workout.");
+            setWaiting(false);
         }
     };
 
@@ -121,6 +128,10 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
 
     return (
         <div className="new-workout-form-container">
+
+            {waiting && 
+                <Loader></Loader>
+            }
 
             {isXXLarge &&
 
@@ -142,9 +153,9 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
 
                     <div className="form-xxl-row">
                         <button
-                            className={`new-workout-button ${validForm ? "active" : ""}`}
+                            className={`new-workout-button ${validForm && !waiting ? "active" : ""}`}
                             type="submit"
-                            disabled={!validForm}
+                            disabled={waiting}
                         >
                             Log Workout
                         </button>
@@ -175,9 +186,9 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
 
                     <div className="form-xl-row" id="footer">
                         <button
-                            className={`new-workout-button ${validForm ? "active" : ""}`}
+                            className={`new-workout-button ${validForm && !waiting ? "active" : ""}`}
                             type="submit"
-                            disabled={!validForm}
+                            disabled={waiting}
                         >
                             Log Workout
                         </button>

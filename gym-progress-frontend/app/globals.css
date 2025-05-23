@@ -2769,3 +2769,21 @@ div.popup#demo-creds .close-button:hover {
   }
 }
 
+div.loader {
+  position: absolute;
+  top: 35%;
+  left: 0;
+  height: 12vh;
+  background-color: var(--core);
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+span.load-text {
+  font-family: monospace;
+  font-size: 24pt;
+  color: var(--black);
+}
