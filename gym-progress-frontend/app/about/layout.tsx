@@ -5,12 +5,13 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Oswald, Tourney } from "next/font/google";
 
-import Navbar from "@/app/components/Navbar";
-import MobileNavbar from "@/app/components/MobileNavbar";
 import ClientLoader from "../components/ClientLoader";
 
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+
+import { MdDashboard } from "react-icons/md";
+import { AiFillHome } from "react-icons/ai";
 
 
 const oswald = Oswald({
@@ -34,6 +35,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isMenuActive, setIsMenuActive] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const [loading, setLoading] = useState(false);
+
 
   // UNTIL SETTINGS IS RELEASED
   const settings = false;
@@ -53,11 +56,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 
   useEffect(() => {
-    // console.log("🔍 Debug - Session Status:", status);
-
-    if (status === "authenticated" && !session) {
-      console.warn("🚨 Redirecting: No session found.");
-    }
 
     if (status === "loading") {
       return;
@@ -100,23 +98,29 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <aside ref={menuRef} onBlur={closeMenu} className={`${isMobile ? 'mobile' : ''} ${isMenuActive ? 'active' : ''} w-64 bg-gray-900 text-white p-5 flex flex-col space-y-4`}>
-        <h2 className={`${tourney.className} text-[12pt] sm:text-[14pt] md:text-[18pt] lg:text-[22pt] xl:text-[28pt]`}>GainsDB</h2>
-        <nav className="flex flex-col space-y-2">
-          <Link href="/dashboard/new-workout" className="dashboard-link hover:bg-gray-700 p-2 rounded">💪 Log Workout</Link>
-          <Link href="/dashboard/history" className="dashboard-link hover:bg-gray-700 p-2 rounded">📜 Workout History</Link>
-          <Link href="/dashboard/exercises" className="dashboard-link hover:bg-gray-700 p-2 rounded">🏋️‍♂️ Exercises</Link>
-          {charts && <Link href="/dashboard/charts" className="dashboard-link hover:bg-gray-700 p-2 rounded">📈 Charts</Link>}
-          {settings && <Link href="/dashboard/settings" className="dashboard-link hover:bg-gray-700 p-2 rounded">⚙️ Settings</Link>}
-          {comingSoon && <Link href="/dashboard/coming-soon" className="dashboard-link hover:bg-gray-700 p-2 rounded">✨ Coming Soon...</Link>}
-        </nav>
-      </aside>
 
       {/* Main Content Area (Where Links Open) */}
       <div className="flex-1 flex flex-col">
         {/* Top Navbar */}
-        {isMobile ? <MobileNavbar sidebar={{ isMenuActive, setIsMenuActive }} /> : <Navbar />}
+        {
+          !isMobile &&
+          <header id="about-page-header">
+            <h1 className="page-header">About <span className={`app-name ${tourney.className}`}>GainsDB</span></h1>
+            {
+              session ? (
+                <Link href="/dashboard" className="hover:text-blue-300 flex items-center">
+                  <MdDashboard className="mr-2 text-xl" />
+                  <h2 className={`${oswald.className} text-lg font-bold  text-[12pt] sm:text-[14pt] md:text-[16pt] lg:text-[20pt]`}>Dashboard</h2>
+                </Link>
+              ) : (
+                <Link href="/" className="hover:text-blue-300 flex items-center">
+                  <AiFillHome className="mr-2 text-xl" />
+                  <h2 className={`${oswald.className} text-lg font-bold  text-[12pt] sm:text-[14pt] md:text-[16pt] lg:text-[20pt]`}>Login</h2>
+                </Link>
+              )
+            }
+          </header>
+        }
         <ClientLoader>
           <main className={`overflow-auto`}>{children}</main>
         </ClientLoader>

@@ -26,6 +26,7 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [popup, setPopup] = useState(true);
   const [waiting, setWaiting] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const { data: session, status } = useSession();
@@ -35,7 +36,6 @@ export default function Home() {
 
   // Redirect authenticated users to the dashboard
   useEffect(() => {
-
     const checkAuth = async () => {
       const token = session?.user?.authToken;
 
@@ -67,10 +67,7 @@ export default function Home() {
       }
 
     };
-
     checkAuth();
-
-
   }, [status, session, router]);
 
   async function handleLogin(e: React.BaseSyntheticEvent) {
@@ -106,13 +103,15 @@ export default function Home() {
     setShowLogin(false);
   }, []);
 
+  useEffect(() => {
+    if (username && password) setIsFormValid(true);
+    else setIsFormValid(false);
+  }, [username, password]);
+
   const closePopup = () => setPopup(false);
 
   return (
     <>
-      {waiting &&
-        <Loader></Loader>
-      }
       {popup &&
         <div className="popup" id="demo-creds">
           <div className="demo-creds-body">
@@ -132,6 +131,9 @@ export default function Home() {
       <div className="splash-container">
         {/* POPUP CONTAINER */}
         <div className="popup">
+          {waiting &&
+            <Loader></Loader>
+          }
           <h1 className={tourney.className}>GainsDB</h1>
           <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>
         </div>
@@ -161,7 +163,7 @@ export default function Home() {
               </div>
               <div className="login-container">
                 {showLogin ? (
-                  <button type="submit" key="submit" className={`submit-button ${waiting ? 'disabled' : ''}`} disabled={waiting}>
+                  <button type="submit" key="submit" className={`submit-button ${waiting || !isFormValid ? 'disabled' : ''}`} disabled={waiting || !isFormValid}>
                     SUBMIT
                   </button>
                 ) : (
@@ -291,8 +293,13 @@ export default function Home() {
           font-family: "Oswald";
         }
         button.login-button {
-          background-color: lightblue;
+          background-color: #add8e6;
         }
+        button.login-button:hover {
+          background-color:rgb(98, 129, 139);
+          color: whitesmoke;
+        }
+
         button.submit-button {
           background-color: #ADD989;
         }
@@ -302,6 +309,7 @@ export default function Home() {
           color: whitesmoke;
         }
 
+        button.login-button:active,
         button.submit-button:active {
           background-color: whitesmoke;
           color: black;
