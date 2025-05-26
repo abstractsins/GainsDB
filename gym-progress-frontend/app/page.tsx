@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { RiCloseFill } from "react-icons/ri";
 import Loader from "@/components/Loader";
 
+import { useFooter } from "@/contexts/FooterContext";
+
 const oswald = Oswald({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -33,6 +35,8 @@ export default function Home() {
   const router = useRouter();
 
   const server = process.env.NEXT_PUBLIC_BACKEND;
+
+  const { isLoggedIn, setIsLoggedIn } = useFooter();
 
   // Redirect authenticated users to the dashboard
   useEffect(() => {
@@ -86,6 +90,8 @@ export default function Home() {
       setWaiting(false);
       return;
     }
+
+    setIsLoggedIn(true);
 
     console.log("✅ Login successful, redirecting to dashboard...");
     router.replace("/dashboard");

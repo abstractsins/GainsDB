@@ -5,6 +5,7 @@ import ClientLoader from "../components/ClientLoader";
 import Footer from "../components/Footer";
 import "./globals.css";
 import AuthProvider from "../components/AuthProvider";
+import { FooterProvider } from "@/contexts/FooterContext";
 
 // import { Analytics } from "@vercel/analytics/react"
 
@@ -45,9 +46,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className={`${inter.className} antialiased relative`}>
         <AuthProvider >
-          <ClientLoader>{children}</ClientLoader>
-          <Footer />
-          {/* <Analytics /> */}
+          <FooterProvider>
+            <ClientLoader>{children}</ClientLoader>
+            <Footer />
+          </FooterProvider>
         </AuthProvider>
       </body>
     </html>

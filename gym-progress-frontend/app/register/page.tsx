@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 
+import { useFooter } from "@/contexts/FooterContext";
+
+
 export default function Register() {
     const router = useRouter();
     const [validForm, setValidForm] = useState(false);
@@ -20,6 +23,8 @@ export default function Register() {
     const [isRegistering, setIsRegistering] = useState(false);
     const [isRedirecting, setIsRedirecting] = useState(false);
     const server = process.env.NEXT_PUBLIC_BACKEND;
+
+    const { setIsInRegistration } = useFooter();
 
     interface FormData {
         date: Date;
@@ -61,7 +66,7 @@ export default function Register() {
                 alert("Account successfully created!\n\nNavigating to login page");
                 setIsRegistering(false);
                 setIsRedirecting(true);
-                setIsRegisteringFooter(false);
+                setIsInRegistration(false);
                 setTimeout(() => router.push('/'), 2000);
             } else {
                 const errorResult = await res.json();

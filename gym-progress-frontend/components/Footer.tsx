@@ -5,6 +5,7 @@ import { Oswald } from "next/font/google";
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
+import { useFooter } from "@/contexts/FooterContext";
 
 const robotoSlab = Roboto_Slab({
     subsets: ["latin"],
@@ -25,21 +26,23 @@ export default function Footer() {
     const { data: session } = useSession();
     const [isRegistering, setIsRegistering] = useState(false);
 
+    const { isLoggedIn, isInRegistration, setIsInRegistration } = useFooter();
+
     // console.log('pathname: ' + pathname);
 
     return (
         <footer className="footer">
-            {session ?
+            {isLoggedIn ?
                 (
                     <button onClick={() => signOut({ callbackUrl: "/" })} className={`footer-link ${oswald.className}`} >
                         Logout
                     </button>
                 ) : (
-                    isRegistering
-                        ? <Link href="/" onClick={() => setIsRegistering(false)} className={`footer-link ${oswald.className}`}>
+                    isInRegistration
+                        ? <Link href="/" onClick={() => setIsInRegistration(false)} className={`footer-link ${oswald.className}`}>
                             Login
                         </Link>
-                        : <Link href="/register" onClick={() => setIsRegistering(true)} className={`footer-link ${oswald.className}`}>
+                        : <Link href="/register" onClick={() => setIsInRegistration(true)} className={`footer-link ${oswald.className}`}>
                             Register
                         </Link>
                 )}
