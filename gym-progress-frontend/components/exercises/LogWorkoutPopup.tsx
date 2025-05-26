@@ -3,7 +3,7 @@
 import { RiCloseLargeFill } from "react-icons/ri";
 import { useSession } from "next-auth/react";
 import { ReactHTMLElement, useState } from "react";
-import NewWorkoutFormContainer from "../../../components/NewWorkoutFormContainer";
+import NewWorkoutFormContainer from "@/components/NewWorkoutFormContainer";
 
 interface Props {
     visible: boolean;
