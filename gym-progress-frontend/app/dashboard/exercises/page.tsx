@@ -6,7 +6,7 @@ import { IoClose } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-import LogWorkoutPopup from "@/app/components/exercises/LogWorkoutPopup";
+import LogWorkoutPopup from "@/components/exercises/LogWorkoutPopup";
 import ExercisesLegend from "@/components/ExercisesLegend";
 import NewExercisePopup from "@/components/NewExercisePopup";
 import ExerciseCards from "@/components/ExerciseCards";
