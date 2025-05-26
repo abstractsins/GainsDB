@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent, useState, useEffect, MouseEventHandler } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
 import { toTitleCase } from "@/utils/utils";
-import Loader from "@/app/components/Loader";
-import ExercisesList from "@/app/components/ExercisesList";
+import Loader from "@/components/Loader";
+import ExercisesList from "@/components/ExercisesList";
 
 
 interface Props {

@@ -3,6 +3,7 @@
 import App from "next/app";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/Loader";
 
 export default function Register() {
     const router = useRouter();
@@ -16,6 +17,8 @@ export default function Register() {
     });
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
+    const [isRegistering, setIsRegistering] = useState(false);
+    const [isRedirecting, setIsRedirecting] = useState(false);
     const server = process.env.NEXT_PUBLIC_BACKEND;
 
     interface FormData {
@@ -37,6 +40,7 @@ export default function Register() {
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
+        setIsRegistering(true);
         if (formData.username.length < 3) {
             alert('Username must be at least 3 characters');
         } else {
@@ -49,18 +53,22 @@ export default function Register() {
 
             const res = await fetch(`${server}/api/register`, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });
 
             if (res.ok) {
                 alert("Account successfully created!\n\nNavigating to login page");
-                setTimeout(() => router.push('/'), 3000);
+                setIsRegistering(false);
+                setIsRedirecting(true);
+                setIsRegisteringFooter(false);
+                setTimeout(() => router.push('/'), 2000);
             } else {
                 const errorResult = await res.json();
                 console.log(errorResult);
                 // Here errorResult.message might contain "error, user name taken"
-                alert(errorResult.error || "Registration failed. Please try again." );
+                alert(errorResult.error || "Registration failed. Please try again.");
+                setIsRegistering(false);
             }
         }
     }
@@ -139,6 +147,8 @@ export default function Register() {
                 <h1 className="page-header">Register</h1>
             </div>
             <div className="registration-body">
+                {isRegistering && <Loader msg={'Registering'}></Loader>}
+                {isRedirecting && <Loader msg={'Redirecting'}></Loader>}
                 <div className="body-header">
                     <ul>
                         <li>We store only the data you enter.</li>
@@ -209,10 +219,9 @@ export default function Register() {
                     {/* Register Button */}
                     <div className="registration-footer">
                         <button
-                            className={`register-button ${validForm ? "active" : ""
-                                }`}
+                            className={`register-button ${validForm ? 'active' : ''} ${isRegistering ? 'disabled' : ''}`}
                             type="submit"
-                            disabled={!validForm}
+                            disabled={!validForm || isRegistering}
                         >
                             Register
                         </button>

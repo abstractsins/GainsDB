@@ -1,6 +1,6 @@
 "use client";
 
-import NewWorkoutFormContainer from "@/app/components/NewWorkoutFormContainer";
+import NewWorkoutFormContainer from "@/components/NewWorkoutFormContainer";
 import { useState, useEffect } from "react";
 
 export default function NewWorkout() {

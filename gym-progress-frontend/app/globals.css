@@ -239,6 +239,7 @@ div.non-dash-page div.header h1 {
 }
 
 div.registration-body {
+  position: relative;
   background-color: #1f2421;
   border-radius: 20px;
   padding: 30px;
@@ -286,16 +287,30 @@ button.register-button,
 button.popup-button#submit-button {
   background-color: lightgray;
   font-size: 16pt;
+  font-family: "Oswald";
   color: darkgray;
   border-radius: 10px;
   padding: 10px;
   height: 80px;
   width: 200px;
   transition: background-color 150ms ease-out;
+  font-weight: 600;
+  text-transform: uppercase;
 }
+
 button.register-button.active {
+  background-color: #add989;
+  color: black;
+}
+
+button.register-button.active:hover {
   background-color: green;
   color: white;
+}
+
+button.register-button.active:active {
+  background-color: whitesmoke;
+  color: black;
 }
 
 div.registration-footer {
@@ -1069,7 +1084,6 @@ header.mobile-nav-header + main {
   margin-top: 58px !important;
 }
 
-
 div.dashboard-body {
   height: calc(100vh - 65px);
   background-image: url("/bg5.jpg");
@@ -1187,7 +1201,8 @@ div#about-page {
   background-repeat: no-repeat;
   background-size: "cover";
   background-position: "left";
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: visible;
 }
 
 #about-page-header {
@@ -1227,7 +1242,7 @@ div.about-body-skeleton {
   background-image: url("/bg1.jpg");
   background-size: 120% auto;
   background-repeat: no-repeat;
-  background-position: bottom;
+  background-position: left bottom;
   z-index: -10;
 }
 
@@ -1273,6 +1288,7 @@ div.about-body ul.about-list li {
 
 div.about-section {
   display: flex;
+  position: relative;
   background-color: rgba(10, 10, 10, 0.9);
   border-radius: 10px;
   width: 50vw;
@@ -1383,18 +1399,19 @@ div.about-section-skeleton {
   width: 50%;
 }
 
-.nav-arrow-right {
+div.nav-arrow {
+  cursor: default;
   font-size: 2em;
   position: absolute;
-  right: 20px;
   bottom: 0;
 }
 
-.nav-arrow-left {
-  font-size: 2em;
-  position: absolute;
+.nav-arrow#right {
+  right: 20px;
+}
+
+.nav-arrow#left {
   left: 20px;
-  bottom: 0;
 }
 
 #p5 .body {
@@ -1809,7 +1826,6 @@ aside.mobile h2 {
   }
 }
 
-
 @media (max-width: 1100px) {
   #history-page div.page-header {
     flex-direction: column;
@@ -1831,12 +1847,9 @@ aside.mobile h2 {
 }
 
 @media (max-width: 768px) {
-
   input#exe-search {
     font-size: 14pt;
   }
-
-
 
   ul.dashboard-list {
     justify-content: center;
@@ -1869,7 +1882,7 @@ aside.mobile h2 {
     justify-content: center;
     gap: 16px;
   }
-  
+
   .mobile-legend-popout {
     background-color: rgb(60 60 60);
     border-radius: 8px;
@@ -1907,12 +1920,9 @@ aside.mobile h2 {
   ul.exercises-ul {
     justify-content: center;
   }
-
-
 }
 
 @media (max-width: 640px) {
-
   .coming-soon-module {
     min-width: 400px;
     width: 90vw;
@@ -1998,11 +2008,9 @@ aside.mobile h2 {
     height: 100%;
     gap: 10px;
   }
-
 }
 
 @media (max-width: 580px) {
-
   div.exe-header {
     flex-direction: column;
     align-items: flex-start;
@@ -2030,7 +2038,7 @@ aside.mobile h2 {
     justify-content: center;
     gap: 16px;
   }
-  
+
   .mobile-legend-popout {
     flex-direction: column;
     position: absolute;
@@ -2041,8 +2049,6 @@ aside.mobile h2 {
   .mobile-legend-popout.active {
     display: flex;
   }
-
-
 
   li.workout-card {
     margin: 15px 8px;
@@ -2062,14 +2068,10 @@ aside.mobile h2 {
     font-size: 11pt;
   }
 
-
-
   .workout-card-details-body {
     max-height: unset;
     min-height: 150px;
   }
-
-
 }
 
 @media (max-width: 512px) {
@@ -2163,16 +2165,10 @@ aside.mobile h2 {
     margin: 10px 0;
   }
 
-
-
-
   div.timeframe-filter span.timeframe {
     display: block;
     margin: 20px 0 0 0;
   }
-
-
-
 
   .settings-footer {
     padding-bottom: 100px;
@@ -2181,8 +2177,6 @@ aside.mobile h2 {
   span.app-signature {
     font-size: 12pt;
   }
-
-  
 
   .coming-soon-module h2 {
     font-size: 14pt;
@@ -2365,7 +2359,6 @@ aside.mobile h2 {
     left: 0;
   }
 
-
   input.new-exercise-name {
     width: 100%;
   }
@@ -2507,7 +2500,6 @@ aside.mobile h2 {
 @media (max-width: 768px) {
 }
 
-
 div.popup#demo-creds {
   position: fixed;
   top: 5%;
@@ -2532,8 +2524,6 @@ div.popup#demo-creds span.label {
   color: silver;
 }
 
-
-
 div.demo-creds-body {
   position: relative;
   display: flex;
@@ -2553,7 +2543,6 @@ div.popup#demo-creds .close-button:hover {
   color: white;
 }
 
-
 /** ABOUT PAGE MEDIA QUERIES */
 @media screen and (max-width: 2022px) {
   #p4 .left {
@@ -2562,12 +2551,11 @@ div.popup#demo-creds .close-button:hover {
 }
 
 @media screen and (max-width: 1895px) {
-
   div#p1 div.right {
     align-items: center;
   }
 
-  div#p1 div.right ul.about-list li  {
+  div#p1 div.right ul.about-list li {
     font-size: 14pt;
   }
 
@@ -2579,7 +2567,6 @@ div.popup#demo-creds .close-button:hover {
   #p4 .left {
     padding-right: 15px;
   }
-  
 }
 
 @media screen and (max-width: 1720px) {
@@ -2603,14 +2590,11 @@ div.popup#demo-creds .close-button:hover {
     padding: 40px;
     font-size: 16pt;
     justify-content: space-around;
-
   }
-
 }
 
 @media screen and (max-width: 1530px) {
-
-  div#p1 div.right ul.about-list li  {
+  div#p1 div.right ul.about-list li {
     font-size: 12pt;
   }
 
@@ -2624,11 +2608,10 @@ div.popup#demo-creds .close-button:hover {
     align-items: center;
   }
 
-  div#p2 .body ul{
+  div#p2 .body ul {
     font-size: 14pt;
   }
 }
-
 
 @media screen and (max-width: 1400px) {
   #p3 {
@@ -2655,16 +2638,12 @@ div.popup#demo-creds .close-button:hover {
   }
 
   #p4 .right img {
-    margin: 0px
+    margin: 0px;
   }
-
 }
 
-
-
 @media screen and (max-width: 1160px) {
-
-  div#p1 div.right ul.about-list li  {
+  div#p1 div.right ul.about-list li {
     font-size: 10pt;
   }
 
@@ -2683,11 +2662,7 @@ div.popup#demo-creds .close-button:hover {
   #p5 .body {
     line-height: 1.5;
   }
-
 }
-
-
-
 
 @media screen and (max-width: 950px) {
   #p1 {
@@ -2700,14 +2675,14 @@ div.popup#demo-creds .close-button:hover {
     width: 100%;
     height: fit-content;
   }
-  
+
   div#p1 div.right {
     width: 100%;
     padding: 0px;
     height: 100%;
   }
 
-  div#p2 .body ul{
+  div#p2 .body ul {
     font-size: 12pt;
   }
 
@@ -2721,7 +2696,6 @@ div.popup#demo-creds .close-button:hover {
     width: 280;
   }
 }
-
 
 @media screen and (max-width: 780px) {
   div.about-section {
@@ -2743,7 +2717,6 @@ div.popup#demo-creds .close-button:hover {
 }
 
 @media screen and (max-width: 512px) {
-
   #p1 .right ul {
     padding: 20px;
   }
@@ -2759,7 +2732,7 @@ div.popup#demo-creds .close-button:hover {
 
   #p4 {
     justify-content: space-around;
-  }  
+  }
 
   #p4 .left p {
     font-size: 12pt;
@@ -2773,9 +2746,9 @@ div.popup#demo-creds .close-button:hover {
 
 div.loader {
   position: absolute;
-  top: 35%;
+  top: 38%;
   left: 0;
-  height: 12vh;
+  height: 11vh;
   background-color: var(--core);
   width: 100% !important;
   display: flex;
@@ -2786,10 +2759,19 @@ div.loader {
 
 span.load-text {
   font-family: monospace;
-  font-size: 24pt;
+  font-size: 20pt;
   color: var(--black);
 }
 
 .splash-container div.loader {
   top: 55%;
+}
+
+
+#about-page-container {
+  /* min-height: 100vh; */
+}
+
+section.about-section {
+  margin: 0 600px;
 }

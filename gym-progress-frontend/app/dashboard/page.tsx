@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import InfoCard from "../components/DashboardCard";
+import InfoCard from "../../components/DashboardCard";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -12,7 +12,7 @@ import { BsGraphUpArrow, BsExclamationTriangle } from "react-icons/bs";
 import { toTitleCase } from "@/utils/utils";
 import { DashboardData } from "../types/types";
 
-import DashboardLoading from "../components/DashboardLoading";
+import DashboardLoading from "../../components/DashboardLoading";
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);

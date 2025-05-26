@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Oswald, Tourney } from "next/font/google";
 
-import ClientLoader from "../components/ClientLoader";
+import ClientLoader from "../../components/ClientLoader";
 
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";

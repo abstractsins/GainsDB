@@ -2,44 +2,35 @@
 
 import { Oswald, Tourney, Roboto_Slab } from "next/font/google";
 
-import Link from "next/link";
-import Image from "next/image";
-// import AboutLoading from "../components/about/AboutLoading";
-
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
-const tourney = Tourney({
-    subsets: ["latin"],
-    weight: ["400", "700"],
-    display: "swap"
-});
-
-const oswald = Oswald({
-    subsets: ["latin"],
-    weight: ["400", "700"],
-    display: "swap"
-});
-
-const robotoSlab = Roboto_Slab({
-    subsets: ["latin"],
-    weight: ["400", "700"],
-    display: "swap"
-});
+import About1 from "../../components/about/About1";
+import About2 from "../../components/about/About1";
+import About3 from "../../components/about/About1";
+import About4 from "../../components/about/About1";
+import About5 from "../../components/about/About1";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const handleWheel = (e: React.WheelEvent) => {
+    console.log("wheel deltaY:", e.deltaY);
+}
+
+
 export default function About() {
     const [width, setWidth] = useState<number>(0);
-    const [loading, setLoading] = useState<boolean>(false);
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
-    const scrollContainerRef2 = useRef<HTMLDivElement>(null);
+    const pinRef = useRef<HTMLDivElement>(null);
+    const bodyRef = useRef<HTMLDivElement>(null);
     const [sections, setSections] = useState<Element[]>([]);
     const [gsapRan, setGsapRan] = useState<boolean>(false);
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
 
+
     useLayoutEffect(() => {
+        console.group('useLayoutEffect1');
+
         setWidth(window.innerWidth);
 
         const checkSections = () => {
@@ -51,65 +42,49 @@ export default function About() {
         };
 
         checkSections();
-        setTimeout(checkSections, 10);
 
-    }, []);
-
-    useEffect(() => {
-        setIsMobile(window.innerWidth <= 768);
-    }, [])
-
-
-    useEffect(() => {
-        if (sections.length === 0) return;
-        if (!scrollContainerRef.current) return;
-
-        setTimeout(() => {
-            ScrollTrigger.refresh();
-            console.log("ScrollTrigger refreshed!");
-        }, 500);
-    }, [sections]);
-
-
-
-    useLayoutEffect(() => {
         if (sections.length === 0) return;
         if (gsapRan === true) return
+
+        console.log('isMobile: ' + isMobile);
 
         const animations: gsap.core.Tween[] = [];
         const triggers: ScrollTrigger[] = [];
 
-        if (!scrollContainerRef.current) {
-            console.error("ScrollTrigger not initialized: scrollContainerRef is null");
+        if (!pinRef.current) {
+            console.error("ScrollTrigger not initialized: pinRef is null");
             return;
         }
 
         if (isMobile === false) {
             const totalScrollDistance = 150 * (sections.length - 1);
 
-            setTimeout(() => {
-                // Horizontal scrolling
-                const animation = gsap.to(sections, {
-                    xPercent: -totalScrollDistance,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: scrollContainerRef.current,
-                        pin: true,
-                        scrub: 2.5,
-                        snap: 1 / (sections.length - 1),
-                        end: "+=4000",
-                        invalidateOnRefresh: true
-                    },
-                });
+            // Horizontal scrolling
+            const animation = gsap.to(sections, {
+                xPercent: -totalScrollDistance,
+                ease: "none",
+                scrollTrigger: {
+                    start: 0,
+                    trigger: pinRef.current,
+                    pin: true,
+                    // markers: true,
+                    scrub: 2.5,
+                    snap: 1 / (sections.length - 1),
+                    end: "+=4000",
+                    // end: `+=${document.body.querySelector('.about-track')?.scrollWidth}`,
+                    invalidateOnRefresh: true
+                },
+            });
 
-                animations.push(animation);
-            }, 100);
+            animations.push(animation);
 
             // Parallax effect ScrollTrigger
             const parallaxTrigger = ScrollTrigger.create({
-                trigger: scrollContainerRef.current,
-                start: "top center",
-                end: `+=${totalScrollDistance * 15}`,
+                trigger: pinRef.current,
+                start: "top top",
+                // end: `+=${totalScrollDistance * 15}`,
+                end: `+=${document.body.querySelector('.about-track')?.scrollWidth}`,
+
                 scrub: 1,
                 pin: false,
                 onUpdate: (self) => {
@@ -125,186 +100,99 @@ export default function About() {
         }
 
         setGsapRan(true);
-    }, [sections, isMobile]);
 
+        // one more safety refresh in case
+        // ScrollTrigger.refresh();
 
+        // clean up
+        console.groupEnd();
 
+        return () => ScrollTrigger.getAll().forEach(st => st.kill());
 
-    // if (loading) {
-    //     // return (<p>Loading...</p>);
-    //     return <AboutLoading />;
-    // }
+    }, []);
+
 
     return (
 
-        <div>
-            <div ref={scrollContainerRef} id="about-page">
+        <div
+            ref={pinRef}
+            id="about-page"
+            onWheel={handleWheel}
+        >
 
-                {/* Parallax Background */}
-                <div className="parallax-bg"></div>
-
-
-                <div className="about-body" ref={scrollContainerRef2}>
-                    {/* Content */}
-                    <div className="about-track" >
+            {/* Parallax Background */}
+            <div className="parallax-bg"></div>
 
 
-                        <div id="p1" className="about-section">
-                            <div className="left">
-                                <p>
-                                    <span className="p-lead">This web application </span>is designed to help users log, visualize, and analyze their workout progress over time. The app provides an intuitive interface for tracking exercises, viewing interactive charts, and gaining insights into strength and endurance improvements.
-                                </p>
-                            </div>
+            <div className="about-body" ref={bodyRef}>
+                {/* Content */}
+                <div className="about-track" >
 
-                            <div className="right">
-                                <ul className="about-list">
-                                    <li><span className="about-li-lead">Workout Logging</span> Easily input exercises, sets, reps, and weights.</li>
-                                    <li><span className="about-li-lead">Interactive Charts</span> Visualize progress with dynamic graphs powered by Recharts.</li>
-                                    <li><span className="about-li-lead">Secure Authentication</span> Protect user data with secure login and session management.</li>
-                                    <li><span className="about-li-lead">Cloud-Based Storage</span> Access workout history from anywhere.</li>
-                                </ul>
-                            </div>
-                            {!isMobile && <div className="animate-pulse nav-arrow-right">{'->'}</div>}
-                        </div>
+                    <About1 isMobile={isMobile} width={width} />
+                    <About2 isMobile={isMobile} width={width} />
+                    <About3 isMobile={isMobile} width={width} />
+                    <About4 isMobile={isMobile} width={width} />
+                    <About5 isMobile={isMobile} width={width} />
 
-
-
-
-
-                        <div id="p2" className="about-section">
-                            <div className="body">
-                                <ul className="about-list"><span className="p-lead ul-title">Tech Stack</span>
-                                    <li><span className="about-li-lead">Frontend</span> Next.js (React + TypeScript), Recharts for data visualization, GSAP for animations.</li>
-                                    <li><span className="about-li-lead">Backend</span> Node.js with Express, PostgreSQL for database management.</li>
-                                    <li><span className="about-li-lead">Authentication</span> Secure login system with JWT-based authentication.</li>
-                                    <li><span className="about-li-lead">Hosting & Deployment</span> Cloud-hosted for scalability and accessibility.</li>
-                                </ul>
-                            </div>
-                            {!isMobile && <div className="animate-pulse nav-arrow-right">{'->'}</div>}
-                        </div>
-
-
-
-
-                        <div id="p3" className="about-section">
-                            <div className="left">
-                                <p>
-                                    <span className="p-lead">This app originally started</span> as a desktop Java application that would sync the gym records on my phone with a local directory. I then had a script that would parse the plaintext notes with REGEX and chart the values using Google charts.
-                                </p>
-                            </div>
-                            <div className="right">
-                                {width <= 1000 &&
-                                    <Image
-                                        src='/java_app_2.png'
-                                        height={300}
-                                        width={450}
-                                        alt="image of app window"
-                                        className="img-app-window"
-                                    />
-                                }
-                                {width > 1000 &&
-                                    <Image
-                                        src='/java_app_2.png'
-                                        width={600}
-                                        height={200}
-                                        alt="image of app window"
-                                        className="img-app-window"
-                                    />
-                                }
-                            </div>
-                            {!isMobile && <div className="animate-pulse nav-arrow-right">{'->'}</div>}
-                        </div>
-
-
-
-
-
-                        <div id="p4" className="about-section">
-
-                            <div className="left">
-                                <p>
-                                    <span className="p-lead">I wanted something simple</span>  to make sure I was accomplishing my goals, which was to pump more iron than the last workout. What began as simple notes in the Samsung notes app became this database web app that I can use at the gym to quickly and easily log my sets and see my progress immediately.
-                                </p>
-                            </div>
-
-                            {isMobile
-                                ? (
-                                    <div className="right">
-                                        <Image
-                                            src='/notes_app_2.jpg'
-                                            width={200}
-                                            height={300}
-                                            alt="image of note-taking app"
-                                            className="img-notes-app zoom-image"
-                                        />
-                                    </div>
-                                )
-                                : (
-                                    <div className="right">
-                                        {width <= 1000 && (
-                                            <Image
-                                                src='/notes_app_2.jpg'
-                                                width={250}
-                                                height={300}
-                                                alt="image of note-taking app"
-                                                className="img-notes-app zoom-image"
-                                            />
-                                        )}
-                                        {width > 1000 &&
-                                            <Image
-                                                src='/notes_app_2.jpg'
-                                                width={300}
-                                                height={400}
-                                                alt="image of note-taking app"
-                                                className="img-notes-app zoom-image"
-                                            />
-                                        }
-                                    </div>
-                                )}
-                            {!isMobile && <div className="animate-pulse nav-arrow-right">{'->'}</div>}
-
-                        </div>
-
-
-                        <div id="p5" className="about-section">
-                            {!isMobile && <div className="animate-pulse nav-arrow-left">{'<-'}</div>}
-
-                            <div className="body">
-                                <p>
-                                    <span className="p-lead">This project showcases</span> my full-stack development skills, including building a modern, interactive UI, designing RESTful APIs, and implementing secure authentication and database management.
-                                </p>
-                                <p className="flex flex-col justify-center items-center">
-                                    Check out my other projects or drop me a message at
-                                    <Link
-                                        href="https://divs4u.com"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`
-                                            ${robotoSlab.className} 
-                                            flex
-                                            items-center
-                                            hover:text-blue-300
-                                            hover:underline
-                                            text-white
-                                            font-semibold
-                                            text-[16pt]
-                                            sm:text-[18pt]
-                                            md:text-[20pt]
-                                            lg:text-[22pt]
-                                            xl:text-[24pt]
-                                        `}
-                                    >
-                                        Divs4U
-                                    </Link>
-                                </p>
-                            </div>
-                        </div>
-
-
-                    </div>
                 </div>
             </div>
         </div>
 
     );
 }
+
+
+
+
+/* 
+ 
+   // ---------- refs & state ---------- //
+    const trackRef = useRef<HTMLDivElement | null>(null);
+    const [panelCount] = useState(5);                // we know there are 5 <AboutX/>
+    const [index, setIndex] = useState(0);           // current panel
+    const isAnimating = useRef(false);               // guard against rapid wheel spam
+
+   //  ---------- resize helper ---------- //
+    const panelWidth = () => window.innerWidth;      // one panel == one viewport width
+
+    //---------- wheel handler ---------- //
+    useEffect(() => {
+        const track = trackRef.current;
+        if (!track) return;
+
+        const handleWheel = (e: WheelEvent) => {
+            if (isAnimating.current) return;            // ignore while tween is running
+            e.preventDefault();
+
+            const dir = Math.sign(e.deltaY);            // 1 => down, -1 => up
+            let newIndex = index + dir;
+            newIndex = Math.max(0, Math.min(panelCount - 1, newIndex));
+            if (newIndex === index) return;             // already at an edge
+
+            isAnimating.current = true;
+            gsap.to(track, {
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTo: { x: newIndex * panelWidth() },
+                onComplete: () => {
+                    isAnimating.current = false;
+                    setIndex(newIndex);
+                }
+            });
+        };
+
+        window.addEventListener("wheel", handleWheel, { passive: false });
+        return () => window.removeEventListener("wheel", handleWheel);
+    }, [index, panelCount]);
+
+    // ---------- snap on window resize ---------- //
+    useEffect(() => {
+        const snapOnResize = () => {
+            const track = trackRef.current;
+            if (track) gsap.set(track, { scrollLeft: index * panelWidth() });
+        };
+        window.addEventListener("resize", snapOnResize);
+        return () => window.removeEventListener("resize", snapOnResize);
+    }, [index]);
+
+ */

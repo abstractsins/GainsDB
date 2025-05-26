@@ -3,7 +3,7 @@
 import { RiCloseLargeFill } from "react-icons/ri";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, ReactEventHandler, ReactHTMLElement, useState } from "react";
-import Loader from "@/app/components/Loader";
+import Loader from "@/components/Loader";
 
 interface Props {
     visible: boolean;

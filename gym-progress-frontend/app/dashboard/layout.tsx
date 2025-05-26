@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Oswald, Tourney } from "next/font/google";
-import Navbar from "@/app/components/Navbar";
-import MobileNavbar from "@/app/components/MobileNavbar";
-import ClientLoader from "../components/ClientLoader";
+import Navbar from "@/components/Navbar";
+import MobileNavbar from "@/components/MobileNavbar";
+import ClientLoader from "../../components/ClientLoader";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
-import { LoggedExe } from "../types/types";
+import { LoggedExe } from "../app/types/types";
 
 interface ExercisesList {
     name: string;

@@ -3,9 +3,9 @@
 import { useHistoryState } from "@/hooks/useHistoryState";
 import { useFetchWorkouts } from "@/hooks/useFetchWorkouts";
 import Loading from "./loading";
-import WorkoutHistoryList from "@/app/components/WorkoutHistory/WorkoutHistoryList";
-import ExercisesLegend from "@/app/components/ExercisesLegend";
-import Pagination from "@/app/components/WorkoutHistory/Pagination";
+import WorkoutHistoryList from "@/components/WorkoutHistory/WorkoutHistoryList";
+import ExercisesLegend from "@/components/ExercisesLegend";
+import Pagination from "@/components/WorkoutHistory/Pagination";
 import { applyCategoryFilter } from "@/utils/utils";
 
 import { toTitleCase } from "@/utils/utils";

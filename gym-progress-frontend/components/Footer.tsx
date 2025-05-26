@@ -4,7 +4,7 @@ import { Roboto_Slab } from "next/font/google"
 import { Oswald } from "next/font/google";
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react";
-
+import { useState } from "react";
 
 const robotoSlab = Roboto_Slab({
     subsets: ["latin"],
@@ -20,25 +20,28 @@ const oswald = Oswald({
 
 export default function Footer() {
 
-    const { data: session } = useSession(); // Get user session
+    // const router = useRouter();
+    // const { pathname, asPath } = router;
+    const { data: session } = useSession();
+    const [isRegistering, setIsRegistering] = useState(false);
+
+    // console.log('pathname: ' + pathname);
 
     return (
         <footer className="footer">
             {session ?
                 (
-                    <button
-                        onClick={() => signOut({ callbackUrl: "/" })}
-                        className={`footer-link ${oswald.className}`}
-                    >
+                    <button onClick={() => signOut({ callbackUrl: "/" })} className={`footer-link ${oswald.className}`} >
                         Logout
                     </button>
                 ) : (
-                    <Link
-                        href="/register"
-                        className={`footer-link ${oswald.className}`}
-                    >
-                        Register
-                    </Link>
+                    isRegistering
+                        ? <Link href="/" onClick={() => setIsRegistering(false)} className={`footer-link ${oswald.className}`}>
+                            Login
+                        </Link>
+                        : <Link href="/register" onClick={() => setIsRegistering(true)} className={`footer-link ${oswald.className}`}>
+                            Register
+                        </Link>
                 )}
             <Link
                 href="/about"
@@ -48,7 +51,7 @@ export default function Footer() {
             </Link>
             <Link
                 href="https://divs4u.com"
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
                 className={`
                     ${robotoSlab.className} 

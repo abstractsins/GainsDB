@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { toTitleCase } from "@/utils/utils";
 
 import WorkoutCardDetails from "./WorkoutHistory/WorkoutCardDetails";
-import { SetArr } from "../types/types";
+import { SetArr } from "../app/types/types";
 
 interface Exercise {
     id: number;

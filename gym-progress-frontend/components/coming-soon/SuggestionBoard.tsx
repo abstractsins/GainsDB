@@ -1,6 +1,6 @@
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from "react-icons/bs";
 
-import SuggestionLI from "@/app/components/coming-soon/SuggestionLI"
+import SuggestionLI from "@/components/coming-soon/SuggestionLI"
 import { useEffect, useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
 
@@ -102,7 +102,7 @@ export default function SuggestionBoard({ trigger }: Props) {
                         ease: "power1.inOut",
                     },
                     horizontal: true,
-                    markers: false,
+                    // markers: true,
                     invalidateOnRefresh: true,
                 },
             });

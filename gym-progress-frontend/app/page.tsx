@@ -5,7 +5,7 @@ import { Oswald, Tourney } from "next/font/google";
 import { signIn, useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { RiCloseFill } from "react-icons/ri";
-import Loader from "@/app/components/Loader";
+import Loader from "@/components/Loader";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -132,7 +132,7 @@ export default function Home() {
         {/* POPUP CONTAINER */}
         <div className="popup">
           {waiting &&
-            <Loader></Loader>
+            <Loader msg="Logging In"></Loader>
           }
           <h1 className={tourney.className}>GainsDB</h1>
           <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>

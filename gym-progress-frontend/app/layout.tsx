@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Roboto } from "next/font/google";
-import ClientLoader from "./components/ClientLoader";
-import Footer from "./components/Footer"; 
+import ClientLoader from "../components/ClientLoader";
+import Footer from "../components/Footer";
 import "./globals.css";
-import AuthProvider from "./components/AuthProvider";
+import AuthProvider from "../components/AuthProvider";
 
 // import { Analytics } from "@vercel/analytics/react"
 
@@ -18,15 +18,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const inter = Inter({ 
-  subsets: ["latin"], 
-  weight: "400" 
+const inter = Inter({
+  subsets: ["latin"],
+  weight: "400"
 });
 
-const roboto = Roboto({ 
-  subsets: ["latin"], 
+const roboto = Roboto({
+  subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
-  display: "swap" 
+  display: "swap"
 });
 
 export const metadata = {
@@ -34,7 +34,7 @@ export const metadata = {
   description: "Track your workouts efficiently",
 };
 
-export default function RootLayout({children}: Readonly<{children: React.ReactNode;}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="en">
       <head>
@@ -43,11 +43,9 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/webmanifest.json" />
       </head>
-      <body
-        className={`${inter.className} antialiased relative`}
-      >
+      <body className={`${inter.className} antialiased relative`}>
         <AuthProvider >
-          <ClientLoader>{children}</ClientLoader>      
+          <ClientLoader>{children}</ClientLoader>
           <Footer />
           {/* <Analytics /> */}
         </AuthProvider>

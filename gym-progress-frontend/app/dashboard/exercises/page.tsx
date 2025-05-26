@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import LogWorkoutPopup from "@/app/components/exercises/LogWorkoutPopup";
-import ExercisesLegend from "@/app/components/ExercisesLegend";
-import NewExercisePopup from "@/app/components/NewExercisePopup";
-import ExerciseCards from "@/app/components/ExerciseCards";
+import ExercisesLegend from "@/components/ExercisesLegend";
+import NewExercisePopup from "@/components/NewExercisePopup";
+import ExerciseCards from "@/components/ExerciseCards";
 
 import { ExerciseCard } from "@/app/types/types";
 

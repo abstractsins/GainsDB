@@ -1,4 +1,4 @@
-import SuggestionBoard from "@/app/components/coming-soon/SuggestionBoard"
+import SuggestionBoard from "@/components/coming-soon/SuggestionBoard"
 import SuggestionForm from "./SuggestionForm";
 import { useState } from "react";
 

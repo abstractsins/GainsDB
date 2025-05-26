@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import ExeToolTip from "@/app/components/ExeToolTip";
+import ExeToolTip from "@/components/ExeToolTip";
 
 interface VolumeHistory {
     workout_date: string;

@@ -1,7 +1,7 @@
 "use client";
 
-import SuggestionModule from "@/app/components/coming-soon/SuggestionModule";
-import FeaturesModule from "@/app/components/coming-soon/FeaturesModule";
+import SuggestionModule from "@/components/coming-soon/SuggestionModule";
+import FeaturesModule from "@/components/coming-soon/FeaturesModule";
 
 
 export default function ComingSoon() {
