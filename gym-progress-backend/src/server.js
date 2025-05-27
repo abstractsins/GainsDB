@@ -16,17 +16,35 @@ const app = express();
 
 // app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-const allowedOrigins = [
-    'https://gainsDB.com',
-    'https://gainsdb.com',
-    'https://www.gainsDB.com',
-    'https://www.gainsdb.com',
-    'https://gymprogress-development.up.railway.app',
-    'https://gainsdb-prod.up.railway.app',
-    'http://localhost:3000',
-    'http://10.0.0.116:3000',
-    'http://10.0.0.107:3000' // Your phone's IP
-];
+const vercelEnv = process.env.VERCEL_ENV;
+
+let allowedOrigins;
+
+if (vercelEnv === 'preview' || vercelEnv === 'development') {
+
+    allowedOrigins = [
+        'https://gymprogress-development.up.railway.app',
+        'https://gym-progress-git-dev-divs4us-projects.vercel.app/',
+    ];
+
+} else if (vercelEnv === 'production') {
+
+    allowedOrigins = [
+        'https://gainsDB.com',
+        'https://gainsdb.com',
+        'https://www.gainsDB.com',
+        'https://www.gainsdb.com',
+        'https://gainsdb-prod.up.railway.app',
+    ];
+} else if (!vercelEnv) {
+    
+    allowedOrigins = [
+        'http://localhost:3000',
+        'http://10.0.0.116:3000',
+        'http://10.0.0.107:3000'
+    ]
+    
+}
 
 app.options("*", cors()); // Automatically handle preflight requests
 

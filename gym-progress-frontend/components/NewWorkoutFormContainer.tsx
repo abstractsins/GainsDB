@@ -157,7 +157,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
                             type="submit"
                             disabled={waiting}
                         >
-                            Log Workout
+                            Log
                         </button>
                     </div>
 
@@ -190,7 +190,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
                             type="submit"
                             disabled={waiting}
                         >
-                            Log Workout
+                            Log
                         </button>
                     </div>
 

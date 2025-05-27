@@ -204,6 +204,7 @@ export default function Exercises() {
 
 
       </div>
+
       <ExercisesLegend
         onCategorySelect={handleCategorySelect}
         onResetExpansion={handleResetExpansions}

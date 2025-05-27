@@ -2101,9 +2101,11 @@ aside.mobile h2 {
   }
 
   button.new-workout-button {
-    font-size: 12pt;
+    font-size: 18pt;
     width: 150px;
     height: 75px;
+    text-transform: uppercase;
+    font-family: "Oswald";
   }
 
   form#new-set-form {

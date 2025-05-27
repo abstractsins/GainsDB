@@ -7,10 +7,10 @@ import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
 import About1 from "../../components/about/About1";
-import About2 from "../../components/about/About1";
-import About3 from "../../components/about/About1";
-import About4 from "../../components/about/About1";
-import About5 from "../../components/about/About1";
+import About2 from "../../components/about/About2";
+import About3 from "../../components/about/About3";
+import About4 from "../../components/about/About4";
+import About5 from "../../components/about/About5";
 
 gsap.registerPlugin(ScrollTrigger);
 

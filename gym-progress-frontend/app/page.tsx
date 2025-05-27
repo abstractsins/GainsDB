@@ -322,12 +322,14 @@ export default function Home() {
         }
 
         h1 {
+          user-select: none;
           font-size: 8em;
           font-family: "Tourney";
         }
 
         h2 {
           font-size: 2.5em;
+          user-select: none;
         }
 
         @media (max-width: 1699px) {
