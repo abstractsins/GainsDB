@@ -68,7 +68,7 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
         <div className="popup" id="new-exercise-popup">
 
             {waiting &&
-                <Loader></Loader>
+                <Loader msg={'Submitting'}></Loader>
             }
 
             <div className="popup-header-container">

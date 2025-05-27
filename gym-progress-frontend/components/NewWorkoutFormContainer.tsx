@@ -130,7 +130,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
         <div className="new-workout-form-container">
 
             {waiting && 
-                <Loader></Loader>
+                <Loader msg={'Submitting'}></Loader>
             }
 
             {isXXLarge &&
