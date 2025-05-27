@@ -16,7 +16,7 @@ const app = express();
 
 // app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-const vercelEnv = process.env.VERCEL_ENV;
+const vercelEnv = process.env.NEXT_PUBLIC_VERCEL_ENV;
 
 let allowedOrigins;
 
@@ -36,6 +36,7 @@ if (vercelEnv === 'preview' || vercelEnv === 'development') {
         'https://www.gainsdb.com',
         'https://gainsdb-prod.up.railway.app',
     ];
+
 } else if (!vercelEnv) {
     
     allowedOrigins = [
