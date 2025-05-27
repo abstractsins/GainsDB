@@ -72,6 +72,10 @@ export default function Home() {
 
     };
     checkAuth();
+    
+  // Optional: log which env is running
+  console.log("ENV:", process.env.VERCEL_ENV);
+  
   }, [status, session, router]);
 
   async function handleLogin(e: React.BaseSyntheticEvent) {
