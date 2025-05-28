@@ -30,7 +30,7 @@ router.post("/register", async (req, res) => {
     const userId = result.rows[0].id;
     const token = jwt.sign({ userId, username: normalizedUsername }, SECRET_KEY, { expiresIn: "1m" });
 
-    res.cookie("auth_token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "Strict" });
+    res.cookie("auth_token", token, { httpOnly: true, secure: process.env.ENVIRONMENT === "production", sameSite: "Strict" });
 
     res.status(201).json({ message: "User registered successfully!", user: { id: userId, username: normalizedUsername } });
   } catch (e) {
