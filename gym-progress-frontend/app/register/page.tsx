@@ -56,24 +56,34 @@ export default function Register() {
                 date: formData.date,
             };
 
-            const res = await fetch(`${server}/api/register`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
+            try {
 
-            if (res.ok) {
-                alert("Account successfully created!\n\nNavigating to login page");
+
+                const res = await fetch(`${server}/api/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+
+                if (res.ok) {
+                    alert("Account successfully created!\n\nNavigating to login page");
+                    setIsRegistering(false);
+                    setIsRedirecting(true);
+                    setIsInRegistration(false);
+                    setTimeout(() => router.push('/'), 2000);
+                } else {
+                    const errorResult = await res.json();
+                    console.log(errorResult);
+                    // Here errorResult.message might contain "error, user name taken"
+                    alert(errorResult.error || "Registration failed. Please try again.");
+                    setIsRegistering(false);
+                }
+            } catch (e) {
+
+                console.error(e);
+                alert("Connection to database failed.");
                 setIsRegistering(false);
-                setIsRedirecting(true);
-                setIsInRegistration(false);
-                setTimeout(() => router.push('/'), 2000);
-            } else {
-                const errorResult = await res.json();
-                console.log(errorResult);
-                // Here errorResult.message might contain "error, user name taken"
-                alert(errorResult.error || "Registration failed. Please try again.");
-                setIsRegistering(false);
+
             }
         }
     }
