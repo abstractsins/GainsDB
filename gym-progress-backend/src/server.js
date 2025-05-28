@@ -75,6 +75,8 @@ app.use(cors({
         }
 
         console.error(`❌ CORS Blocked: ${origin}`);
+        console.error(origin);
+        console.error(allowedOrigins);
         return callback(new Error('Not allowed by CORS'));
     },
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
