@@ -199,6 +199,9 @@ export default function Register() {
                                     name="password"
                                     value={formData.password}
                                     onChange={handleChange}
+                                    autoComplete="new-password"
+                                    autoCorrect="off"
+                                    spellCheck="false"
                                 />
                                 {passwordError
                                     ? <p className="field-subtitle error">{passwordError}</p>
@@ -216,6 +219,9 @@ export default function Register() {
                                     type="password"
                                     name="confirmPassword"
                                     value={formData.confirmPassword}
+                                    autoComplete="new-password"
+                                    autoCorrect="off"
+                                    spellCheck="false"
                                     onChange={handleChange}
                                     placeholder="Re-enter password"
                                     disabled={!passwordValid} // Disable until password is valid
@@ -233,7 +239,7 @@ export default function Register() {
                         <button
                             className={`register-button ${validForm ? 'active' : ''} ${isRegistering ? 'disabled' : ''}`}
                             type="submit"
-                            disabled={!validForm || isRegistering}
+                            disabled={!validForm || isRegistering || isRedirecting}
                         >
                             Register
                         </button>
