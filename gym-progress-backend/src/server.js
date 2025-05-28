@@ -24,7 +24,7 @@ if (vercelEnv === 'preview' || vercelEnv === 'development') {
 
     allowedOrigins = [
         'https://gymprogress-development.up.railway.app',
-        'https://gym-progress-git-dev-divs4us-projects.vercel.app/',
+        'https://gym-progress-git-dev-divs4us-projects.vercel.app',
     ];
 
 } else if (vercelEnv === 'production') {
@@ -49,19 +49,38 @@ if (vercelEnv === 'preview' || vercelEnv === 'development') {
 
 app.options("*", cors()); // Automatically handle preflight requests
 
+// app.use(cors({
+//     origin: (origin, callback) => {
+//         if (!origin || allowedOrigins.includes(origin)) {
+//             callback(null, true);
+//         } else {
+//             console.error(`❌ CORS Blocked: ${origin}`);
+//             callback(new Error('Not allowed by CORS'));
+//         }
+//     },
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     credentials: true,
+//     allowedHeaders: "Content-Type,Authorization,Access-Control-Allow-Origin"
+// }));
+
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            console.error(`❌ CORS Blocked: ${origin}`);
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true,
-    allowedHeaders: "Content-Type,Authorization,Access-Control-Allow-Origin"
+  origin: (origin, callback) => {
+    // Allow no-origin requests (like curl or mobile apps)
+    if (!origin) return callback(null, true);
+
+    // Check if any allowed origin matches the beginning of the origin string
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    console.error(`❌ CORS Blocked: ${origin}`);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  allowedHeaders: "Content-Type,Authorization,Access-Control-Allow-Origin"
 }));
+console.log("💡 Incoming CORS origin:", origin);
 
 
 app.use(express.json());
