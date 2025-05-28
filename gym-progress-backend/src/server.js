@@ -16,18 +16,18 @@ const app = express();
 
 // app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-const vercelEnv = process.env.VERCEL_ENV || process.env.NEXT_PUBLIC_VERCEL_ENV;
+const env = process.env.ENVIRONMENT;
 
 let allowedOrigins;
 
-if (vercelEnv === 'preview' || vercelEnv === 'development') {
+if (env === 'preview' || env === 'development') {
 
     allowedOrigins = [
         'https://gymprogress-development.up.railway.app',
         'https://gym-progress-git-dev-divs4us-projects.vercel.app',
     ];
 
-} else if (vercelEnv === 'production') {
+} else if (env === 'production') {
 
     allowedOrigins = [
         'https://gainsDB.com',
@@ -37,7 +37,7 @@ if (vercelEnv === 'preview' || vercelEnv === 'development') {
         'https://gainsdb-prod.up.railway.app',
     ];
 
-} else if (!vercelEnv) {
+} else if (!env) {
 
     allowedOrigins = [
         'http://localhost:3000',
