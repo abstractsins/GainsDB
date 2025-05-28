@@ -57,8 +57,6 @@ export default function Register() {
             };
 
             try {
-
-
                 const res = await fetch(`${server}/api/register`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -69,7 +67,6 @@ export default function Register() {
                     alert("Account successfully created!\n\nNavigating to login page");
                     setIsRegistering(false);
                     setIsRedirecting(true);
-                    setIsInRegistration(false);
                     setTimeout(() => router.push('/'), 2000);
                 } else {
                     const errorResult = await res.json();
