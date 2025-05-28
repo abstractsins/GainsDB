@@ -237,7 +237,7 @@ export default function Register() {
                     {/* Register Button */}
                     <div className="registration-footer">
                         <button
-                            className={`register-button ${validForm ? 'active' : ''} ${isRegistering ? 'disabled' : ''}`}
+                            className={`register-button ${validForm ? 'active' : ''} ${isRegistering || isRedirecting ? 'disabled' : ''}`}
                             type="submit"
                             disabled={!validForm || isRegistering || isRedirecting}
                         >
