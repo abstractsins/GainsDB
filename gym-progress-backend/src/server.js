@@ -38,13 +38,13 @@ if (vercelEnv === 'preview' || vercelEnv === 'development') {
     ];
 
 } else if (!vercelEnv) {
-    
+
     allowedOrigins = [
         'http://localhost:3000',
         'http://10.0.0.116:3000',
         'http://10.0.0.107:3000'
     ]
-    
+
 }
 
 app.options("*", cors()); // Automatically handle preflight requests
@@ -64,23 +64,23 @@ app.options("*", cors()); // Automatically handle preflight requests
 // }));
 
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow no-origin requests (like curl or mobile apps)
-    if (!origin) return callback(null, true);
+    origin: (origin, callback) => {
+        console.log("💡 Incoming CORS origin:", origin);
+        // Allow no-origin requests (like curl or mobile apps)
+        if (!origin) return callback(null, true);
 
-    // Check if any allowed origin matches the beginning of the origin string
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
+        // Check if any allowed origin matches the beginning of the origin string
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
 
-    console.error(`❌ CORS Blocked: ${origin}`);
-    return callback(new Error('Not allowed by CORS'));
-  },
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  allowedHeaders: "Content-Type,Authorization,Access-Control-Allow-Origin"
+        console.error(`❌ CORS Blocked: ${origin}`);
+        return callback(new Error('Not allowed by CORS'));
+    },
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+    allowedHeaders: "Content-Type,Authorization,Access-Control-Allow-Origin"
 }));
-console.log("💡 Incoming CORS origin:", origin);
 
 
 app.use(express.json());
