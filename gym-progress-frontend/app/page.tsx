@@ -35,6 +35,7 @@ export default function Home() {
   const router = useRouter();
 
   const server = process.env.NEXT_PUBLIC_BACKEND;
+  const env = process.env.ENVIRONMENT;
 
   const { isLoggedIn, setIsLoggedIn } = useFooter();
 
@@ -123,7 +124,7 @@ export default function Home() {
 
   return (
     <>
-      {popup &&
+      {(popup && env === 'production') &&
         <div className="popup" id="demo-creds">
           <div className="demo-creds-body">
             <header>

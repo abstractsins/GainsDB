@@ -35,7 +35,6 @@ export default function About3({ isMobile, width }: Props) {
                     />
                 }
             </div>
-            {!isMobile && <div className="animate-pulse nav-arrow" id="right">{'->'}</div>}
         </div>
 
     )

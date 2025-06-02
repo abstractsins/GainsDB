@@ -28,8 +28,6 @@ export default function Footer() {
 
     const { isLoggedIn, isInRegistration, setIsInRegistration } = useFooter();
 
-    // console.log('pathname: ' + pathname);
-
     return (
         <footer className="footer">
             {isLoggedIn ?

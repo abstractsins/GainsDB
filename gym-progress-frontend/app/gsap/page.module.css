@@ -1,0 +1,55 @@
+.body {
+    height: 200vh;
+}
+
+.circle {
+    border-radius: 50%
+}
+
+.container1 {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    width: 500vw;
+}
+
+.square {
+    color: black;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18pt;
+    height: 60vh;
+    width: 100vw;
+    flex-shrink: 0;
+    border: 1px solid black;
+}
+
+.a {
+    background-color: lightcyan;
+}
+
+.b {
+    background-color: lightcoral;
+}
+
+.c {
+    background-color: lightgreen;
+}
+
+.d {
+    background-color: lightblue;
+}
+
+.e {
+    background-color: lightgray;
+}
+
+.wrapper {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    overflow-y: hidden;
+
+}

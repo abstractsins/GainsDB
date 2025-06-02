@@ -1,9 +1,8 @@
 "use client";
 
-import { Oswald, Tourney, Roboto_Slab } from "next/font/google";
-
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
+
+import { gsap, snap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
 import About1 from "../../components/about/About1";
@@ -11,6 +10,7 @@ import About2 from "../../components/about/About2";
 import About3 from "../../components/about/About3";
 import About4 from "../../components/about/About4";
 import About5 from "../../components/about/About5";
+import { start } from "repl";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,176 +23,140 @@ export default function About() {
     const [width, setWidth] = useState<number>(0);
     const pinRef = useRef<HTMLDivElement>(null);
     const bodyRef = useRef<HTMLDivElement>(null);
-    const [sections, setSections] = useState<Element[]>([]);
+    const trackRef = useRef<HTMLDivElement>(null);
+    // const [sections, setSections] = useState<Element[]>([]);
     const [gsapRan, setGsapRan] = useState<boolean>(false);
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
 
 
+    // useLayoutEffect(() => {
+    //     if (!pinRef.current || !trackRef.current) {
+    //         console.warn("⛔ Missing ref");
+    //         return;
+    //     }
+
+
+    //     const sections = Array.from(trackRef.current.children);
+    //     const sectionCount = sections.length;
+    //     console.log(sections);
+
+    //     // const totalScrollDistance = 100 * (sectionCount - 1); // for xPercent
+
+    //     const timeline = gsap.timeline({
+    //         scrollTrigger: {
+    //             trigger: pinRef.current,
+    //             start: "top top",
+    //             end: `+=${window.innerWidth * (sectionCount - 1)}`,
+    //             scrub: 1,
+    //             pin: true,
+    //             anticipatePin: 1,
+    //             snap: {
+    //                 snapTo: 1 / (sectionCount - 1),
+    //                 duration: 0.4,
+    //                 ease: "power1.inOut",
+    //             },
+    //             markers: true,
+    //             onUpdate: (self) => {
+    //                 const moveAmount = -self.progress * 50;
+    //                 gsap.set(".parallax-bg", {
+    //                     backgroundPositionX: `${moveAmount * 5}vw`,
+    //                 });
+    //             },
+    //         }
+    //     });
+
+    //     timeline.to(trackRef.current, {
+    //         xPercent: -100 * (sectionCount - 1), // 👈 key fix
+    //         duration: 1,
+    //         ease: "none",
+    //     });
+
+
+    //     ScrollTrigger.refresh();
+
+
+    //     return () => {
+    //         timeline.scrollTrigger?.kill();
+    //         timeline.kill();
+    //     };
+
+    // }, []);
+
     useLayoutEffect(() => {
-        console.group('useLayoutEffect1');
-
-        setWidth(window.innerWidth);
-
-        const checkSections = () => {
-            const foundSections = Array.from(document.querySelectorAll(".about-section"));
-            console.log(foundSections);
-            if (foundSections.length > 0) {
-                setSections(foundSections);
-            }
-        };
-
-        checkSections();
-
-        if (sections.length === 0) return;
-        if (gsapRan === true) return
-
-        console.log('isMobile: ' + isMobile);
-
-        const animations: gsap.core.Tween[] = [];
-        const triggers: ScrollTrigger[] = [];
-
-        if (!pinRef.current) {
-            console.error("ScrollTrigger not initialized: pinRef is null");
+        if (!pinRef.current || !trackRef.current) {
+            console.warn("⛔ Missing ref");
             return;
         }
 
-        if (isMobile === false) {
-            const totalScrollDistance = 150 * (sections.length - 1);
+        const sections = gsap.utils.toArray(".panel");
+        const sectionCount = sections.length;
 
-            // Horizontal scrolling
-            const animation = gsap.to(sections, {
-                xPercent: -totalScrollDistance,
-                ease: "none",
-                scrollTrigger: {
-                    start: 0,
-                    trigger: pinRef.current,
-                    pin: true,
-                    // markers: true,
-                    scrub: 2.5,
-                    snap: 1 / (sections.length - 1),
-                    end: "+=4000",
-                    // end: `+=${document.body.querySelector('.about-track')?.scrollWidth}`,
-                    invalidateOnRefresh: true
-                },
-            });
+        const totalScroll = trackRef.current.scrollWidth + window.innerWidth;   // full width of the track (incl. padding)
 
-            animations.push(animation);
+        // gsap.to(sections, {
+        //     xPercent: -100 * (sectionCount - 1),
+        //     ease: "none",
+        //     scrollTrigger: {
+        //         trigger: "#about-page",
+        //         pin: true,
+        //         scrub: 1,
+        //         snap: 1 / (sectionCount - 1),
+        //         end: () => `+=${totalScroll}`,
+        //         // end: () => "+=" + document.querySelector('.about-track')?.scrollWidth,
+        //         // onToggle: (self) => console.log("update", self.progress.toFixed(7))
+        //     },
+        // })
 
-            // Parallax effect ScrollTrigger
-            const parallaxTrigger = ScrollTrigger.create({
-                trigger: pinRef.current,
-                start: "top top",
-                // end: `+=${totalScrollDistance * 15}`,
-                end: `+=${document.body.querySelector('.about-track')?.scrollWidth}`,
 
-                scrub: 1,
-                pin: false,
-                onUpdate: (self) => {
-                    const progress = self.progress;
-                    const moveAmount = -progress * totalScrollDistance * 0.4;
-                    console.log('moveAmount: ' + moveAmount);
-
-                    gsap.set(".parallax-bg", { backgroundPositionX: `${moveAmount}vw` });
-                }
-            });
-            triggers.push(parallaxTrigger);
-
-        }
-
-        setGsapRan(true);
-
-        // one more safety refresh in case
-        // ScrollTrigger.refresh();
-
-        // clean up
-        console.groupEnd();
-
-        return () => ScrollTrigger.getAll().forEach(st => st.kill());
 
     }, []);
 
+    useEffect(() => {
+
+        // gsap.to(".panel", {
+        //     scrollTrigger: {
+        //         trigger: ".panel.p1",
+        //         toggleActions: "restart restart"
+        //     },
+        //     // start: "top 50vh",
+        //     // x: -720,
+        //     rotation: 45,
+        //     duration: 1
+        // }).then(() => {
+        //     gsap.to(".panel", {
+        //         scrollTrigger: "#about-page",
+        //         // x: -720,
+        //         rotation: -45,
+        //         duration: 1
+        //     });
+        // });
+    }, [])
+
+
 
     return (
+        // <div className="pin-container">
 
-        <div
-            ref={pinRef}
-            id="about-page"
-            onWheel={handleWheel}
-        >
+        <div ref={pinRef} id="about-page">
 
             {/* Parallax Background */}
             <div className="parallax-bg"></div>
 
+            {/* <div className="about-body" ref={bodyRef} > */}
+            {/* Content */}
+            <div className="about-track" ref={trackRef}>
 
-            <div className="about-body" ref={bodyRef}>
-                {/* Content */}
-                <div className="about-track" >
+                <About1 isMobile={isMobile} width={width} />
+                <About2 isMobile={isMobile} width={width} />
+                <About3 isMobile={isMobile} width={width} />
+                <About4 isMobile={isMobile} width={width} />
+                <About5 isMobile={isMobile} width={width} />
 
-                    <About1 isMobile={isMobile} width={width} />
-                    <About2 isMobile={isMobile} width={width} />
-                    <About3 isMobile={isMobile} width={width} />
-                    <About4 isMobile={isMobile} width={width} />
-                    <About5 isMobile={isMobile} width={width} />
-
-                </div>
             </div>
+            {/* </div> */}
         </div>
+        // </div>
 
     );
 }
 
-
-
-
-/* 
- 
-   // ---------- refs & state ---------- //
-    const trackRef = useRef<HTMLDivElement | null>(null);
-    const [panelCount] = useState(5);                // we know there are 5 <AboutX/>
-    const [index, setIndex] = useState(0);           // current panel
-    const isAnimating = useRef(false);               // guard against rapid wheel spam
-
-   //  ---------- resize helper ---------- //
-    const panelWidth = () => window.innerWidth;      // one panel == one viewport width
-
-    //---------- wheel handler ---------- //
-    useEffect(() => {
-        const track = trackRef.current;
-        if (!track) return;
-
-        const handleWheel = (e: WheelEvent) => {
-            if (isAnimating.current) return;            // ignore while tween is running
-            e.preventDefault();
-
-            const dir = Math.sign(e.deltaY);            // 1 => down, -1 => up
-            let newIndex = index + dir;
-            newIndex = Math.max(0, Math.min(panelCount - 1, newIndex));
-            if (newIndex === index) return;             // already at an edge
-
-            isAnimating.current = true;
-            gsap.to(track, {
-                duration: 0.8,
-                ease: "power2.out",
-                scrollTo: { x: newIndex * panelWidth() },
-                onComplete: () => {
-                    isAnimating.current = false;
-                    setIndex(newIndex);
-                }
-            });
-        };
-
-        window.addEventListener("wheel", handleWheel, { passive: false });
-        return () => window.removeEventListener("wheel", handleWheel);
-    }, [index, panelCount]);
-
-    // ---------- snap on window resize ---------- //
-    useEffect(() => {
-        const snapOnResize = () => {
-            const track = trackRef.current;
-            if (track) gsap.set(track, { scrollLeft: index * panelWidth() });
-        };
-        window.addEventListener("resize", snapOnResize);
-        return () => window.removeEventListener("resize", snapOnResize);
-    }, [index]);
-
- */

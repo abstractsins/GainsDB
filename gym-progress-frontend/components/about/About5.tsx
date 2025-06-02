@@ -17,7 +17,6 @@ export default function About3({ isMobile }: Props) {
     return (
 
         <div id="p5" className="about-section">
-            {!isMobile && <div className="animate-pulse nav-arrow" id="left">{'<-'}</div>}
 
             <div className="body">
                 <p>
