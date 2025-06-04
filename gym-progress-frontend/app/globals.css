@@ -1208,7 +1208,6 @@ div.about-section-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 10vh;
 }
 
 #about-page-header {
@@ -1447,10 +1446,18 @@ div.about-section-skeleton {
 }
 
 div.nav-arrow {
+  display: flex;
+  align-items: center;
   cursor: default;
   font-size: 2em;
   position: absolute;
   bottom: 0;
+}
+
+.nav-text {
+  font-size: 0.35em;
+  letter-spacing: 1pt;
+  margin-right: 10px;
 }
 
 .nav-arrow#right {
@@ -3089,5 +3096,51 @@ div.opaque {
   100% {
     transform: scale(1);
     filter: drop-shadow(0 0 0px var(--upper-body));
+  }
+}
+
+
+/* * NAV SIGNAL ANIMATION */
+div.nav-signal-container {
+  position: absolute;
+  display: flex;
+  top: 50%;
+}
+
+div#nav-signal-container-right {
+  right: 5vw;
+}
+
+div#nav-signal-container-left {
+  left: 20vw;
+}
+
+div.nav-signal-line {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 10px solid white;
+  /* border-image: linear-gradient(rgb(191, 236, 191), green); */
+  border-bottom: none;
+  border-right: none;
+  border-radius: 15px;
+  opacity: 0.8;
+  border-color: #3be68d;
+}
+div.nav-signal-line-right {
+  rotate: 135deg;
+}
+
+div.nav-signal-line-left {
+  rotate: -45deg;
+  /* animation: borderPulse 1.9s infinite; */
+}
+
+@keyframes borderPulse {
+  0% {
+    border-color: #4fda5b;
+  }
+  100% {
+    border-color: white;
   }
 }

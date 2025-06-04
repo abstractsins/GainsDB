@@ -21,6 +21,8 @@ export default function About1({ isMobile }: Props) {
                     <li><span className="about-li-lead">Cloud-Based Storage</span> Access workout history from anywhere.</li>
                 </ul>
             </div>
+
+            <div className="nav-arrow" id="right"><span className="nav-text">scroll </span><span className="glowPulse">-></span></div>
         </div>
     )
 }
