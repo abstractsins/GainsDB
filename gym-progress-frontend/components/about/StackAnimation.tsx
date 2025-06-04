@@ -23,7 +23,13 @@ export default function StackAnimation() {
 
         let upload = true;
 
-        const tl = gsap.timeline({ repeat: -1 });
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.animation-container',
+                markers: true,
+            },
+            repeat: -1
+        });
 
         tl
             .to('#upload', {

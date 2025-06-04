@@ -28,7 +28,7 @@ export default function About() {
 
         const animation = gsap.to(sections, {
             xPercent: -100 * sectionsLess,
-            ease: 'none',
+            ease: "none",
             scrollTrigger: {
                 trigger: pinRef.current,
                 pin: true,
@@ -71,11 +71,11 @@ export default function About() {
             {/* Parallax Background */}
             <div className="parallax-bg"></div>
 
-            <div className="nav-signal-container" id="nav-signal-container-left">
+            {/* <div className="nav-signal-container" id="nav-signal-container-left">
                 <div className="nav-signal-line nav-signal-line-left" id="nav-signal-line-left-1"></div>
                 <div className="nav-signal-line nav-signal-line-left" id="nav-signal-line-left-2"></div>
                 <div className="nav-signal-line nav-signal-line-left" id="nav-signal-line-left-3"></div>
-            </div>
+            </div> */}
 
             {/* Content */}
             <div ref={trackRef} className="about-track">
@@ -102,11 +102,11 @@ export default function About() {
 
             </div>
 
-            <div className="nav-signal-container" id="nav-signal-container-right">
+            {/* <div className="nav-signal-container" id="nav-signal-container-right">
                 <div className="nav-signal-line nav-signal-line-right" id="nav-signal-line-right-1">a</div>
                 <div className="nav-signal-line nav-signal-line-right" id="nav-signal-line-right-2">a</div>
                 <div className="nav-signal-line nav-signal-line-right" id="nav-signal-line-right-3">a</div>
-            </div>
+            </div> */}
 
         </div>
 

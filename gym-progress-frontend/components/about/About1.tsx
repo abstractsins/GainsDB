@@ -22,7 +22,6 @@ export default function About1({ isMobile }: Props) {
                 </ul>
             </div>
 
-            <div className="nav-arrow" id="right"><span className="nav-text">scroll </span><span className="glowPulse">-></span></div>
         </div>
     )
 }
