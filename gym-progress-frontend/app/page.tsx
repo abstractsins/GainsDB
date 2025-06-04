@@ -37,10 +37,14 @@ export default function Home() {
   const server = process.env.NEXT_PUBLIC_BACKEND;
   const env = process.env.ENVIRONMENT;
 
-  const { isLoggedIn, setIsLoggedIn } = useFooter();
+  const { setIsInRegistration, setIsLoggedIn } = useFooter();
+
 
   // Redirect authenticated users to the dashboard
   useEffect(() => {
+
+    setIsInRegistration(false);
+
     const checkAuth = async () => {
       const token = session?.user?.authToken;
 
@@ -304,10 +308,11 @@ export default function Home() {
           width: fit-content;
           font-family: "Oswald";
         }
-        button.login-button {
-          background-color: #add8e6;
-        }
         button.login-button:hover {
+          background-color: #add8e6;
+          color: black;
+        }
+        button.login-button {
           background-color:rgb(98, 129, 139);
           color: whitesmoke;
         }

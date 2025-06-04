@@ -2,10 +2,9 @@
 
 import { Roboto_Slab } from "next/font/google"
 import { Oswald } from "next/font/google";
-import Link from "next/link"
-import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { signOut } from "next-auth/react";
 import { useFooter } from "@/contexts/FooterContext";
+import Link from "next/link"
 
 const robotoSlab = Roboto_Slab({
     subsets: ["latin"],
@@ -17,14 +16,12 @@ const oswald = Oswald({
     subsets: ["latin"],
     weight: ["400", "700"],
     display: "swap"
-})
+});
 
 export default function Footer() {
 
     // const router = useRouter();
     // const { pathname, asPath } = router;
-    const { data: session } = useSession();
-    const [isRegistering, setIsRegistering] = useState(false);
 
     const { isLoggedIn, isInRegistration, setIsInRegistration } = useFooter();
 

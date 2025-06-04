@@ -17,6 +17,7 @@ const app = express();
 // app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 const env = process.env.ENVIRONMENT;
+console.log('ENVIRONMENT: ' + env);
 
 let allowedOrigins;
 
@@ -37,7 +38,7 @@ if (env === 'preview' || env === 'development') {
         'https://gainsdb-prod.up.railway.app',
     ];
 
-} else if (!env) {
+} else if (!env || env === 'local') {
 
     allowedOrigins = [
         'http://localhost:3000',
@@ -46,6 +47,8 @@ if (env === 'preview' || env === 'development') {
     ]
 
 }
+
+console.log('allowed origins: ' + allowedOrigins);
 
 app.options("*", cors()); // Automatically handle preflight requests
 
@@ -66,6 +69,7 @@ app.options("*", cors()); // Automatically handle preflight requests
 app.use(cors({
     origin: (origin, callback) => {
         console.log("💡 Incoming CORS origin:", origin);
+
         // Allow no-origin requests (like curl or mobile apps)
         if (!origin) return callback(null, true);
 
@@ -74,7 +78,7 @@ app.use(cors({
             return callback(null, true);
         }
 
-        console.error(`❌ CORS Blocked: ${origin}`);
+        console.error(`❌ CORS Blocked : ${origin}`);
         console.error(origin);
         console.error(allowedOrigins);
         return callback(new Error('Not allowed by CORS'));

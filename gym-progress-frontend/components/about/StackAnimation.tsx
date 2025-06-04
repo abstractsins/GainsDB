@@ -88,12 +88,8 @@ export default function StackAnimation() {
         return () => tl.kill() as unknown as void;
 
         function toggleClouds(i: string) {
-            console.log('upload: ' + upload);
-            console.log('i: ' + i)
             const id = upload ? 'upload' : 'download';
             const other = upload ? 'download' : 'upload';
-
-            console.log(document.getElementsByClassName('active-cloud'));
 
             switch (i) {
                 case 'off':

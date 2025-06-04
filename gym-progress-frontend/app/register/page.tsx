@@ -136,7 +136,7 @@ export default function Register() {
             setPasswordError("Password must contain at least one special character");
             setPasswordValid(false);
         } else if (asciiRange === false) {
-            setPasswordError("Password characters must be in ASCII range 33 -   126");
+            setPasswordError("Password characters must be in ASCII range 33 - 126");
             setPasswordValid(false);
         } else {
             setPasswordError(""); // No errors

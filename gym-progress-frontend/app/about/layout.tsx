@@ -122,7 +122,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </header>
         }
         <ClientLoader>
-          <main className={`overflow-auto`}>{children}</main>
+          <main className={`overflow-visible`}>{children}</main>
         </ClientLoader>
       </div>
     </div>
