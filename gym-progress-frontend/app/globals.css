@@ -3125,7 +3125,7 @@ div.nav-signal-line {
   border-right: none;
   border-radius: 15px;
   opacity: 0.8;
-  border-color: #3be68d;
+  border-color: #214624;
 }
 div.nav-signal-line-right {
   rotate: 135deg;
@@ -3138,7 +3138,7 @@ div.nav-signal-line-left {
 
 @keyframes borderPulse {
   0% {
-    border-color: #4fda5b;
+    border-color: #214624;
   }
   100% {
     border-color: white;

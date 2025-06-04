@@ -19,8 +19,9 @@ export default function About() {
     const trackRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
 
-
-    useLayoutEffect(() => {
+    
+    useEffect(() => {
+        const parallaxElement = document.querySelector(".parallax-bg") as HTMLElement;
         const sections = gsap.utils.toArray(".about-section-container");
         const sectionCount = sections.length;
         const sectionsLess = sectionCount - 1;
@@ -34,15 +35,25 @@ export default function About() {
                 scrub: true,
                 snap: 1 / sectionsLess,
                 end: () => '+=' + (window.innerWidth * sections.length),
-                onUpdate: (self) => console.log(document.querySelector('.parallax-bg')),
+                onUpdate: (self) => {
+                    if (parallaxElement) {
+                        console.log(self.progress);
+                        const parallaxOffset = self.progress * -35; // tweak this for speed
+                        parallaxElement.style.transform = `translateX(${parallaxOffset}vw)`;
+                    }
+                }
             }
         });
 
+
         ScrollTrigger.refresh();
 
-        return () => animation.scrollTrigger?.kill();
-    }, []);
+        return () => {
+            animation.scrollTrigger?.kill();
+            ScrollTrigger.getAll().forEach(st => st.kill()); // optional full cleanup
+        };
 
+    }, []);
 
     useEffect(() => {
         const leftArrows = gsap.timeline({ repeat: -1 });

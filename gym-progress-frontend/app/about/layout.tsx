@@ -8,10 +8,11 @@ import { Oswald, Tourney } from "next/font/google";
 import ClientLoader from "../../components/ClientLoader";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 
 import { MdDashboard } from "react-icons/md";
 import { AiFillHome } from "react-icons/ai";
+import { useFooter } from "@/contexts/FooterContext";
 
 
 const oswald = Oswald({
@@ -36,6 +37,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const menuRef = useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = useState(false);
+  const { setIsLoggedIn } = useFooter();
 
 
   // UNTIL SETTINGS IS RELEASED
@@ -63,7 +65,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     if (status === "unauthenticated" || !session?.user) {
       console.warn("🚨 unauthenticated.");
+      setIsLoggedIn(false);
     } else {
+      setIsLoggedIn(true);
     }
     setIsChecking(false);
 
@@ -122,7 +126,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </header>
         }
         <ClientLoader>
-          <main className={`overflow-visible`}>{children}</main>
+            <main className={`overflow-visible`}>{children}</main>
         </ClientLoader>
       </div>
     </div>
