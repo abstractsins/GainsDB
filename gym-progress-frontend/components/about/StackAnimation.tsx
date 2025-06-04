@@ -26,7 +26,7 @@ export default function StackAnimation() {
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: '.animation-container',
-                markers: true,
+                // markers: true,
             },
             repeat: -1
         });

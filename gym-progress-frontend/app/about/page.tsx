@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import { gsap, snap } from "gsap";
+import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
 import About1 from "@/components/about/About1";
@@ -26,7 +26,7 @@ export default function About() {
         const sectionCount = sections.length;
         const sectionsLess = sectionCount - 1;
 
-        const animation = gsap.to(sections, {
+        const slidesShow = gsap.to(sections, {
             xPercent: -100 * sectionsLess,
             ease: "none",
             scrollTrigger: {
@@ -38,19 +38,18 @@ export default function About() {
                 onUpdate: (self) => {
                     if (parallaxElement) {
                         console.log(self.progress);
-                        const parallaxOffset = self.progress * -35; // tweak this for speed
+                        const parallaxOffset = self.progress * -35; 
                         parallaxElement.style.transform = `translateX(${parallaxOffset}vw)`;
                     }
                 }
             }
         });
 
-
         ScrollTrigger.refresh();
 
         return () => {
-            animation.scrollTrigger?.kill();
-            ScrollTrigger.getAll().forEach(st => st.kill()); // optional full cleanup
+            slidesShow.scrollTrigger?.kill();
+            ScrollTrigger.getAll().forEach(st => st.kill()); 
         };
 
     }, []);
