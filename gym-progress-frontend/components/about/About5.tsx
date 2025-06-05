@@ -47,6 +47,8 @@ export default function About3({ isMobile }: Props) {
                     </Link>
                 </p>
             </div>
+            <div className="nav-arrow" id="right"><span className="nav-text">5/5</span></div>
+
         </div>
     )
 }

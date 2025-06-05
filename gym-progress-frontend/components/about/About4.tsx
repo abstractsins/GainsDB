@@ -52,6 +52,7 @@ export default function About4({ isMobile, width }: Props) {
                         }
                     </div>
                 )}
+            <div className="nav-arrow" id="right"><span className="nav-text">4/5</span></div>
 
         </div>
     )

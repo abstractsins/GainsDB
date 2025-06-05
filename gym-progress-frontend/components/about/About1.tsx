@@ -22,6 +22,7 @@ export default function About1({ isMobile }: Props) {
                 </ul>
             </div>
 
+            <div className="nav-arrow" id="right"><span className="nav-text">1/5</span></div>
         </div>
     )
 }

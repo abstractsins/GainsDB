@@ -35,6 +35,8 @@ export default function About3({ isMobile, width }: Props) {
                     />
                 }
             </div>
+            <div className="nav-arrow" id="right"><span className="nav-text">3/5</span></div>
+
         </div>
 
     )
