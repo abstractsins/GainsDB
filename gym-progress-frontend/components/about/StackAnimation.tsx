@@ -95,7 +95,6 @@ export default function StackAnimation() {
             onLeave: () => tl.pause(),
             onEnterBack: () => tl.play(),
             onLeaveBack: () => tl.pause(),
-            markers: true,
             horizontal: true,
             id: 'tl trigger'
         });
