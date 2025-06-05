@@ -37,7 +37,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const menuRef = useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = useState(false);
-  const { setIsLoggedIn } = useFooter();
+  const { setIsLoggedIn, setIsInRegistration } = useFooter();
 
 
   // UNTIL SETTINGS IS RELEASED
@@ -66,6 +66,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (status === "unauthenticated" || !session?.user) {
       console.warn("🚨 unauthenticated.");
       setIsLoggedIn(false);
+      setIsInRegistration(false);
     } else {
       setIsLoggedIn(true);
     }

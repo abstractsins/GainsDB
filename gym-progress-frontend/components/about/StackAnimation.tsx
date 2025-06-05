@@ -23,13 +23,7 @@ export default function StackAnimation() {
 
         let upload = true;
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.animation-container',
-                // markers: true,
-            },
-            repeat: -1
-        });
+        const tl = gsap.timeline({ repeat: -1 });
 
         tl
             .to('#upload', {
@@ -91,6 +85,22 @@ export default function StackAnimation() {
 
         tlRef.current = tl;
 
+        ScrollTrigger.create({
+            trigger: '.animation-container',
+            scroller: '#about-page',
+            start: 'left right',
+            end: 'right left',
+            scrub: false,
+            onEnter: () => tl.play(),
+            onLeave: () => tl.pause(),
+            onEnterBack: () => tl.play(),
+            onLeaveBack: () => tl.pause(),
+            markers: true,
+            horizontal: true,
+            id: 'tl trigger'
+        });
+
+
         return () => tl.kill() as unknown as void;
 
         function toggleClouds(i: string) {
@@ -143,7 +153,7 @@ export default function StackAnimation() {
 
 
     return (
-        < div className="animation-container" >
+        <div className="animation-container">
             {/* <input type='button' className="pause-btn" onClick={() => setPause(prev => !prev)} value={!pause ? '⏸️' : '▶️'} /> */}
 
             <IoCloudUploadSharp className="cloud-icon glowPulse active-cloud" id="upload" />

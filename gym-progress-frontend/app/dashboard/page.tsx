@@ -14,6 +14,8 @@ import { DashboardData } from "../types/types";
 
 import DashboardLoading from "../../components/DashboardLoading";
 
+import { useFooter } from "@/contexts/FooterContext";
+
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
@@ -23,6 +25,8 @@ export default function DashboardPage() {
   const router = useRouter();
   const server = process.env.NEXT_PUBLIC_BACKEND || "http://localhost:5000";
 
+  const { setIsLoggedIn } = useFooter();
+
   useEffect(() => {
     console.log("🔄 Session Status:", status);
 
@@ -30,10 +34,10 @@ export default function DashboardPage() {
 
     if (status === "unauthenticated" || !session?.user?.authToken) {
       console.warn("🚨 No valid session found, redirecting...");
-      if (typeof window !== "undefined") {
-        router.replace("/");
-      }
+      if (typeof window !== "undefined") router.replace("/");
       return;
+    } else {
+      setIsLoggedIn(true);
     }
 
     fetchData();
