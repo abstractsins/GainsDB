@@ -1451,7 +1451,7 @@ div.nav-arrow {
   cursor: default;
   font-size: 2em;
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
 }
 
 .nav-text {
@@ -3104,43 +3104,61 @@ div.opaque {
 div.nav-signal-container {
   position: absolute;
   display: flex;
-  top: 50%;
+  top: 45%;
 }
 
 div#nav-signal-container-right {
-  right: 5vw;
+  right: 18vw;
 }
 
 div#nav-signal-container-left {
-  left: 20vw;
+  left: 15vw;
 }
 
 div.nav-signal-line {
   position: absolute;
-  width: 80px;
-  height: 80px;
-  border: 10px solid white;
+  padding: 5px 10px;
+  color: white;
+  font-size: 16pt;
+  width: 100px;
+  height: 100px;
+  border: 15px solid white;
   /* border-image: linear-gradient(rgb(191, 236, 191), green); */
   border-bottom: none;
   border-right: none;
   border-radius: 15px;
-  opacity: 0.8;
+  opacity: 0.6;
   border-color: #3be68d;
+  /* transition: all 150ms; */
 }
+
 div.nav-signal-line-right {
   rotate: 135deg;
 }
 
 div.nav-signal-line-left {
   rotate: -45deg;
-  /* animation: borderPulse 1.9s infinite; */
 }
 
 @keyframes borderPulse {
   0% {
-    border-color: #4fda5b;
-  }
-  100% {
     border-color: white;
   }
+
+  50% {
+    border-color: #4fda5b;
+  }
+
+  100% {
+    border-color: #acd1af;
+  }
+}
+
+.instruction {
+  padding: 15px;
+  border-radius: 10px;
+  background-color: rgba(10, 10, 10, 0.9);
+  position: absolute;
+  bottom: 3vh;
+  left: 50vw;
 }

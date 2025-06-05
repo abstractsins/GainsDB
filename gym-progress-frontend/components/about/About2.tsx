@@ -35,6 +35,7 @@ export default function About2({ isMobile }: Props) {
                     <StackAnimation />
                 </div>
             </div>
+            <div className="nav-arrow" id="right"><span className="nav-text">2/5</span></div>
         </div>
     )
 }
