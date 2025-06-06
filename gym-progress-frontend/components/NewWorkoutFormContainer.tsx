@@ -22,8 +22,14 @@ interface FormData {
 
 const getFormattedDate = () => {
     const today = new Date();
-    today.setMinutes(today.getMinutes()); // Adjust for local timezone
-    return today.toISOString().split("T")[0]; // Extract YYYY-MM-DD
+    const date = today.toLocaleDateString(); // --> 5/6/2025
+    let [month, day, year] = date.split('/');
+    if (parseInt(month) < 10) month = `0${month}`;
+    if (parseInt(day) < 10) day = `0${day}`;
+    if (year.length === 2) year = `20${year}`;
+    const editedDate = `${year}-${month}-${day}`; // --> 2025-06-05
+    console.log(editedDate);
+    return editedDate;
 };
 
 
