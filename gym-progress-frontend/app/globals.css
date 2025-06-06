@@ -1196,6 +1196,7 @@ span.app-name {
 }
 
 div#about-page {
+  position: relative;
   overflow-x: hidden;
   overflow-y: hidden;
   display: flex;
@@ -1251,7 +1252,7 @@ div.about-track-skeleton {
   display: flex;
   /* flex-direction: column; */
   justify-content: space-between;
-  padding: 30vh 8vh 19vh 8vh;
+  padding: 30vh 0 20vh 0;
   height: 100vh;
   width: 500vw;
   will-change: transform;
@@ -2606,6 +2607,18 @@ div.popup#demo-creds .close-button:hover {
 }
 
 /** ABOUT PAGE MEDIA QUERIES */
+@media screen and (max-width: 2120px) {
+  #p1 .left{
+    padding: 20px !important;
+  }
+}
+
+@media screen and (max-width: 2060px) {
+  #p2 ul {
+    font-size: 12pt !important;
+  }
+}
+
 @media screen and (max-width: 2022px) {
   #p4 .left {
     font-size: 16pt;
@@ -2632,6 +2645,16 @@ div.popup#demo-creds .close-button:hover {
 }
 
 @media screen and (max-width: 1720px) {
+
+  #p1 .left {
+    /* font-size: 14pt; */
+    font-size: 16pt !important;
+  }
+
+  #p1 .right {
+    padding: 10px !important;
+  }
+
   #p3 .left {
     padding-right: 15px;
     font-size: 16pt;
@@ -2657,6 +2680,7 @@ div.popup#demo-creds .close-button:hover {
 }
 
 @media screen and (max-width: 1530px) {
+
   div#p1 div.right ul.about-list li {
     font-size: 12pt;
   }
@@ -2667,16 +2691,49 @@ div.popup#demo-creds .close-button:hover {
     padding-right: 15px;
   }
 
-  div#p2 .body {
-    align-items: center;
+  div.sheet {
+    height: 180px !important;
+    border-radius: 5px;
+    width: 140px !important;
+    padding: 10px !important;
+    font-size: 12pt !important;
   }
 
-  div#p2 .body ul {
-    font-size: 14pt;
+  .sheet-icon {
+    font-size: 32pt !important;
   }
+
+  .cloud-icon {
+    font-size: 52pt !important;
+  }
+
+  .sheet-pretext {
+    font-size: 20pt !important;
+  }
+
+  div.about-section {
+    width: 70vw;
+  }
+
+  div#nav-signal-container-right {
+    right: 13vw !important;
+  }
+
+  div#nav-signal-container-left {
+    left: 7vw !important;
+  }
+
 }
 
 @media screen and (max-width: 1400px) {
+
+
+  div.nav-signal-line {
+    width: 75px !important;
+    height: 75px !important;
+    border-width: 10px !important;
+  }
+
   #p3 {
     flex-direction: column;
   }
@@ -2703,6 +2760,10 @@ div.popup#demo-creds .close-button:hover {
   #p4 .right img {
     margin: 0px;
   }
+
+  .img-notes-app {
+    width: 300px;
+  }
 }
 
 @media screen and (max-width: 1160px) {
@@ -2719,13 +2780,52 @@ div.popup#demo-creds .close-button:hover {
   }
 
   #p4 .left {
-    padding-left: 15px;
+    padding-left: 50px !important;
   }
 
   #p5 .body {
     line-height: 1.5;
   }
 }
+
+@media screen and (max-width: 1060px) {
+
+  #p1 .left {
+    font-size: 14pt !important;
+  }
+
+  #p2 {
+    padding: 10px;
+  }
+
+  #p2 div.animation-container {
+    right: 25px !important;
+    top: 150px !important;
+  }
+
+  div.sheet {
+    height: 135px !important;
+    border-radius: 5px;
+    width: 105px !important;
+    padding: 7px !important;
+    font-size: 9pt !important;
+  }
+
+
+  .sheet-icon {
+    font-size: 24pt !important;
+  }
+
+  .cloud-icon {
+    font-size: 39pt !important;
+  }
+
+  .sheet-pretext {
+    font-size: 15pt !important;
+  }
+
+}
+
 
 @media screen and (max-width: 950px) {
   #p1 {
@@ -2747,6 +2847,11 @@ div.popup#demo-creds .close-button:hover {
 
   div#p2 .body ul {
     font-size: 12pt;
+  }
+
+  #p2 div.animation-container {
+    top: 100px !important;
+    right: 50px !important;
   }
 
   #p4 .left {
@@ -2777,9 +2882,31 @@ div.popup#demo-creds .close-button:hover {
   #p4 .right {
     width: 100%;
   }
+
+  #p4 .right {
+    height: 100% !important;
+  }
 }
 
+@media screen and (max-width: 760px) {
+  div.parallax-bg {
+    background-size: 200% !important;
+  }
+}
+
+@media screen and (max-width: 610px) {
+  div.parallax-bg {
+    background-size: 250% !important;
+  }
+}
+
+
 @media screen and (max-width: 512px) {
+
+  #about-page {
+    overflow-y: scroll !important;
+  }
+
   #p1 .right ul {
     padding: 20px;
   }
@@ -3160,14 +3287,15 @@ div.nav-signal-line-left {
   background-color: rgba(10, 10, 10, 0.9);
   position: absolute;
   bottom: 3vh;
-  left: 50vw;
+  transform-origin: center;
+  transform: translateX(50%)
 }
 
 div.suggestion-container.skeleton {
-    @apply animate-pulse;
+  @apply animate-pulse;
   background-color: var(--skeleton-gray);
 }
 
 .nav-button.disabled {
-    border-radius: 5px;
+  border-radius: 5px;
 }

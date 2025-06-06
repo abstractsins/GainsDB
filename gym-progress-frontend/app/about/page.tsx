@@ -54,7 +54,7 @@ export default function About() {
 
         return () => {
             slidesShow.scrollTrigger?.kill();
-            ScrollTrigger.getAll().forEach(st => st.kill()); 
+            ScrollTrigger.getAll().forEach(st => st.kill());
         };
 
     }, []);
@@ -119,44 +119,47 @@ export default function About() {
 
 
     return (
+        <>
+            <div ref={pinRef} id="about-page">
 
-        <div ref={pinRef} id="about-page">
+                {/* Parallax Background */}
+                <div className="parallax-bg"></div>
 
-            {/* Parallax Background */}
-            <div className="parallax-bg"></div>
+                {/* Content */}
+                <div ref={trackRef} className="about-track">
 
-            {/* Content */}
-            <div ref={trackRef} className="about-track">
+                    <div className='about-section-container' id="about-section-container-1">
+                        <About1 isMobile={isMobile} width={width} />
+                        <RightArrows />
+                    </div>
 
-                <div className='about-section-container' id="about-section-container-1">
-                    <About1 isMobile={isMobile} width={width} />
-                    <RightArrows />
+                    <div className='about-section-container' id="about-section-container-2">
+                        <About2 isMobile={isMobile} width={width} />
+                    </div>
+
+                    <div className='about-section-container' id="about-section-container-3">
+                        <About3 isMobile={isMobile} width={width} />
+                    </div>
+
+                    <div className='about-section-container' id="about-section-container-4">
+                        <About4 isMobile={isMobile} width={width} />
+                    </div>
+
+                    <div className='about-section-container' id="about-section-container-5">
+                        <LeftArrows />
+                        <About5 isMobile={isMobile} width={width} />
+                    </div>
+
                 </div>
 
-                <div className='about-section-container' id="about-section-container-2">
-                    <About2 isMobile={isMobile} width={width} />
+                <div className="instruction">
+                    <span>Scroll to Explore</span>
                 </div>
-
-                <div className='about-section-container' id="about-section-container-3">
-                    <About3 isMobile={isMobile} width={width} />
-                </div>
-
-                <div className='about-section-container' id="about-section-container-4">
-                    <About4 isMobile={isMobile} width={width} />
-                </div>
-
-                <div className='about-section-container' id="about-section-container-5">
-                    <LeftArrows />
-                    <About5 isMobile={isMobile} width={width} />
-                </div>
-
+            
             </div>
 
-            <div className="instruction">
-                <span>Scroll to Explore</span>
-            </div>
 
-        </div>
+        </>
 
     );
 }
