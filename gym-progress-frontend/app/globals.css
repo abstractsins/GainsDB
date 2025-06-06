@@ -3162,3 +3162,12 @@ div.nav-signal-line-left {
   bottom: 3vh;
   left: 50vw;
 }
+
+div.suggestion-container.skeleton {
+    @apply animate-pulse;
+  background-color: var(--skeleton-gray);
+}
+
+.nav-button.disabled {
+    border-radius: 5px;
+}
