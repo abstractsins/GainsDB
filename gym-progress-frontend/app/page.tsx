@@ -43,6 +43,8 @@ export default function Home() {
   // Redirect authenticated users to the dashboard
   useEffect(() => {
 
+    console.log(env);
+
     setIsInRegistration(false);
 
     const checkAuth = async () => {
@@ -79,8 +81,8 @@ export default function Home() {
     checkAuth();
     
   // Optional: log which env is running
-  console.log("ENV:", process.env.VERCEL_ENV);
-  console.log("ENV (frontend):", process.env.NEXT_PUBLIC_VERCEL_ENV);
+  // console.log("ENV:", process.env.VERCEL_ENV);
+  // console.log("ENV (frontend):", process.env.NEXT_PUBLIC_VERCEL_ENV);
 
   }, [status, session, router]);
 
