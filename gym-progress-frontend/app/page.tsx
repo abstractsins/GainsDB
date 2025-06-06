@@ -35,15 +35,13 @@ export default function Home() {
   const router = useRouter();
 
   const server = process.env.NEXT_PUBLIC_BACKEND;
-  const env = process.env.ENVIRONMENT;
+  const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
 
   const { setIsInRegistration, setIsLoggedIn } = useFooter();
 
 
   // Redirect authenticated users to the dashboard
   useEffect(() => {
-
-    console.log(env);
 
     setIsInRegistration(false);
 
@@ -80,10 +78,6 @@ export default function Home() {
     };
     checkAuth();
     
-  // Optional: log which env is running
-  console.log("ENV:", process.env.VERCEL_ENV);
-  console.log("ENV (frontend):", process.env.NEXT_PUBLIC_VERCEL_ENV);
-
   }, [status, session, router]);
 
   async function handleLogin(e: React.BaseSyntheticEvent) {
