@@ -43,7 +43,7 @@ input {
 }
 
 .splash-container {
-  background-image: url("/bg3.jpg");
+  background-image: url("/bg3.webp");
   background-size: cover;
   background-position: center;
 }
@@ -1083,7 +1083,7 @@ header.mobile-nav-header+main {
 
 div.dashboard-body {
   height: calc(100vh - 65px);
-  background-image: url("/bg5.jpg");
+  background-image: url("/bg5.webp");
   background-size: cover;
   background-repeat: repeat;
   background-position: center;
@@ -1240,7 +1240,7 @@ div.about-body-skeleton {
   left: 0;
   width: 200vw;
   height: 175vh;
-  background-image: url("/bg1.jpg");
+  background-image: url("/bg1.webp");
   background-size: 120% auto;
   background-repeat: no-repeat;
   background-position: left bottom;

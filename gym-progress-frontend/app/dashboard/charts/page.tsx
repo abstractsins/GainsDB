@@ -1,5 +1,5 @@
 import Image from "next/image";
-import weightsImg from "@/public/delaney-van-I72QeY20Q7o-unsplash.jpg"
+import weightsImg from "@/public/weights.webp"
 import { Tourney } from "next/font/google";
 
 const tourney = Tourney({

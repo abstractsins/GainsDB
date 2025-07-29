@@ -22,7 +22,7 @@ export default function About4({ isMobile, width }: Props) {
                 ? (
                     <div className="right">
                         <Image
-                            src='/notes_app_2.jpg'
+                            src='/notes_app_2.webp'
                             width={200}
                             height={300}
                             alt="image of note-taking app"
@@ -34,7 +34,7 @@ export default function About4({ isMobile, width }: Props) {
                     <div className="right">
                         {width <= 1000 && (
                             <Image
-                                src='/notes_app_2.jpg'
+                                src='/notes_app_2.webp'
                                 width={250}
                                 height={300}
                                 alt="image of note-taking app"
@@ -43,7 +43,7 @@ export default function About4({ isMobile, width }: Props) {
                         )}
                         {width > 1000 &&
                             <Image
-                                src='/notes_app_2.jpg'
+                                src='/notes_app_2.webp'
                                 width={300}
                                 height={400}
                                 alt="image of note-taking app"
