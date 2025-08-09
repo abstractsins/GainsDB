@@ -7,15 +7,6 @@ export default function Loading() {
             <li className="animate-pulse exercise-card skeleton"></li>
             <li className="animate-pulse exercise-card skeleton"></li>
             <li className="animate-pulse exercise-card skeleton"></li>
-            <li className="animate-pulse exercise-card skeleton"></li>
-            <li className="animate-pulse exercise-card skeleton"></li>
-            <li className="animate-pulse exercise-card skeleton"></li>
-            <li className="animate-pulse exercise-card skeleton"></li>
-            <li className="animate-pulse exercise-card skeleton"></li>
-            <li className="animate-pulse exercise-card skeleton"></li>
-            <li className="animate-pulse exercise-card skeleton"></li>
-            <li className="animate-pulse exercise-card skeleton"></li>
-            <li className="animate-pulse exercise-card skeleton"></li>
         </ul>
     );
 }

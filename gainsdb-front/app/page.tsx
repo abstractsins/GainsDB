@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { RiCloseFill } from "react-icons/ri";
 import Loader from "@/components/Loader";
 
+
 import { useFooter } from "@/contexts/FooterContext";
 
 const oswald = Oswald({

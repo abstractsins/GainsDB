@@ -1,9 +1,8 @@
 "use client";
 
-import { RiCloseLargeFill } from "react-icons/ri";
 import { IoClose } from "react-icons/io5";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 
 import LogWorkoutPopup from "@/components/exercises/LogWorkoutPopup";
@@ -81,55 +80,6 @@ export default function Exercises() {
   };
 
 
-  useEffect(() => {
-    const fetchExercises = async () => {
-      if (status === "loading") return;
-
-      setLoading(true);
-
-      const token = session?.user?.authToken || localStorage.getItem("token");
-
-      if (!token) {
-        setError("No authentication session found. Please log in.");
-        return;
-      }
-
-      try {
-        console.log('server: ' + server);
-        const response = await fetch(`${server}/api/user/${userId}/exercises`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch exercises");
-        }
-
-        const data: ExerciseCard[] = await response.json();
-        if (!Array.isArray(data)) throw new Error("API did not return an array");
-
-        const sortedExercises = [...data].sort((a, b) => a.name.localeCompare(b.name));
-
-        setExercises(sortedExercises);
-        setFilteredExercises(sortedExercises);
-      } catch (error: any) {
-        console.error("Error fetching exercises:", error.message);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (status === "authenticated" && session?.user?.authToken) {
-      fetchExercises();
-    }
-
-  }, [session, status, dataUpdated, userId]);
-
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
@@ -172,6 +122,57 @@ export default function Exercises() {
     setResetInnerExpansion(true);
     setTimeout(() => setResetInnerExpansion(false), 100);
   };
+
+
+
+const hasFetchedRef = useRef(false);
+
+useEffect(() => {
+  const token = session?.user?.authToken || localStorage.getItem("token");
+  if (status === "loading") return;
+  if (!token) {
+    setError("No authentication session found. Please log in.");
+    setLoading(false); // ensure we don’t get stuck if we early-return
+    return;
+  }
+
+  // If we already have data and nothing signaled a real change, skip
+  const shouldRefetch =
+    dataUpdated || !hasFetchedRef.current || exercises.length === 0;
+
+  if (!shouldRefetch) return;
+
+  const fetchExercises = async () => {
+    // Only show loader if this is a cold fetch
+    if (!hasFetchedRef.current || exercises.length === 0) setLoading(true);
+
+    try {
+      const res = await fetch(`${server}/api/user/${userId}/exercises`, {
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error((await res.json()).message || "Failed to fetch exercises");
+
+      const data: ExerciseCard[] = await res.json();
+      if (!Array.isArray(data)) throw new Error("API did not return an array");
+
+      const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name));
+      setExercises(sorted);
+      setFilteredExercises(sorted);
+      hasFetchedRef.current = true;
+    } catch (e: any) {
+      console.error("Error fetching exercises:", e.message);
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (status === "authenticated" && token) fetchExercises();
+  // Only include the minimal deps that truly affect fetching:
+}, [status, session?.user?.authToken, dataUpdated, userId]);
+
+
+
 
   return (
     <div id="exercises-page">
