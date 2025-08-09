@@ -47,12 +47,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className={`${inter.className} antialiased relative`}>
         <AuthProvider >
-          <SessionProvider refetchOnWindowFocus={false}>
             <FooterProvider>
               <ClientLoader>{children}</ClientLoader>
               <Footer />
             </FooterProvider>
-          </SessionProvider>
         </AuthProvider>
       </body>
     </html>

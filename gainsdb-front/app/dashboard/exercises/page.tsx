@@ -12,6 +12,8 @@ import ExerciseCards from "@/components/ExerciseCards";
 
 import { ExerciseCard } from "@/app/types/types";
 
+import { SessionProvider } from "next-auth/react";
+
 const server = process.env.NEXT_PUBLIC_BACKEND;
 
 export default function Exercises() {
@@ -175,6 +177,8 @@ useEffect(() => {
 
 
   return (
+              <SessionProvider refetchOnWindowFocus={false}>
+    
     <div id="exercises-page">
 
       {error && <p className="text-red-500">{error}</p>}
@@ -224,5 +228,6 @@ useEffect(() => {
       {popupLog && <div className="click-block"><LogWorkoutPopup visible={popupLog} exeId={logExeId} onClose={closeFunctions} /></div>}
 
     </div>
+    </SessionProvider>
   );
 }
