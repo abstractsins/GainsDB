@@ -12,8 +12,6 @@ import ExerciseCards from "@/components/ExerciseCards";
 
 import { ExerciseCard } from "@/app/types/types";
 
-import { SessionProvider } from "next-auth/react";
-
 const server = process.env.NEXT_PUBLIC_BACKEND;
 
 export default function Exercises() {
@@ -127,58 +125,57 @@ export default function Exercises() {
 
 
 
-const hasFetchedRef = useRef(false);
+  const hasFetchedRef = useRef(false);
 
-useEffect(() => {
-  const token = session?.user?.authToken || localStorage.getItem("token");
-  if (status === "loading") return;
-  if (!token) {
-    setError("No authentication session found. Please log in.");
-    setLoading(false); // ensure we don’t get stuck if we early-return
-    return;
-  }
-
-  // If we already have data and nothing signaled a real change, skip
-  const shouldRefetch =
-    dataUpdated || !hasFetchedRef.current || exercises.length === 0;
-
-  if (!shouldRefetch) return;
-
-  const fetchExercises = async () => {
-    // Only show loader if this is a cold fetch
-    if (!hasFetchedRef.current || exercises.length === 0) setLoading(true);
-
-    try {
-      const res = await fetch(`${server}/api/user/${userId}/exercises`, {
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error((await res.json()).message || "Failed to fetch exercises");
-
-      const data: ExerciseCard[] = await res.json();
-      if (!Array.isArray(data)) throw new Error("API did not return an array");
-
-      const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name));
-      setExercises(sorted);
-      setFilteredExercises(sorted);
-      hasFetchedRef.current = true;
-    } catch (e: any) {
-      console.error("Error fetching exercises:", e.message);
-      setError(e.message);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    const token = session?.user?.authToken || localStorage.getItem("token");
+    if (status === "loading") return;
+    if (!token) {
+      setError("No authentication session found. Please log in.");
+      setLoading(false); // ensure we don’t get stuck if we early-return
+      return;
     }
-  };
 
-  if (status === "authenticated" && token) fetchExercises();
-  // Only include the minimal deps that truly affect fetching:
-}, [status, session?.user?.authToken, dataUpdated, userId]);
+    // If we already have data and nothing signaled a real change, skip
+    const shouldRefetch =
+      dataUpdated || !hasFetchedRef.current || exercises.length === 0;
+
+    if (!shouldRefetch) return;
+
+    const fetchExercises = async () => {
+      // Only show loader if this is a cold fetch
+      if (!hasFetchedRef.current || exercises.length === 0) setLoading(true);
+
+      try {
+        const res = await fetch(`${server}/api/user/${userId}/exercises`, {
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error((await res.json()).message || "Failed to fetch exercises");
+
+        const data: ExerciseCard[] = await res.json();
+        if (!Array.isArray(data)) throw new Error("API did not return an array");
+
+        const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name));
+        setExercises(sorted);
+        setFilteredExercises(sorted);
+        hasFetchedRef.current = true;
+      } catch (e: any) {
+        console.error("Error fetching exercises:", e.message);
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (status === "authenticated" && token) fetchExercises();
+    // Only include the minimal deps that truly affect fetching:
+  }, [status, session?.user?.authToken, dataUpdated, userId]);
 
 
 
 
   return (
-              <SessionProvider refetchOnWindowFocus={false}>
-    
+
     <div id="exercises-page">
 
       {error && <p className="text-red-500">{error}</p>}
@@ -228,6 +225,5 @@ useEffect(() => {
       {popupLog && <div className="click-block"><LogWorkoutPopup visible={popupLog} exeId={logExeId} onClose={closeFunctions} /></div>}
 
     </div>
-    </SessionProvider>
   );
 }
