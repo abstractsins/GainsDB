@@ -14,6 +14,9 @@
   --core: #ffd639;
   --cardio: #ffa3af;
   --other: #712f79;
+
+  color-scheme: dark !important; 
+
 }
 
 @media (prefers-color-scheme: dark) {
