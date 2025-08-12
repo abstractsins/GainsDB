@@ -3309,3 +3309,8 @@ div.suggestion-container.skeleton {
 .nav-button.disabled {
   border-radius: 5px;
 }
+
+.suggestion-name,
+.suggestion-text {
+  color: white;
+}
