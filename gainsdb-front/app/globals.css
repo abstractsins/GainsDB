@@ -3312,5 +3312,5 @@ div.suggestion-container.skeleton {
 
 .suggestion-name,
 .suggestion-text {
-  color: white;
+  color: white !important;
 }
