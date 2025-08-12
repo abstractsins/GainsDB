@@ -237,6 +237,7 @@ export default function Home() {
           padding-top: 20px;
         }
         .login-field {
+          color: white !important;
           margin: 5px;
         }
         .login-fields-container {
