@@ -7,6 +7,7 @@ import "./globals.css";
 import AuthProvider from "../components/AuthProvider";
 import { FooterProvider } from "@/contexts/FooterContext";
 import { SessionProvider } from "next-auth/react";
+import { Analytics } from "@vercel/analytics/next"
 
 // import { Analytics } from "@vercel/analytics/react"
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <AuthProvider >
             <FooterProvider>
               <ClientLoader>{children}</ClientLoader>
+              <Analytics />
               <Footer />
             </FooterProvider>
         </AuthProvider>
