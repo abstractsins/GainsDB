@@ -158,6 +158,8 @@ const exerciseCategorizer= (exercisesArr) => {
             'cable kickback',
             'resistance band kickback',
             'step-up',
+            'leg extension',
+            'leg extensions',
             'reverse hyperextension',
             'kettlebell swing',
             'sled push',
