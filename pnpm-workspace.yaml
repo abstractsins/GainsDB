@@ -1,3 +1,8 @@
 packages:
-- gainsdb-back
-- gainsdb-front
+  - gainsdb-back
+  - gainsdb-front
+
+onlyBuiltDependencies:
+  - bcrypt
+  - sharp
+  - unrs-resolver
