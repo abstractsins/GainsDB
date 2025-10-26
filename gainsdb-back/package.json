@@ -23,5 +23,8 @@
   "packageManager": "pnpm@10.17.0",
   "engines": {
     "node": "22.x"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0"
   }
 }
