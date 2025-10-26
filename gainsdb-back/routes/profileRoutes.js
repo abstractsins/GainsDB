@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
 import pool from "../src/db.js";
