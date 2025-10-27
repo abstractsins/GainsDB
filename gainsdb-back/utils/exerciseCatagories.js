@@ -99,6 +99,7 @@ const exerciseCategorizer= (exercisesArr) => {
             'dumbbell wrist curl',
             'reverse wrist curl',
             'farmer\'s carry',
+            'farmers carry',
             'plate pinch hold'
         ],
         'lower-body': [
@@ -126,6 +127,8 @@ const exerciseCategorizer= (exercisesArr) => {
             'machine leg press',
             'sled leg press',
             'sled push',
+            'sled machine',
+            'sled reverse',
             'lunge',
             'forward lunge',
             'reverse lunge',
