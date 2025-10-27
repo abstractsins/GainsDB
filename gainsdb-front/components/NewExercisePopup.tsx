@@ -2,7 +2,7 @@
 
 import { RiCloseLargeFill } from "react-icons/ri";
 import { useSession } from "next-auth/react";
-import { ChangeEvent, ReactEventHandler, ReactHTMLElement, useState } from "react";
+import { useState } from "react";
 import Loader from "@/components/Loader";
 
 interface Props {
@@ -11,12 +11,14 @@ interface Props {
 }
 
 export default function NewExercisePopup({ visible, onClose }: Props) {
-    if (!visible) return null;
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const [error, setError] = useState<unknown>();
     const [entryValue, setEntryValue] = useState<string>("");
     const [waiting, setWaiting] = useState(false);
     const userId = session?.user?.id || localStorage.getItem("userId");
+
+    if (!visible) return null;
+    if (error) console.log(error);
 
     const server = process.env.NEXT_PUBLIC_BACKEND || `http://localhost:5000`;
 
@@ -55,8 +57,8 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
             onClose();
 
         } catch (error: any) {
-            console.error("Error fetching exercises:", error.message);
             setWaiting(false);
+            console.error("Error fetching exercises:", error.message);
             setError(error.message);
         }
 
@@ -78,7 +80,7 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
                 <span>You will only see your own exercises</span>
             </div>
             <form onSubmit={submitNewExercise}>
-                <input type="text" className="new-exercise-name" required autoFocus placeholder="exercise name..." onChange={inputHandler} />
+                <input type="text" className="new-exercise-name" id="new-exercise-name" required autoFocus placeholder="exercise name..." onChange={inputHandler} />
             </form>
             <div className="popup-footer">
                 <button type="submit" className={`${entryValue && !waiting ? 'active' : ''} popup-button`} id="submit-button" disabled={waiting} onClick={submitNewExercise}>Submit</button>

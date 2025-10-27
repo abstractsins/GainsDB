@@ -13,7 +13,9 @@
   --cardio: #ffa3af;
   --other: #712f79;
 
-  color-scheme: dark !important; 
+  color-scheme: dark !important;
+
+  --button-active: #add989;
 
 }
 
@@ -242,12 +244,19 @@ div.registration-body {
   padding: 30px;
   justify-self: center;
   margin: 30px;
+  width: 450px;
 }
 
 div.registration-body div.body-header {
   margin: 0 0 20px 0;
   padding: 20px;
   border-bottom: 1px solid whitesmoke;
+}
+
+#registration-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 div.non-dash-page {
@@ -267,9 +276,18 @@ div.registration-form-module div.module-label {
 }
 
 div.registration-form-module input {
+  background-color: var(--black);
   font-size: 18pt;
   padding: 10px;
   border-radius: 10px;
+}
+
+div.registration-form-module input:focus {
+  background-color: rgb(40, 40, 40);
+}
+
+div.registration-form-module input:disabled {
+  background-color: lightgray;
 }
 
 div.registration-form-module {
@@ -288,15 +306,15 @@ button.popup-button#submit-button {
   color: darkgray;
   border-radius: 10px;
   padding: 10px;
-  height: 80px;
-  width: 200px;
+  height: 60px;
+  width: 140px;
   transition: background-color 150ms ease-out;
   font-weight: 600;
   text-transform: uppercase;
 }
 
 button.register-button.active {
-  background-color: #add989;
+  background-color: var(--button-active);
   color: black;
 }
 
@@ -349,7 +367,7 @@ select.new-workout-field[name="exercise"] {
 }
 
 input[type="date"] {
-  padding: 20px;
+  padding: 10px;
 }
 
 .form-xl-row#weight-reps {
@@ -363,13 +381,13 @@ input[type="date"] {
 }
 
 button#submit-button.active {
-  background-color: #add989;
+  background-color: var(--button-active);
   color: black;
   font-size: 16pt;
 }
 
 button#submit-button.active:hover {
-  background-color: #35a031;
+  background-color: green;
   color: whitesmoke;
 }
 
@@ -381,10 +399,14 @@ button#submit-button.active:active {
 button.new-workout-button {
   background-color: lightgray;
   color: darkgray;
+  width: 140px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "oswald";
   border-radius: 15px;
   font-weight: 600;
-  width: 200px;
-  height: 80px;
   font-size: 20pt;
   padding: 15px 20px;
   justify-self: center;
@@ -396,13 +418,14 @@ button.new-workout-button {
 }
 
 button.new-workout-button.active {
-  background-color: rgb(0, 128, 0);
+  background-color: var(--button-active);
   color: whitesmoke;
+  color: black;
 }
 
 button.new-workout-button.active:hover {
-  /* background-color: rgba(0, 128, 64, 0.5); */
-  border: 2px solid whitesmoke;
+  background-color: green;
+  color: whitesmoke;
 }
 
 button.new-workout-button.active:active {
@@ -411,7 +434,7 @@ button.new-workout-button.active:active {
 }
 
 select.new-workout-field {
-  padding: 20px;
+  padding: 10px;
   appearance: none;
   /* Removes default styling */
   -webkit-appearance: none;
@@ -439,7 +462,7 @@ option {
 
 input#input-weight,
 input#input-reps {
-  padding: 20px;
+  padding: 10px;
 }
 
 input#input-weight {
@@ -467,14 +490,12 @@ div.form-xl-row {
   }
 
   button.new-workout-button {
-    width: 250px;
-    height: 100px;
     margin: 30px 15px;
     /* font-size: 22pt; */
   }
 
   button.new-workout-button.active:hover {
-    border: 3px solid whitesmoke;
+    border: 2px solid whitesmoke;
   }
 
   select.new-workout-field {
@@ -774,11 +795,16 @@ div#new-exercise-popup {
 
 input.new-exercise-name {
   font-size: 16pt;
-  color: black;
+  color: whitesmoke;
+  background-color: var(--black);
   padding: 10px 15px;
   margin: 15px 0;
-  width: 80%;
+  width: 100%;
   border-radius: 7px;
+}
+
+input.new-exercise-name:focus {
+  background-color: rgb(40, 40, 40);
 }
 
 div.expansion-button-container {
@@ -2433,10 +2459,6 @@ aside.mobile h2 {
     left: 0;
   }
 
-  input.new-exercise-name {
-    width: 100%;
-  }
-
   button.popup-button#submit-button {
     font-size: 14pt;
     width: 140px;
@@ -2618,7 +2640,7 @@ div.popup#demo-creds .close-button:hover {
 
 /** ABOUT PAGE MEDIA QUERIES */
 @media screen and (max-width: 2120px) {
-  #p1 .left{
+  #p1 .left {
     padding: 20px !important;
   }
 }
@@ -3313,4 +3335,31 @@ div.suggestion-container.skeleton {
 .suggestion-name,
 .suggestion-text {
   color: white !important;
+}
+
+
+
+.new-workout-field {
+  position: relative;
+  display: inline-block;
+}
+
+.new-workout-field input[type="date"] {
+  color: white;
+  background: #2a2a2a;
+  padding-right: 2rem;
+}
+
+.new-workout-field::after {
+  content: "📅"; /* or use background-image: url(...svg) */
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #06d6a0;
+  pointer-events: none;
+}
+
+.new-workout-field:hover::after {
+  color: #f77f00;
 }

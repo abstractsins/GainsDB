@@ -13,13 +13,13 @@ import { useFooter } from "@/contexts/FooterContext";
 const oswald = Oswald({
   subsets: ["latin"],
   weight: ["400", "700"],
-  display: "swap",
+  display: "block",
 });
 
 const tourney = Tourney({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700"],
-  display: "swap",
+  display: "block",
 });
 
 export default function Home() {
@@ -78,7 +78,7 @@ export default function Home() {
 
     };
     checkAuth();
-    
+
   }, [status, session, router]);
 
   async function handleLogin(e: React.BaseSyntheticEvent) {
@@ -237,9 +237,13 @@ export default function Home() {
           padding-top: 20px;
         }
         .login-field {
+          background-color: var(--black);
           color: white !important;
           margin: 5px;
         }
+         .login-field:focus{
+          background-color: rgb(45, 45, 45);          
+         }
         .login-fields-container {
           display: flex;
           align-items: center;

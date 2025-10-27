@@ -163,7 +163,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
                             type="submit"
                             disabled={waiting}
                         >
-                            Log
+                            LOG
                         </button>
                     </div>
 

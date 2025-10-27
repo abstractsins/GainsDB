@@ -160,6 +160,8 @@ const exerciseCategorizer= (exercisesArr) => {
             'step-up',
             'leg extension',
             'leg extensions',
+            'leg curl', 
+            'leg curls',
             'reverse hyperextension',
             'kettlebell swing',
             'sled push',
