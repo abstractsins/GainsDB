@@ -25,7 +25,13 @@ export default function DashboardPage() {
   const router = useRouter();
   const server = process.env.NEXT_PUBLIC_BACKEND || "http://localhost:5000";
 
+  const [leastLogged, setLeastLogged] = useState<number>(0);
+  const [mostLogged, setMostLogged] = useState<number>(0);
+  const [totalWeeks, setTotalWeeks] = useState<number>(0)
+
   const { setIsLoggedIn } = useFooter();
+
+
 
   useEffect(() => {
     console.log("🔄 Session Status:", status);
@@ -41,37 +47,53 @@ export default function DashboardPage() {
     }
 
     fetchData();
-  }, [status, session?.user?.authToken]);
 
-  const fetchData = async () => {
-    const token = session?.user?.authToken;
-    const userId = session?.user?.id;
+    async function fetchData() {
+      const token = session?.user?.authToken;
+      const userId = session?.user?.id;
 
-    if (!token || !userId) return;
+      if (!token || !userId) return;
 
-    try {
-      const response = await fetch(`${server}/api/user/${userId}/dashboard`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        const response = await fetch(`${server}/api/user/${userId}/dashboard`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch workout data");
+        if (!response.ok) {
+          throw new Error("Failed to fetch workout data");
+        }
+
+        const data: DashboardData = await response.json();
+        console.log("📊 Received Data:", data);
+        setDashboardData(data.totalWorkouts ? data : null);
+      } catch (error) {
+        console.error("❌ Error fetching dashboard data:", error);
+        setError("Failed to load dashboard data.");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data: DashboardData = await response.json();
-      console.log("📊 Received Data:", data);
-      setDashboardData(data.totalWorkouts ? data : null);
-    } catch (error) {
-      console.error("❌ Error fetching dashboard data:", error);
-      setError("Failed to load dashboard data.");
-    } finally {
-      setLoading(false);
+  }, [status, session?.user?.authToken, router, server, session?.user?.id, setIsLoggedIn]);
+
+
+  useEffect(() => {
+    if (dashboardData && dashboardData.mostLoggedExe) {
+      const numLeastLogs: number = parseInt(dashboardData?.mostLoggedExe?.slice(-1)[0]?.log_count) || 0;
+      const numMostLogs: number = parseInt(dashboardData?.mostLoggedExe?.[0].log_count) || 0;
+      setLeastLogged(numLeastLogs);
+      setMostLogged(numMostLogs);
     }
-  };
+
+    if (dashboardData && dashboardData.totalWeeks) {
+      setTotalWeeks(dashboardData?.totalWeeks);
+    }
+  }, [dashboardData])
+
 
   if (error) return <p>{error}</p>;
 
@@ -92,7 +114,7 @@ export default function DashboardPage() {
                     icon={<FaClipboardList />}
                     title="Logged Workouts"
                     value={dashboardData?.totalWorkouts || "N/A"}
-                    description={`over ${dashboardData?.totalWeeks || 0} weeks`}
+                    description={`over ${totalWeeks || 0} week${totalWeeks === 1 ? '' : 's'}`}
                     id="logged-workouts"
                   />
                 </li>
@@ -102,7 +124,7 @@ export default function DashboardPage() {
                     icon={<IoRibbon />}
                     title="Most Logged"
                     value={toTitleCase(dashboardData?.mostLoggedExe?.[0]?.exercise_name) || "N/A"}
-                    description={`${dashboardData?.mostLoggedExe?.[0]?.log_count || 0} workouts`}
+                    description={`${mostLogged || 0} workout${mostLogged === 1 ? '' : 's'}`}
                     id="most-logged"
                   />
                 </li>
@@ -112,7 +134,7 @@ export default function DashboardPage() {
                     icon={<BsExclamationTriangle />}
                     title="Least Logged"
                     value={toTitleCase(dashboardData?.mostLoggedExe?.slice(-1)[0]?.exercise_name) || "N/A"}
-                    description={`${dashboardData?.mostLoggedExe?.slice(-1)[0]?.log_count || 0} workouts`}
+                    description={`${leastLogged || 0} workout${leastLogged === 1 ? '' : 's'}`}
                     id="least-logged"
                   />
                 </li>

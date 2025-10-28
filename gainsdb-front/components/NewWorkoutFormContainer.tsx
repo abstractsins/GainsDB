@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState, useEffect, MouseEventHandler } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
 import { toTitleCase } from "@/utils/utils";
 import Loader from "@/components/Loader";
@@ -34,7 +34,7 @@ const getFormattedDate = () => {
 
 
 export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, onClose, exerciseName }: Props) {
-    const { data: session, status } = useSession(); // Get authentication session
+    const { data: session } = useSession(); // Get authentication session
     const [validForm, setValidForm] = useState(false);
     const [waiting, setWaiting] = useState(false);
     const server = process.env.NEXT_PUBLIC_BACKEND;
@@ -135,7 +135,7 @@ export default function NewWorkoutFormContainer({ visible, isMobile, isXXLarge, 
     return (
         <div className="new-workout-form-container">
 
-            {waiting && 
+            {waiting &&
                 <Loader msg={'Submitting'}></Loader>
             }
 

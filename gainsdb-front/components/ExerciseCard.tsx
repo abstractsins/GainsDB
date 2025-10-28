@@ -233,7 +233,7 @@ const ExerciseCard: React.FC<Props> = ({ exercise, isExpanded: isThisExpanded, s
                     }
 
                     {exercise &&
-                        <span className="text-[12pt] font-thin">
+                        <span className="text-[12pt]">
                             Last logged: {normalizeDate(exercise.last_logged_date, true)}
                         </span>}
 

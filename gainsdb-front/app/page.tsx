@@ -1,26 +1,12 @@
 "use client"; // Required for state & interactivity in Next.js App Router
 
 import { useRef, useEffect, useState } from "react";
-import { Oswald, Tourney } from "next/font/google";
 import { signIn, useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { RiCloseFill } from "react-icons/ri";
 import Loader from "@/components/Loader";
 
-
 import { useFooter } from "@/contexts/FooterContext";
-
-const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "block",
-});
-
-const tourney = Tourney({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "700"],
-  display: "block",
-});
 
 export default function Home() {
   const [showLogin, setShowLogin] = useState(false);
@@ -79,7 +65,7 @@ export default function Home() {
     };
     checkAuth();
 
-  }, [status, session, router]);
+  }, [status, session, router, server, setIsInRegistration]);
 
   async function handleLogin(e: React.BaseSyntheticEvent) {
     e.preventDefault();
@@ -147,8 +133,8 @@ export default function Home() {
           {waiting &&
             <Loader msg="Logging In"></Loader>
           }
-          <h1 className={tourney.className}>GainsDB</h1>
-          <h2 className={oswald.className}>Track your workouts and visualize progress!</h2>
+          <h1>GainsDB</h1>
+          <h2>Track your workouts and visualize progress!</h2>
         </div>
 
         {isClient && (
@@ -337,12 +323,13 @@ export default function Home() {
         h1 {
           user-select: none;
           font-size: 8em;
-          font-family: "Tourney";
+          font-family: var(--tourney);
         }
 
         h2 {
           font-size: 2.5em;
           user-select: none;
+          font-family: var(--oswald);
         }
 
         @media (max-width: 1699px) {

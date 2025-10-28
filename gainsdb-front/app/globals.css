@@ -1105,6 +1105,14 @@ header.mobile-nav-header+main {
 }
 
 div.dashboard-body {
+  background-image: url("data:image/webp;base64,AAA...tiny...");
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  transition: filter 300ms ease;
+}
+
+body.loaded div.dashboard-body {
   height: calc(100vh - 65px);
   background-image: url("/bg5.webp");
   background-size: cover;
@@ -1112,7 +1120,7 @@ div.dashboard-body {
   background-position: center;
   top: 0;
   left: 0;
-  /* height: 100%; */
+  filter: blur(0);
 }
 
 @media (max-aspect-ratio: 1/1) {
@@ -3338,7 +3346,8 @@ div.suggestion-container.skeleton {
 }
 
 .new-workout-field::after {
-  content: "📅"; /* or use background-image: url(...svg) */
+  content: "📅";
+  /* or use background-image: url(...svg) */
   position: absolute;
   right: 8px;
   top: 50%;
