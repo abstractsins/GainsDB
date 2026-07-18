@@ -19,8 +19,11 @@
 
   --background: #0a0a0a;
   --foreground: #ededed;
-}
 
+  /* BORDER-RADIUS */
+  --popup-border-radius: 7px;
+  --text-input-border-radius: 0px;
+}
 
 html {
   scroll-behavior: smooth;
@@ -31,6 +34,36 @@ html {
   display: none;
 }
 
+button {
+  padding: 12px 25px;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: black;
+  border-radius: 10px;
+  font-weight: 600;
+  margin: 10px;
+  width: fit-content;
+  font-family: "Oswald";
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  user-select: none;
+  font-size: 8em;
+  font-family: var(--tourney);
+}
+
+h2 {
+  font-size: 2.5vw;
+  user-select: none;
+  font-family: var(--oswald);
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -39,12 +72,11 @@ body {
 
 input {
   color: var(--foreground);
-}
-
-.splash-container {
-  background-image: url("/bg3.webp");
-  background-size: cover;
-  background-position: center;
+  font-weight: 500;
+  font-size: 1.25em;
+  padding: 10px;
+  width: 200px;
+  border: 1px solid #ccc;
 }
 
 div.image-container-coming-soon {
@@ -189,7 +221,8 @@ footer.footer {
   @apply animate-pulse;
 }
 
-.set-list-skeleton {}
+.set-list-skeleton {
+}
 
 .skeleton-row {
   border-bottom: 5px solid rgb(64, 64, 64);
@@ -266,7 +299,7 @@ div.registration-form-module input {
   background-color: var(--black);
   font-size: 18pt;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: var(--text-input-border-radius);
 }
 
 div.registration-form-module input:focus {
@@ -512,7 +545,7 @@ div.form-xl-row {
 
 /** Exercises Page */
 
-ul.exercises-ul.skeleton>li {
+ul.exercises-ul.skeleton > li {
   @apply animate-pulse;
   background-color: var(--skeleton-gray);
 }
@@ -593,13 +626,15 @@ div.workout-card-details-body.null ul {
   max-height: unset;
 }
 
-div.expanded-lvl-1 ul {}
+div.expanded-lvl-1 ul {
+}
 
 div.expanded-lvl-1 li {
   width: fit-content;
 }
 
-div.lvl-1-exe-data {}
+div.lvl-1-exe-data {
+}
 
 div.lvl-1-exe-data span {
   letter-spacing: 1.25;
@@ -1099,8 +1134,8 @@ header.mobile-nav-header {
   height: 65px;
 }
 
-header.nav-header+main,
-header.mobile-nav-header+main {
+header.nav-header + main,
+header.mobile-nav-header + main {
   margin-top: 58px !important;
 }
 
@@ -1124,7 +1159,6 @@ body.loaded div.dashboard-body {
 }
 
 @media (max-aspect-ratio: 1/1) {
-
   /* Styles for portrait mode */
   div.dashboard-body {
     background-size: cover;
@@ -2029,7 +2063,7 @@ aside.mobile h2 {
     padding: 0;
   }
 
-  .coming-soon-module#suggestions form>div {
+  .coming-soon-module#suggestions form > div {
     flex-wrap: wrap;
   }
 
@@ -2588,7 +2622,8 @@ aside.mobile h2 {
 }
 
 /* Small tablets (iPads, large phones in landscape) */
-@media (max-width: 768px) {}
+@media (max-width: 768px) {
+}
 
 div.popup#demo-creds {
   position: fixed;
@@ -2672,7 +2707,6 @@ div.popup#demo-creds .close-button:hover {
 }
 
 @media screen and (max-width: 1720px) {
-
   #p1 .left {
     /* font-size: 14pt; */
     font-size: 16pt !important;
@@ -2707,7 +2741,6 @@ div.popup#demo-creds .close-button:hover {
 }
 
 @media screen and (max-width: 1530px) {
-
   div#p1 div.right ul.about-list li {
     font-size: 12pt;
   }
@@ -2749,12 +2782,9 @@ div.popup#demo-creds .close-button:hover {
   div#nav-signal-container-left {
     left: 7vw !important;
   }
-
 }
 
 @media screen and (max-width: 1400px) {
-
-
   div.nav-signal-line {
     width: 75px !important;
     height: 75px !important;
@@ -2816,7 +2846,6 @@ div.popup#demo-creds .close-button:hover {
 }
 
 @media screen and (max-width: 1060px) {
-
   #p1 .left {
     font-size: 14pt !important;
   }
@@ -2838,7 +2867,6 @@ div.popup#demo-creds .close-button:hover {
     font-size: 9pt !important;
   }
 
-
   .sheet-icon {
     font-size: 24pt !important;
   }
@@ -2850,9 +2878,7 @@ div.popup#demo-creds .close-button:hover {
   .sheet-pretext {
     font-size: 15pt !important;
   }
-
 }
-
 
 @media screen and (max-width: 950px) {
   #p1 {
@@ -2927,9 +2953,7 @@ div.popup#demo-creds .close-button:hover {
   }
 }
 
-
 @media screen and (max-width: 512px) {
-
   #about-page {
     overflow-y: scroll !important;
   }
@@ -3000,15 +3024,13 @@ div.pin-container {
   height: 100vh;
 }
 
-
-
 /* GSAP */
 /* .body {
   height: 150vh;
 } */
 
 .circle {
-  border-radius: 50%
+  border-radius: 50%;
 }
 
 .container1 {
@@ -3071,7 +3093,6 @@ div.pin-container {
   overflow: hidden;
   position: relative;
   overflow-y: hidden;
-
 }
 
 .stretch {
@@ -3106,7 +3127,6 @@ div.pin-container {
 * {
   /* border: 1px solid red; */
 }
-
 
 /** STACK ANIMATION */
 
@@ -3221,9 +3241,6 @@ div.opaque {
   opacity: 0;
 }
 
-
-
-
 /* tech-stack.module.css */
 .glowPulse {
   /* keeps the icon centred while it scales */
@@ -3252,7 +3269,6 @@ div.opaque {
     filter: drop-shadow(0 0 0px var(--upper-body));
   }
 }
-
 
 /* * NAV SIGNAL ANIMATION */
 div.nav-signal-container {
@@ -3315,7 +3331,7 @@ div.nav-signal-line-left {
   position: absolute;
   bottom: 3vh;
   transform-origin: center;
-  transform: translateX(50%)
+  transform: translateX(50%);
 }
 
 div.suggestion-container.skeleton {
@@ -3331,8 +3347,6 @@ div.suggestion-container.skeleton {
 .suggestion-text {
   color: white !important;
 }
-
-
 
 .new-workout-field {
   position: relative;
@@ -3358,4 +3372,43 @@ div.suggestion-container.skeleton {
 
 .new-workout-field:hover::after {
   color: #f77f00;
+}
+
+@media (max-width: 1699px) {
+  h1 {
+    font-size: 6em;
+  }
+  h2 {
+    font-size: 2vw;
+  }
+}
+
+@media (max-width: 1199px) {
+  h1 {
+    font-size: 4.5em;
+  }
+  h2 {
+    font-size: 2.25vw;
+  }
+}
+
+@media (max-width: 848px) {
+  h1 {
+    font-size: 4em;
+  }
+  h2 {
+    font-size: 2.75vw;
+  }
+}
+
+@media (max-width: 753px) {
+  h2 {
+    font-size: 3.7vw;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1em;
+  }
 }
