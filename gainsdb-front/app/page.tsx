@@ -1,21 +1,29 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import CheckingUsOut from "@/components/CheckingUsOut";
 import LoginRegister from "@/components/LoginRegister";
-import { Environments } from "@/constants/general";
+import { Environments, Routes } from "@/constants/generalConstants";
 
 import styles from "./page.module.css";
 
 export default function Home() {
   const { data: session, status } = useSession();
+  const [route, setRoute] = useState<Routes | undefined>();
 
   const server = process.env.NEXT_PUBLIC_BACKEND;
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (route) {
+      console.log(route);
+      router.push("/" + route);
+    }
+  }, [route]);
 
   // Redirect authenticated users to the dashboard
   useEffect(() => {
@@ -36,17 +44,15 @@ export default function Home() {
           throw new Error("Token invalid");
         }
 
-        // Proceed as normal
         if (status === "authenticated" && session?.user?.authToken) {
           router.replace("/dashboard");
         }
       } catch (err) {
-        // Token is invalid or expired
         console.error(err);
-        localStorage.removeItem("token");
         return;
       }
     };
+
     checkAuth();
   }, [status, session, router, server]);
 
@@ -62,7 +68,7 @@ export default function Home() {
 
       <div className={`${styles.splashBody}`}>
         {/* LOGIN/REGISTER Popup */}
-        <LoginRegister />
+        <LoginRegister setRoute={setRoute} />
       </div>
     </>
   );

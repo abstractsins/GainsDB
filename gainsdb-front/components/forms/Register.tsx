@@ -1,20 +1,29 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Loader from "../Loader";
 import { useRouter } from "next/navigation";
 import { useFooter } from "@/contexts/FooterContext";
 
 import styles from "./Register.module.css";
+import { CredentialsFormData } from "@/constants/formConstants";
 
-export default function Register() {
+interface Props {
+  formData2: CredentialsFormData;
+  setFormData2: Dispatch<SetStateAction<CredentialsFormData>>;
+}
+
+export default function Register({ formData2, setFormData2 }: Props) {
   const router = useRouter();
   const [validForm, setValidForm] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+
+  // ! change this
   const [formData, setFormData] = useState({
     date: new Date(),
     username: "",
     password: "",
     confirmPassword: "",
   });
+
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const server = process.env.NEXT_PUBLIC_BACKEND;
@@ -65,7 +74,7 @@ export default function Register() {
     }
   };
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     setIsRegistering(true);
     if (formData.username.length < 3) {

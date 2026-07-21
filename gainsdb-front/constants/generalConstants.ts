@@ -3,3 +3,7 @@ export enum Environments {
   Local = "local",
   Dev = "development",
 }
+
+export enum Routes {
+  Dashboard = "dashboard",
+}
