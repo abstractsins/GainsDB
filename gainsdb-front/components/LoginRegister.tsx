@@ -7,7 +7,8 @@ import {
   blankCredentials,
   CredentialsFormData,
 } from "@/constants/formConstants";
-import { Routes } from "@/constants/generalConstants";
+import { loginRequest } from "@/utils/fetchRequests";
+import { LoginResponse } from "@/constants/fetchConstants";
 
 export enum FormState {
   Login = "login",
@@ -15,21 +16,30 @@ export enum FormState {
 }
 
 export default function LoginRegister({
-  setRoute,
+  setLoginResponse,
 }: {
-  setRoute: (route: Routes) => void;
+  setLoginResponse: (res: LoginResponse) => void;
 }) {
   const [formState, setFormState] = useState<FormState>(FormState.Login);
   const [formData, setFormData] =
     useState<CredentialsFormData>(blankCredentials);
 
-  const handleLoginSubmit = (event: React.SubmitEvent) => {
+  const handleLoginSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
 
-    //* await the login submission here
+    try {
+      const res = await loginRequest(formData);
 
-    //* if response is good, send the route along
-    setRoute(Routes.Dashboard);
+      if (res && res.ok) {
+        //* if response is good, send the route along
+        const response = await res.json();
+        setLoginResponse(response);
+      } else {
+        throw new Error("Response not ok"); //?
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleRegisterSubmit = (event: React.SubmitEvent) => {

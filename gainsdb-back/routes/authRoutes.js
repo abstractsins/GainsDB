@@ -15,7 +15,10 @@ router.post("/register", async (req, res) => {
   const normalizedUsername = username.toLowerCase();
 
   try {
-    const existingUser = await pool.query("SELECT id FROM users WHERE username = $1", [normalizedUsername]);
+    const existingUser = await pool.query(
+      "SELECT id FROM users WHERE username = $1",
+      [normalizedUsername],
+    );
 
     if (existingUser.rows.length > 0) {
       return res.status(400).json({ error: "That username is taken" });
@@ -24,40 +27,67 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await pool.query(
       "INSERT INTO users (username, password, created_on) VALUES ($1, $2, $3) RETURNING id;",
-      [normalizedUsername, hashedPassword, date]
+      [normalizedUsername, hashedPassword, date],
     );
 
     const userId = result.rows[0].id;
-    const token = jwt.sign({ userId, username: normalizedUsername }, SECRET_KEY, { expiresIn: "1m" });
+    const token = jwt.sign(
+      { userId, username: normalizedUsername },
+      SECRET_KEY,
+      { expiresIn: "1m" },
+    );
 
-    res.cookie("auth_token", token, { httpOnly: true, secure: process.env.ENVIRONMENT === "production", sameSite: "Strict" });
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: process.env.ENVIRONMENT === "production",
+      sameSite: "Strict",
+    });
 
-    res.status(201).json({ message: "User registered successfully!", user: { id: userId, username: normalizedUsername } });
+    res.status(201).json({
+      message: "User registered successfully!",
+      user: { id: userId, username: normalizedUsername },
+    });
   } catch (e) {
     console.error("Registration error", e);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-
-
 //* Login User (Generate JWT)
 router.post("/login", async (req, res) => {
-  console.log("Attempting login");
   const { username, password } = req.body;
+  console.log(">>> Attempting login, user: " + username);
 
   try {
-    const userResult = await pool.query("SELECT * FROM users WHERE username = $1", [username.toLowerCase()]);
-    if (userResult.rows.length === 0) return res.status(401).json({ error: "Invalid credentials" });
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE username = $1",
+      [username.toLowerCase()],
+    );
+    if (userResult.rows.length === 0) {
+      console.error("❌ Login unsuccessful, username not found");
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
 
     const user = userResult.rows[0];
     const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) return res.status(401).json({ error: "Invalid credentials" });
+    if (!isValidPassword) {
+      console.error("❌ Login unsuccessful, invalid credentials");
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
 
-    const token = jwt.sign({ id: user.id, username: user.username }, SECRET_KEY, { expiresIn: "3hr" });
+    const token = jwt.sign(
+      { id: user.id, username: user.username },
+      SECRET_KEY,
+      { expiresIn: "3hr" },
+    );
 
-    res.cookie("auth_token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict" });
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
     res.json({ id: user.id, username: user.username, token });
+    console.log("✅ Login successful");
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
@@ -69,6 +99,7 @@ router.get("/verify-token", (req, res) => {
   if (!authHeader) return res.status(401).send("No token");
 
   const token = authHeader.split(" ")[1];
+
   try {
     jwt.verify(token, SECRET_KEY);
     res.send("Token valid");
@@ -78,6 +109,5 @@ router.get("/verify-token", (req, res) => {
     res.status(401).send("Token expired or invalid");
   }
 });
-
 
 export default router;

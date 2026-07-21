@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useCallback, useEffect, useState } from "react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import CheckingUsOut from "@/components/CheckingUsOut";
@@ -9,14 +9,23 @@ import LoginRegister from "@/components/LoginRegister";
 import { Environments, Routes } from "@/constants/generalConstants";
 
 import styles from "./page.module.css";
+import { LoginResponse } from "@/constants/fetchConstants";
 
 export default function Home() {
   const { data: session, status } = useSession();
+  const [isLoginAuthenticated, setLoginAuthenticated] =
+    useState<boolean>(false);
   const [route, setRoute] = useState<Routes | undefined>();
 
   const server = process.env.NEXT_PUBLIC_BACKEND;
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (isLoginAuthenticated === true) {
+      signIn();
+    }
+  }, [isLoginAuthenticated]);
 
   useEffect(() => {
     if (route) {
@@ -58,6 +67,16 @@ export default function Home() {
 
   const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
 
+  const handleLoginResponse = useCallback(
+    (res: LoginResponse) => {
+      if (!res) return;
+      if (res.username && res.token) {
+        setLoginAuthenticated(true);
+      }
+    },
+    [isLoginAuthenticated, setLoginAuthenticated],
+  );
+
   return (
     <>
       {/* Popup for demo credentials */}
@@ -68,7 +87,7 @@ export default function Home() {
 
       <div className={`${styles.splashBody}`}>
         {/* LOGIN/REGISTER Popup */}
-        <LoginRegister setRoute={setRoute} />
+        <LoginRegister setLoginResponse={handleLoginResponse} />
       </div>
     </>
   );
