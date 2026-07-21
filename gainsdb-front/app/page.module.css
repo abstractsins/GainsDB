@@ -1,4 +1,4 @@
-.splashBody {
+.splashBackground {
   background-image: url("/bg3.webp");
   background-size: cover;
   background-position: center;
@@ -6,7 +6,7 @@
   height: 100vh;
 }
 
-.splashContainer {
+.splashBody {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +16,7 @@
   width: 100%;
 }
 
-.splashContainer .loginPopup {
+.splashBody .loginPopup {
   border: 3px solid var(--darkGray);
 }
 
@@ -27,16 +27,14 @@
 /* POPUP STYLES */
 .popup {
   background-color: var(--black);
-  padding: 50px;
+  padding: 30px;
   border-radius: var(--popup-border-radius);
-  margin-top: 100px;
-  min-height: 25%;
   width: 48%;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  position: relative;
   z-index: 2;
 }
 
@@ -57,8 +55,9 @@
 .loginField {
   background-color: var(--black);
   color: whitesmoke !important;
-  margin: 5px;
-  padding: 5px 10px;
+  margin: var(--margin-text-input-1);
+  padding: var(--padding-text-input-1);
+  border-radius: var(--text-input-border-radius);
 }
 .loginField:focus {
   background-color: rgb(45, 45, 45);
@@ -90,12 +89,26 @@
 }
 
 .submitButton {
-  background-color: #add989;
+  background-color: var(--action-button-enabled);
 }
 
+.submitButton:focus,
 .submitButton:hover {
-  background-color: #35a031;
-  color: whitesmoke;
+  background-color: var(--action-button-active);
+}
+
+.submitButton.disabled {
+  background-color: lightgray !important;
+  color: gray !important;
+}
+
+.submitButton.disabled:hover {
+  border-color: transparent !important;
+  cursor: unset !important;
+}
+
+.submitButton:focus-visible {
+  outline-offset: var(--outline-offset-1);
 }
 
 .loginButton:active,
@@ -107,15 +120,15 @@
 @media (max-width: 1199px) {
   .loginFieldsContainer {
     flex-direction: column;
-    gap: 0.5em;
+    gap: 0.5rem;
   }
 
   .loginField {
-    font-size: 1em;
+    font-size: 1rem;
   }
 
   .submitButton {
-    font-size: 1.25em;
+    font-size: 1.25rem;
     font-weight: 500;
   }
 }

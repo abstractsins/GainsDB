@@ -1,0 +1,12 @@
+.popup {
+  background-color: var(--black);
+  padding: 30px;
+  border-radius: var(--popup-border-radius);
+  width: 48%;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 2;
+}

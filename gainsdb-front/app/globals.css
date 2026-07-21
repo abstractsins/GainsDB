@@ -1,28 +1,54 @@
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  color-scheme: dark !important;
+
   --darkGray: #1f2421;
   --black: rgb(10, 10, 10);
   --skeleton-gray: rgb(44, 44, 44);
+  --nice-blue: rgb(147, 197, 253);
 
-  --upper-body: #00af54;
-  --lower-body: #007cbe;
-  --core: #ffd639;
-  --cardio: #ffa3af;
-  --other: #712f79;
+  --green-0: #add989;
+  --green-1: #92c965;
+  --green-2: #77c538;
+  --green-3: #00af54;
 
-  color-scheme: dark !important;
+  --blue-1: #007cbe;
 
-  --button-active: #add989;
+  --yellow-1: #ffd639;
+
+  --purple-1: #712f79;
+
+  --red-1: #ffa3af;
+
+  --upper-body: var(--green-3);
+  --lower-body: var(--blue-1);
+  --core: var(--yellow-1);
+  --cardio: var(--red-1);
+  --other: var(--purple-1);
 
   --background: #0a0a0a;
   --foreground: #ededed;
 
+  /* BUTTONS */
+  --button-active: var(--green-0);
+  --action-button-enabled: var(--green-1);
+  --action-button-active: var(--green-2);
+  --footer-link-hover: var(--nice-blue);
+
   /* BORDER-RADIUS */
   --popup-border-radius: 7px;
-  --text-input-border-radius: 0px;
+  --text-input-border-radius: 5px;
+
+  /* PADDING */
+  --padding-text-input-1: 7px 10px;
+
+  /* MARGIN */
+  --margin-text-input-1: 5px;
+
+  /* OUTLINE OFFSET */
+  --outline-offset-1: 5px;
 }
 
 html {
@@ -36,7 +62,7 @@ html {
 
 button {
   padding: 12px 25px;
-  font-size: 1.5em;
+  font-size: 1.5rem;
   cursor: pointer;
   color: black;
   border-radius: 10px;
@@ -44,6 +70,7 @@ button {
   margin: 10px;
   width: fit-content;
   font-family: "Oswald";
+  border: none;
 }
 
 form {
@@ -54,7 +81,7 @@ form {
 
 h1 {
   user-select: none;
-  font-size: 8em;
+  font-size: 8rem;
   font-family: var(--tourney);
 }
 
@@ -73,7 +100,7 @@ body {
 input {
   color: var(--foreground);
   font-weight: 500;
-  font-size: 1.25em;
+  font-size: 1.25rem;
   padding: 10px;
   width: 200px;
   border: 1px solid #ccc;
@@ -91,28 +118,11 @@ span.coming-soon {
   justify-content: center;
   font-family: "Tourney";
   margin: 50px;
-  font-size: 4em;
+  font-size: 4rem;
 }
 
 .coming-soon-img {
   border-radius: 20px;
-}
-
-button.disabled {
-  background-color: lightgray !important;
-  color: darkgray !important;
-}
-
-button.disabled:hover {
-  border-color: transparent !important;
-  cursor: unset !important;
-}
-
-.footer-link {
-  border-right: 1px solid whitesmoke;
-  border-radius: 10px;
-  color: whitesmoke;
-  @apply flex items-center justify-center hover:text-blue-300 hover:underline text-[12pt] md:text-[14pt] lg:text-[16pt] m-1 pr-6 pl-4 font-light;
 }
 
 .dashboard-link {
@@ -122,15 +132,6 @@ button.disabled:hover {
 h1.page-header {
   font-size: 28pt;
   font-family: "Oswald";
-}
-
-div.popup {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  height: 100%;
-  justify-content: space-between;
-  z-index: 100;
 }
 
 div.popup-footer {
@@ -323,7 +324,7 @@ button.popup-button#submit-button {
   background-color: lightgray;
   font-size: 16pt;
   font-family: "Oswald";
-  color: darkgray;
+  color: black;
   border-radius: 10px;
   padding: 10px;
   height: 60px;
@@ -331,16 +332,6 @@ button.popup-button#submit-button {
   transition: background-color 150ms ease-out;
   font-weight: 600;
   text-transform: uppercase;
-}
-
-button.register-button.active {
-  background-color: var(--button-active);
-  color: black;
-}
-
-button.register-button.active:hover {
-  background-color: green;
-  color: white;
 }
 
 button.register-button.active:active {
@@ -706,7 +697,7 @@ div.exercises-legend-filter {
   padding: 5px 15px;
   cursor: pointer;
   align-items: center;
-  font-size: 1em;
+  font-size: 1rem;
 }
 
 div.exercises-legend-filter:hover {
@@ -1243,7 +1234,7 @@ li.dashboard-list {
 }
 
 #logged-workouts {
-  font-size: 5em;
+  font-size: 5rem;
 }
 
 /* * ABOUT PAGE */
@@ -1257,7 +1248,7 @@ li.dashboard-list {
 
 span.app-name {
   font-family: "Tourney" !important;
-  font-size: 1.25em;
+  font-size: 1.25rem;
 }
 
 div#about-page {
@@ -1337,7 +1328,7 @@ div.about-track-skeleton {
 }
 
 span.leading-text {
-  font-size: 2em;
+  font-size: 2rem;
 }
 
 div.about-body ul.about-list {
@@ -1370,7 +1361,7 @@ div.about-section {
   height: 50vh;
   /* padding: 50px; */
   margin: 20px;
-  font-size: 1.25em;
+  font-size: 1.5rem;
 }
 
 div.about-section-skeleton {
@@ -1381,7 +1372,7 @@ div.about-section-skeleton {
   height: 50vh;
   padding: 50px;
   margin: 20px;
-  font-size: 1.25em;
+  font-size: 1.5rem;
 }
 
 .about-li-lead {
@@ -1515,13 +1506,13 @@ div.nav-arrow {
   display: flex;
   align-items: center;
   cursor: default;
-  font-size: 2em;
+  font-size: 2rem;
   position: absolute;
   bottom: 10px;
 }
 
 .nav-text {
-  font-size: 0.35em;
+  font-size: 0.35rem;
   letter-spacing: 1pt;
   margin-right: 10px;
 }
@@ -1898,7 +1889,7 @@ aside.mobile.active {
 }
 
 aside.mobile h2 {
-  font-size: 2em;
+  font-size: 2rem;
 }
 
 .hamburger-menu-container {
@@ -2265,7 +2256,7 @@ aside.mobile h2 {
   }
 
   h1.page-header {
-    font-size: 1.75em;
+    font-size: 1.75rem;
   }
 
   .dashboard-body {
@@ -2433,7 +2424,7 @@ aside.mobile h2 {
 
   li#add-exercise-card h2 {
     font-family: "Oswald";
-    font-size: 1.25em;
+    font-size: 1.25rem;
   }
 
   div.popup#new-workout-popup {
@@ -2445,7 +2436,7 @@ aside.mobile h2 {
   }
 
   div.popup#new-workout-popup h2 {
-    font-size: 2em;
+    font-size: 2rem;
     padding-bottom: 0;
   }
 
@@ -2588,7 +2579,7 @@ aside.mobile h2 {
   }
 
   div.non-dash-page h1.page-header {
-    font-size: 2em !important;
+    font-size: 2rem !important;
   }
 
   div.registration-body {
@@ -2597,7 +2588,7 @@ aside.mobile h2 {
   }
 
   .registration-form-module input {
-    font-size: 1.25em !important;
+    font-size: 1.25rem !important;
     width: 90% !important;
   }
 
@@ -3376,7 +3367,7 @@ div.suggestion-container.skeleton {
 
 @media (max-width: 1699px) {
   h1 {
-    font-size: 6em;
+    font-size: 6rem;
   }
   h2 {
     font-size: 2vw;
@@ -3385,7 +3376,7 @@ div.suggestion-container.skeleton {
 
 @media (max-width: 1199px) {
   h1 {
-    font-size: 4.5em;
+    font-size: 4.5rem;
   }
   h2 {
     font-size: 2.25vw;
@@ -3394,7 +3385,7 @@ div.suggestion-container.skeleton {
 
 @media (max-width: 848px) {
   h1 {
-    font-size: 4em;
+    font-size: 4rem;
   }
   h2 {
     font-size: 2.75vw;
@@ -3409,6 +3400,6 @@ div.suggestion-container.skeleton {
 
 @media (max-width: 480px) {
   h2 {
-    font-size: 1em;
+    font-size: 1rem;
   }
 }

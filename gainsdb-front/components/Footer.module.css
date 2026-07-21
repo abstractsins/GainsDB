@@ -1,0 +1,45 @@
+.footerLink {
+  border-right: 1px solid whitesmoke;
+  border-radius: 10px;
+  color: whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.25rem;
+  padding-right: 1.5rem;
+  padding-left: 1rem;
+  font-size: 1.5rem;
+  padding: 1rem;
+}
+
+.footerLink:hover {
+  color: var(--footer-link-hover);
+  text-decoration: underline;
+}
+
+@media (max-width: 1699px) {
+  .footerLink {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 1199px) {
+  .footerLink {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 848px) {
+  .footerLink {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 753px) {
+}
+
+@media (max-width: 480px) {
+  .footerLink {
+    font-size: 0.75rem;
+  }
+}
