@@ -27,19 +27,19 @@ export default function LoginRegister({
   const handleLoginSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
 
-    try {
-      const res = await loginRequest(formData);
+    // try {
+    //   const res = await loginRequest(formData);
 
-      if (res && res.ok) {
-        //* if response is good, send the route along
-        const response = await res.json();
-        setLoginResponse(response);
-      } else {
-        throw new Error("Response not ok"); //?
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    //   if (res && res.ok) {
+    //     //* if response is good, send the route along
+    //     const response = await res.json();
+    //     setLoginResponse(response);
+    //   } else {
+    //     throw new Error("Response not ok"); //?
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   const handleRegisterSubmit = (event: React.SubmitEvent) => {

@@ -13,8 +13,7 @@ import { LoginResponse } from "@/constants/fetchConstants";
 
 export default function Home() {
   const { data: session, status } = useSession();
-  const [isLoginAuthenticated, setLoginAuthenticated] =
-    useState<boolean>(false);
+  const [isLoginAuthenticated, setLoginAuthenticated] = useState(false);
   const [route, setRoute] = useState<Routes | undefined>();
 
   const server = process.env.NEXT_PUBLIC_BACKEND;
@@ -22,7 +21,12 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
+    // signOut();
+  }, []);
+
+  useEffect(() => {
     if (isLoginAuthenticated === true) {
+      console.log("signing in");
       signIn();
     }
   }, [isLoginAuthenticated]);
