@@ -21,13 +21,9 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // signOut();
-  }, []);
-
-  useEffect(() => {
     if (isLoginAuthenticated === true) {
       console.log("signing in");
-      signIn();
+      // signIn();
     }
   }, [isLoginAuthenticated]);
 

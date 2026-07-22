@@ -9,6 +9,7 @@ import {
 } from "@/constants/formConstants";
 import { loginRequest } from "@/utils/fetchRequests";
 import { LoginResponse } from "@/constants/fetchConstants";
+import { signIn } from "next-auth/react";
 
 export enum FormState {
   Login = "login",
@@ -26,6 +27,8 @@ export default function LoginRegister({
 
   const handleLoginSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
+
+    signIn("credentials", {});
 
     // try {
     //   const res = await loginRequest(formData);
