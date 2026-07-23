@@ -17,3 +17,7 @@ export interface LoginRequestDTO {
   username: string;
   password: string;
 }
+
+export enum Endpoints {
+  VerifyToken = "api/verify-token",
+}

@@ -1,6 +1,6 @@
 import { CredentialsFormData } from "@/constants/formConstants";
 
-import styles from "./Login.module.css";
+import styles from "@/components/LoginRegister.module.css";
 
 interface Props {
   formData: CredentialsFormData;

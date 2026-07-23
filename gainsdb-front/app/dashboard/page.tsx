@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import InfoCard from "../../components/DashboardCard";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import { IoRibbon } from "react-icons/io5";
@@ -105,6 +105,9 @@ export default function DashboardPage() {
 
   return (
     <div id="dashboard-page">
+      <button className="temp-logout" onClick={() => signOut()}>
+        LOG OUT
+      </button>
       <div className="dashboard-body">
         {loading ? (
           <DashboardLoading />

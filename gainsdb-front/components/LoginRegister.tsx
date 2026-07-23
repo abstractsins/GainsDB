@@ -1,48 +1,37 @@
 import { useState } from "react";
-import styles from "./LoginRegister.module.css";
+import { signIn } from "next-auth/react";
+
 import Login from "./forms/Login";
 import Register from "./forms/Register";
-import Loader from "./Loader";
+import Loader, { LoaderMessage } from "./Loader";
+
 import {
   blankCredentials,
   CredentialsFormData,
 } from "@/constants/formConstants";
-import { loginRequest } from "@/utils/fetchRequests";
-import { LoginResponse } from "@/constants/fetchConstants";
-import { signIn } from "next-auth/react";
+
+import styles from "./LoginRegister.module.css";
 
 export enum FormState {
   Login = "login",
   Register = "register",
 }
 
-export default function LoginRegister({
-  setLoginResponse,
-}: {
-  setLoginResponse: (res: LoginResponse) => void;
-}) {
+export default function LoginRegister() {
+  const [waiting, setWaiting] = useState(false);
   const [formState, setFormState] = useState<FormState>(FormState.Login);
   const [formData, setFormData] =
     useState<CredentialsFormData>(blankCredentials);
 
   const handleLoginSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
+    setWaiting(true);
 
-    signIn("credentials", {});
-
-    // try {
-    //   const res = await loginRequest(formData);
-
-    //   if (res && res.ok) {
-    //     //* if response is good, send the route along
-    //     const response = await res.json();
-    //     setLoginResponse(response);
-    //   } else {
-    //     throw new Error("Response not ok"); //?
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    signIn("credentials", {
+      username: formData.username,
+      password: formData.password,
+      redirect: false,
+    });
   };
 
   const handleRegisterSubmit = (event: React.SubmitEvent) => {
@@ -62,7 +51,7 @@ export default function LoginRegister({
 
   return (
     <div className={`${styles.popup} ${styles.loginPopup}`}>
-      {/* {waiting && <Loader msg={LoaderMessage.LoggingIn}></Loader>} */}
+      {waiting && <Loader msg={LoaderMessage.LoggingIn}></Loader>}
       <h1 className={`${styles.title}`}>GainsDB</h1>
       <h2>Track your workouts and visualize progress!</h2>
 

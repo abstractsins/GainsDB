@@ -3403,3 +3403,18 @@ div.suggestion-container.skeleton {
     font-size: 1rem;
   }
 }
+
+/* TEMP */
+button.temp-logout {
+  position: absolute;
+  top: 10%;
+  z-index: 1000;
+}
+
+button.temp-logout:active {
+  filter: invert();
+}
+
+button.temp-logout:hover {
+  background-color: yellow;
+}

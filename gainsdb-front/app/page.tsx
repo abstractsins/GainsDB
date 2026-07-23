@@ -1,51 +1,33 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { useSession, signOut, signIn } from "next-auth/react";
+import { useEffect } from "react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import CheckingUsOut from "@/components/CheckingUsOut";
 import LoginRegister from "@/components/LoginRegister";
+
 import { Environments, Routes } from "@/constants/generalConstants";
+import { Endpoints } from "@/constants/fetchConstants";
 
 import styles from "./page.module.css";
-import { LoginResponse } from "@/constants/fetchConstants";
 
 export default function Home() {
   const { data: session, status } = useSession();
-  const [isLoginAuthenticated, setLoginAuthenticated] = useState(false);
-  const [route, setRoute] = useState<Routes | undefined>();
-
-  const server = process.env.NEXT_PUBLIC_BACKEND;
-
   const router = useRouter();
 
-  useEffect(() => {
-    if (isLoginAuthenticated === true) {
-      console.log("signing in");
-      // signIn();
-    }
-  }, [isLoginAuthenticated]);
-
-  useEffect(() => {
-    if (route) {
-      console.log(route);
-      router.push("/" + route);
-    }
-  }, [route]);
+  const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
+  const server = process.env.NEXT_PUBLIC_BACKEND;
 
   // Redirect authenticated users to the dashboard
   useEffect(() => {
     const checkAuth = async () => {
       const token = session?.user?.authToken;
-
       if (!token) return;
 
       try {
-        const res = await fetch(`${server}/api/verify-token`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const res = await fetch(`${server}/${Endpoints.VerifyToken}`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (!res.ok) {
@@ -54,7 +36,7 @@ export default function Home() {
         }
 
         if (status === "authenticated" && session?.user?.authToken) {
-          router.replace("/dashboard");
+          router.replace(`/${Routes.Dashboard}`);
         }
       } catch (err) {
         console.error(err);
@@ -64,18 +46,6 @@ export default function Home() {
 
     checkAuth();
   }, [status, session, router, server]);
-
-  const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
-
-  const handleLoginResponse = useCallback(
-    (res: LoginResponse) => {
-      if (!res) return;
-      if (res.username && res.token) {
-        setLoginAuthenticated(true);
-      }
-    },
-    [isLoginAuthenticated, setLoginAuthenticated],
-  );
 
   return (
     <>
@@ -87,7 +57,7 @@ export default function Home() {
 
       <div className={`${styles.splashBody}`}>
         {/* LOGIN/REGISTER Popup */}
-        <LoginRegister setLoginResponse={handleLoginResponse} />
+        <LoginRegister />
       </div>
     </>
   );
