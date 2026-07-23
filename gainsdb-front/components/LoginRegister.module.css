@@ -1,26 +1,35 @@
-.popup {
-  background-color: var(--black);
-  padding: 30px;
-  border-radius: var(--popup-border-radius);
-  width: 48%;
-  margin-top: 2rem;
+.loginRegisterContainer {
+  background-color: color-mix(in srgb, var(--near-black) 95%, transparent);
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  border-radius: var(--popup-border-radius);
+  width: clamp(400px, 50%, 1000px);
+  padding: 30px;
+  margin-top: 2rem;
   z-index: 2;
-}
-
-.loginPopup {
-  background-color: rgba(17, 17, 17, 0.95);
 }
 
 .title {
   color: rgb(141, 255, 137);
+  font-size: 6rem;
+  margin-bottom: 1rem;
+}
+
+.subTitle {
+  /* font-size: clamp(2rem, 4vw, 2.5rem); */
+  font-size: 2rem;
 }
 
 .formContainer {
   margin-top: 1rem;
+}
+
+.loginRegisterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .submitButton {
@@ -71,8 +80,8 @@
 
 .loginFieldsContainer {
   display: flex;
-  align-items: center;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .loginForm {
@@ -92,9 +101,15 @@
 }
 
 @media (max-width: 1199px) {
-  .loginFieldsContainer {
-    flex-direction: column;
-    gap: 0.5rem;
+  .title {
+    font-size: 5rem;
+  }
+  .subTitle {
+    font-size: 1.75rem;
+  }
+
+  .loginRegisterContainer {
+    width: 575px;
   }
 
   .loginField {
@@ -116,5 +131,23 @@
 @media (max-width: 753px) {
   .loginPopup {
     width: 80%;
+  }
+  .loginRegisterContainer {
+    width: 85%;
+  }
+  .title {
+    font-size: 4.5rem;
+  }
+  .subTitle {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 3rem;
+  }
+  .subTitle {
+    font-size: 1rem;
   }
 }

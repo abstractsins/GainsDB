@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 // STYLES
-import "./globals.css";
+import "@/styles/global.css";
 
 // FONTS
 import {
@@ -26,6 +26,7 @@ import { Analytics } from "@vercel/analytics/next";
 import ClientLoader from "../components/ClientLoader";
 import Footer from "../components/Footer";
 import AuthProvider from "../components/AuthProvider";
+import { WaiterProvider } from "@/contexts/WaiterContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -97,7 +98,9 @@ export default function RootLayout({
       >
         <AuthProvider>
           <FooterProvider>
-            <ClientLoader>{children}</ClientLoader>
+            <ClientLoader>
+              <WaiterProvider>{children}</WaiterProvider>
+            </ClientLoader>
             <Analytics />
             <Footer />
           </FooterProvider>

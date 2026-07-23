@@ -3,7 +3,7 @@
 import styles from "./page.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Loader from "@/components/Loader";
+import Loader from "@/components/Waiter";
 
 import { useFooter } from "@/contexts/FooterContext";
 

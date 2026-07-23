@@ -3,25 +3,27 @@
 import { useEffect, useState } from "react";
 import { toTitleCase } from "@/utils/utils";
 
-export enum LoaderMessage {
-  LoggingIn = "Logging In",
+import styles from "./Waiter.module.css";
+
+export enum WaiterMessage {
+  LoggingIn = "Logging\u00A0In",
+  Off = "",
 }
 
 interface Props {
   msg: string;
 }
 
-export default function Loader({ msg }: Props) {
-  const [loadText, setLoadText] = useState(msg);
+export default function Waiter({ msg }: Props) {
+  const [waitText, setLoadText] = useState(msg);
 
   msg = msg.toLowerCase();
 
   useEffect(() => {
     setTimeout(() => {
       const cap = toTitleCase(msg);
-      console.log(cap);
-      console.log(loadText, msg);
-      switch (loadText.toLowerCase()) {
+      console.log(waitText);
+      switch (waitText.toLowerCase()) {
         case msg:
           setLoadText(cap + ".");
           break;
@@ -39,8 +41,13 @@ export default function Loader({ msg }: Props) {
   });
 
   return (
-    <div className="loader">
-      <span className="load-text">{loadText}</span>
-    </div>
+    <>
+      <div className={styles.waiterShield}></div>
+      <div className={styles.waiter}>
+        <div className={styles.waitTextWrapper}>
+          <span className={styles.waitText}>{waitText}</span>
+        </div>
+      </div>
+    </>
   );
 }

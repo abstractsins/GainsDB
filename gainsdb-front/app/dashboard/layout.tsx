@@ -8,20 +8,25 @@ import MobileNavbar from "@/components/MobileNavbar";
 import ClientLoader from "../../components/ClientLoader";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+import { useWaiter } from "@/contexts/WaiterContext";
 
 const oswald = Oswald({
   subsets: ["latin"],
   weight: ["400", "700"],
-  display: "swap"
+  display: "swap",
 });
 
 const tourney = Tourney({
   subsets: ["latin"],
   weight: ["100", "400", "700"],
-  display: "swap"
+  display: "swap",
 });
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
@@ -37,7 +42,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const closeMenu = () => setIsMenuActive(false);
 
+  const { setWaiter } = useWaiter();
+
   useEffect(() => {
+    setWaiter(false);
     setIsMobile(window.innerWidth <= 768);
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
@@ -81,22 +89,70 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <aside ref={menuRef} onBlur={closeMenu} className={`${isMobile ? "mobile" : ""} ${isMenuActive ? "active" : ""} w-64 bg-gray-900 text-white p-5 flex flex-col space-y-4`}>
-        <h2 className={`${tourney.className} text-[12pt] sm:text-[18pt] md:text-[22pt] lg:text-[28pt] xl:text-[28pt]`}>GainsDB</h2>
+      <aside
+        ref={menuRef}
+        onBlur={closeMenu}
+        className={`${isMobile ? "mobile" : ""} ${isMenuActive ? "active" : ""} w-64 bg-gray-900 text-white p-5 flex flex-col space-y-4`}
+      >
+        <h2
+          className={`${tourney.className} text-[12pt] sm:text-[18pt] md:text-[22pt] lg:text-[28pt] xl:text-[28pt]`}
+        >
+          GainsDB
+        </h2>
         <nav className="flex flex-col space-y-2">
-          <Link href="/dashboard/new-workout" className="dashboard-link hover:bg-gray-700 p-2 rounded">💪 Log Workout</Link>
-          <Link href="/dashboard/history" className="dashboard-link hover:bg-gray-700 p-2 rounded">📜 Workout History</Link>
-          <Link href="/dashboard/exercises" className="dashboard-link hover:bg-gray-700 p-2 rounded">🏋️‍♂️ Exercises</Link>
-          {charts && <Link href="/dashboard/charts" className="dashboard-link hover:bg-gray-700 p-2 rounded">📈 Charts</Link>}
-          {settings && <Link href="/dashboard/settings" className="dashboard-link hover:bg-gray-700 p-2 rounded">⚙️ Settings</Link>}
-          {comingSoon && <Link href="/dashboard/coming-soon" className="dashboard-link hover:bg-gray-700 p-2 rounded">✨ Coming Soon...</Link>}
+          <Link
+            href="/dashboard/new-workout"
+            className="dashboard-link hover:bg-gray-700 p-2 rounded"
+          >
+            💪 Log Workout
+          </Link>
+          <Link
+            href="/dashboard/history"
+            className="dashboard-link hover:bg-gray-700 p-2 rounded"
+          >
+            📜 Workout History
+          </Link>
+          <Link
+            href="/dashboard/exercises"
+            className="dashboard-link hover:bg-gray-700 p-2 rounded"
+          >
+            🏋️‍♂️ Exercises
+          </Link>
+          {charts && (
+            <Link
+              href="/dashboard/charts"
+              className="dashboard-link hover:bg-gray-700 p-2 rounded"
+            >
+              📈 Charts
+            </Link>
+          )}
+          {settings && (
+            <Link
+              href="/dashboard/settings"
+              className="dashboard-link hover:bg-gray-700 p-2 rounded"
+            >
+              ⚙️ Settings
+            </Link>
+          )}
+          {comingSoon && (
+            <Link
+              href="/dashboard/coming-soon"
+              className="dashboard-link hover:bg-gray-700 p-2 rounded"
+            >
+              ✨ Coming Soon...
+            </Link>
+          )}
         </nav>
       </aside>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
         {/* Navbar */}
-        {isMobile ? <MobileNavbar sidebar={{ isMenuActive, setIsMenuActive }} /> : <Navbar />}
+        {isMobile ? (
+          <MobileNavbar sidebar={{ isMenuActive, setIsMenuActive }} />
+        ) : (
+          <Navbar />
+        )}
         <ClientLoader>
           <main className="overflow-auto">{children}</main>
         </ClientLoader>

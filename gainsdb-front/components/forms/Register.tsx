@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import Loader from "../Loader";
+import Loader from "../Waiter";
 import { useRouter } from "next/navigation";
 import { useFooter } from "@/contexts/FooterContext";
 
