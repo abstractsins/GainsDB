@@ -7,3 +7,9 @@ export enum Environments {
 export enum Routes {
   Dashboard = "dashboard",
 }
+
+export enum InputTypes {
+  Text = "text",
+  Password = "password",
+  Number = "number",
+}

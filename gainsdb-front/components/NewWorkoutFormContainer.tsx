@@ -12,7 +12,7 @@ interface Props {
   onClose: null | (() => void);
 }
 
-interface FormData {
+interface NewWorkoutFormData {
   date: string;
   exercise: string;
   weight: string;
@@ -127,7 +127,7 @@ export default function NewWorkoutFormContainer({
     }
   };
 
-  const formComplete = (formData: FormData): boolean => {
+  const formComplete = (formData: NewWorkoutFormData): boolean => {
     return (
       formData.date.trim() !== "" &&
       formData.exercise.trim() !== "" &&

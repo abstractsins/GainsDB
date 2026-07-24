@@ -8,7 +8,7 @@ import Loader from "@/components/Waiter";
 import { useFooter } from "@/contexts/FooterContext";
 
 export default function Register() {
-  interface FormData {
+  interface RegisterFormData {
     date: Date;
     username: string;
     password: string;

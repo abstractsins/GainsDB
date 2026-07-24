@@ -4,11 +4,14 @@
 :root {
   color-scheme: dark !important;
 
-  --darkGray: #1f2421;
   --black: rgb(10, 10, 10);
   --near-black: rgb(17, 17, 17);
   --skeleton-gray: rgb(44, 44, 44);
   --nice-blue: rgb(147, 197, 253);
+
+  --darkGray: #1f2421;
+  --lightGray1: #878787;
+  --lightGray2: #434343;
 
   --green-0: #add989;
   --green-1: #92c965;
@@ -22,6 +25,8 @@
   --purple-1: #712f79;
 
   --red-1: #ffa3af;
+
+  --silver-light: rgb(215, 215, 215);
 
   --upper-body: var(--green-3);
   --lower-body: var(--blue-1);
@@ -44,6 +49,7 @@
 
   /* PADDING */
   --padding-text-input-1: 7px 10px;
+  --padding-text-input-2: 10px;
   --padding-submit-button: 8px 25px;
 
   /* MARGIN */
@@ -318,7 +324,7 @@ div.registration-form-module {
 }
 
 p.field-subtitle {
-  margin: 5px 0 10px 0;
+  margin: 0 0 1rem 0;
 }
 
 button.register-button,

@@ -23,7 +23,7 @@ export default function Footer() {
   // const router = useRouter();
   // const { pathname, asPath } = router;
 
-  const { isLoggedIn, isInRegistration, setIsInRegistration } = useFooter();
+  const { isLoggedIn } = useFooter();
 
   return (
     <footer className="footer">
@@ -34,23 +34,7 @@ export default function Footer() {
         >
           Logout
         </button>
-      ) : isInRegistration ? (
-        <Link
-          href="/"
-          onClick={() => setIsInRegistration(false)}
-          className={`${styles.footerLink} ${oswald.className}`}
-        >
-          Login
-        </Link>
-      ) : (
-        <Link
-          href="/register"
-          onClick={() => setIsInRegistration(true)}
-          className={`${styles.footerLink} ${oswald.className}`}
-        >
-          Register
-        </Link>
-      )}
+      ) : null}
       <Link
         href="/about"
         className={`${styles.footerLink} ${oswald.className}`}

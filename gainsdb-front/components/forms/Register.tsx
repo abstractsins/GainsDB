@@ -1,10 +1,12 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import Loader from "../Waiter";
 import { useRouter } from "next/navigation";
+
+import { CredentialsFormData } from "@/constants/formConstants";
+
 import { useFooter } from "@/contexts/FooterContext";
 
-import styles from "./Register.module.css";
-import { CredentialsFormData } from "@/constants/formConstants";
+import styles from "@/components/LoginRegister.module.css";
+import Loader from "@/components/Waiter";
 
 interface Props {
   formData2: CredentialsFormData;
@@ -219,17 +221,6 @@ export default function Register({ formData2, setFormData2 }: Props) {
               )}
             </div>
           </div>
-        </div>
-
-        {/* Register Button */}
-        <div className="registration-footer">
-          <button
-            className={`${styles.registerBbutton} ${validForm ? styles.enabled : ""} ${isRegistering || isRedirecting ? styles.disabled : ""}`}
-            type="submit"
-            disabled={!validForm || isRegistering || isRedirecting}
-          >
-            Register
-          </button>
         </div>
       </form>
     </div>

@@ -5,23 +5,18 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 type FooterContextType = {
   isLoggedIn: boolean;
-  isInRegistration: boolean;
   setIsLoggedIn: (val: boolean) => void;
-  setIsInRegistration: (val: boolean) => void;
 };
 
 const FooterContext = createContext<FooterContextType | undefined>(undefined);
 
 export const FooterProvider = ({ children }: { children: ReactNode }) => {
-  const [isInRegistration, setIsInRegistration] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <FooterContext.Provider
       value={{
         isLoggedIn,
-        isInRegistration,
         setIsLoggedIn,
-        setIsInRegistration,
       }}
     >
       {children}
