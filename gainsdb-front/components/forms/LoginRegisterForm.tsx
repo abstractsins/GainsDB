@@ -13,6 +13,9 @@ interface Props {
   formData: CredentialsFormData;
   setFormData: Dispatch<SetStateAction<CredentialsFormData>>;
   setFormValid: Dispatch<SetStateAction<boolean>>;
+  loginError: string | undefined;
+  registrationError: string | undefined;
+  formStateChange: () => void;
 }
 
 export default function LoginRegisterForm({
@@ -20,6 +23,9 @@ export default function LoginRegisterForm({
   formData,
   setFormData,
   setFormValid,
+  loginError,
+  registrationError,
+  formStateChange,
 }: Props) {
   const [credentialFormStrings, setCredentialFormStrings] =
     useState<Record<string, string>>();
@@ -51,8 +57,6 @@ export default function LoginRegisterForm({
 
   // Confirm password validation function
   const validateConfirmPassword = (confirmPassword: string) => {
-    console.log(confirmPassword);
-    console.log(formData.password);
     if (confirmPassword !== formData.password) {
       setConfirmPasswordError("Passwords do not match.");
       setConfirmPasswordValid(false);
@@ -127,6 +131,7 @@ export default function LoginRegisterForm({
   useEffect(() => {
     const strings = cacheStrings(formState);
     setCredentialFormStrings(strings);
+    formStateChange();
   }, [formState]);
 
   // Clear the confirmation password field if 'create password' becomes invalid
@@ -176,12 +181,20 @@ export default function LoginRegisterForm({
         onChange={handleChange}
         required
       />
+      {formState === FormState.Login && (
+        <div className={styles.errorMessageWrapper}>
+          <p className={`${styles.fieldSubtitle} error`}>{loginError}</p>
+        </div>
+      )}
       {formState === FormState.Register && (
-        <div className={styles.passwordErrorWrapper}>
-          {passwordError ? (
-            <p className="field-subtitle error">{passwordError}</p>
-          ) : (
-            <p className="field-subtitle"></p>
+        <div className={styles.errorMessageWrapper}>
+          {passwordError && (
+            <p className={`${styles.fieldSubtitle} error`}>{passwordError}</p>
+          )}
+          {registrationError && (
+            <p className={`${styles.fieldSubtitle} error`}>
+              {registrationError}
+            </p>
           )}
         </div>
       )}
@@ -200,11 +213,9 @@ export default function LoginRegisterForm({
             readOnly={!isPasswordValid}
             required
           />
-          <div className={styles.passwordErrorWrapper}>
-            {isPasswordValid && confirmPasswordError ? (
-              <p className="field-subtitle error">{confirmPasswordError}</p>
-            ) : (
-              <p className="field-subtitle"></p>
+          <div className={styles.errorMessageWrapper}>
+            {isPasswordValid && confirmPasswordError && (
+              <p className={styles.fieldSubtitle}>{confirmPasswordError}</p>
             )}
           </div>
           <div className={styles.registrationNotesWrapper}>

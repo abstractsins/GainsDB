@@ -46,9 +46,9 @@
   pointer-events: none;
 }
 
-.submitButton:focus:not([aria-disabled="true"]),
 .submitButton:hover {
-  background-color: var(--action-button-active);
+  outline-offset: var(--outline-offset-button-1);
+  outline: 2px solid whitesmoke;
 }
 
 .submitButton.disabled {
@@ -62,13 +62,12 @@
 }
 
 .submitButton:focus-visible {
-  outline-offset: var(--outline-offset-1);
+  outline-offset: var(--outline-offset-button-1);
 }
 
-.loginButton:active,
-.submitButton:active {
-  background-color: whitesmoke;
-  color: black;
+button.submitButton:active {
+  background-color: var(--action-button-active);
+  outline: none;
 }
 
 .loginContainer {
@@ -92,7 +91,7 @@
 
 .credentialField:focus-visible {
   outline: 2px solid var(--lower-body);
-  outline-offset: 2px;
+  outline-offset: var(--outline-offset-fields-1);
 }
 
 .credentialField[aria-disabled="true"] {
@@ -119,15 +118,6 @@
   flex-direction: column;
   gap: 10px;
   align-items: center;
-}
-
-.loginButton:hover {
-  background-color: #add8e6;
-  color: black;
-}
-.loginButton {
-  background-color: rgb(98, 129, 139);
-  color: whitesmoke;
 }
 
 .credentialsPromptWrapper {
@@ -161,7 +151,7 @@ span.formStateSwitch:focus {
 }
 
 span.formStateSwitch:focus-visible {
-  outline-offset: 2px;
+  outline-offset: var(--outline-offset-fields-1);
   outline: 2px solid var(--lower-body);
   border-radius: 5px;
   text-decoration: underline;
@@ -184,11 +174,18 @@ li.registrationNoteItem {
   color: silver;
 }
 
-.passwordErrorWrapper {
-  max-width: inherit;
+.errorMessageWrapper {
   display: flex;
+  justify-content: center;
+  max-width: inherit;
   flex-wrap: wrap;
   color: var(--core);
+  height: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.fieldSubtitle {
+  margin: 0;
 }
 
 @media (max-width: 1199px) {
@@ -241,7 +238,10 @@ li.registrationNoteItem {
   .subTitle {
     font-size: 1rem;
   }
-  .credentialsPrompt {
+
+  li.registrationNoteItem,
+  .credentialsPrompt,
+  .fieldSubtitle {
     font-size: 0.85rem;
   }
 }

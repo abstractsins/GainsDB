@@ -14,6 +14,8 @@ router.post("/register", async (req, res) => {
   const { username, password, date } = req.body;
   const normalizedUsername = username.toLowerCase();
 
+  console.log(">>> Attempting registration, user:  " + username);
+
   try {
     const existingUser = await pool.query(
       "SELECT id FROM users WHERE username = $1",
@@ -21,7 +23,10 @@ router.post("/register", async (req, res) => {
     );
 
     if (existingUser.rows.length > 0) {
-      return res.status(400).json({ error: "That username is taken" });
+      console.error("❌ Registration unsuccessful, username already exists");
+      return res
+        .status(400)
+        .json({ status: 400, error: "That username is taken" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,6 +42,8 @@ router.post("/register", async (req, res) => {
       { expiresIn: "1m" },
     );
 
+    console.warn("✅ Registration successful. New user Id: " + userId);
+
     res.cookie("auth_token", token, {
       httpOnly: true,
       secure: process.env.ENVIRONMENT === "production",
@@ -44,12 +51,13 @@ router.post("/register", async (req, res) => {
     });
 
     res.status(201).json({
+      status: 201,
       message: "User registered successfully!",
       user: { id: userId, username: normalizedUsername },
     });
   } catch (e) {
-    console.error("Registration error", e);
-    res.status(500).json({ error: "Server error" });
+    console.error("❌ Registration unsuccessful: ", e);
+    res.status(500).json({ status: 500, error: "Server error" });
   }
 });
 

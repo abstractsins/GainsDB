@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 
 import LoginRegisterForm from "./forms/LoginRegisterForm";
-import Register from "./forms/Register";
+import Register from "./forms/RegistrationFields";
 
 import {
   blankCredentials,
@@ -13,6 +13,8 @@ import styles from "./LoginRegister.module.css";
 import { useWaiter } from "@/contexts/WaiterContext";
 import { WaiterMessage } from "./Waiter";
 import { useFooter } from "@/contexts/FooterContext";
+import { registrationRequest } from "@/utils/fetchRequests";
+import { LoginError, RegistrationError } from "@/constants/errorMessages";
 
 export enum FormState {
   Login = "login",
@@ -24,13 +26,21 @@ export default function LoginRegister() {
   const [formData, setFormData] =
     useState<CredentialsFormData>(blankCredentials);
   const [isFormValid, setFormValid] = useState(false);
+  const [loginError, setLoginError] = useState<string>();
+  const [registrationError, setRegistrationError] = useState<string>();
 
   const { setWaiter, isWaiting } = useWaiter();
 
   const { setIsLoggedIn } = useFooter();
 
+  const formStateChange = () => {
+    setRegistrationError(undefined);
+    setLoginError(undefined);
+  };
+
   const handleLoginSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
+    setLoginError(undefined);
     setWaiter(WaiterMessage.LoggingIn);
 
     const user = await signIn("credentials", {
@@ -42,14 +52,14 @@ export default function LoginRegister() {
     if (!user || !user.ok) {
       setWaiter(false);
       // handle authentication error notification
-      // TODO make custom modal?
+      // TODO make custom modal? or just inline messaging
       if (user) {
         switch (user.status) {
           case 401:
-            alert("Authentication error 401: Invalid credentials");
+            setLoginError(LoginError.InvalidCredentials);
             break;
           case 500:
-            alert("Response 500: Server Error");
+            setLoginError(LoginError.Server);
             break;
         }
       }
@@ -58,8 +68,38 @@ export default function LoginRegister() {
     }
   };
 
-  const handleRegisterSubmit = (event: React.SubmitEvent) => {
+  const handleRegisterSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
+    setRegistrationError(undefined);
+    setWaiter(WaiterMessage.Registering);
+
+    const response = await registrationRequest({
+      username: formData.username,
+      password: formData.password,
+      date: new Date(),
+    });
+
+    setWaiter(false);
+
+    if (!response) {
+      alert("error registering");
+    } else {
+      if (response.status !== 201) {
+        switch (response.status) {
+          case 400:
+            setRegistrationError(RegistrationError.NameTaken);
+            break;
+          case 500:
+            setRegistrationError(RegistrationError.Server);
+            break;
+          default:
+            setRegistrationError(RegistrationError.Unknown);
+        }
+      } else {
+        alert(response.message);
+        console.log(response);
+      }
+    }
   };
 
   const handleFormSubmission = (event: React.SubmitEvent) => {
@@ -137,6 +177,9 @@ export default function LoginRegister() {
             formData={formData}
             setFormData={setFormData}
             setFormValid={setFormValid}
+            loginError={loginError}
+            registrationError={registrationError}
+            formStateChange={formStateChange}
           />
 
           <button

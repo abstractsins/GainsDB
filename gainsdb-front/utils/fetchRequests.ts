@@ -3,14 +3,17 @@ import {
   FetchMethods,
   LoginRequestDTO,
   LoginResponse,
+  RegistrationRequestDTO,
+  RegistrationResponse,
 } from "@/constants/fetchConstants";
+
+import { Endpoints } from "@/constants/fetchConstants";
 
 const server = process.env.NEXT_PUBLIC_BACKEND;
 
 export const loginRequest = async (reqBody: LoginRequestDTO) => {
-  console.log("LOGIN REQUEST");
   try {
-    const res = await fetch(`${server}/api/login`, {
+    const res = await fetch(`${server}/${Endpoints.Login}`, {
       method: FetchMethods.POST,
       headers: ContentTypeAppJson,
       body: JSON.stringify(reqBody),
@@ -26,8 +29,6 @@ export const loginRequest = async (reqBody: LoginRequestDTO) => {
       throw new Error("Invalid user response from backend");
     }
 
-    console.log(user);
-
     return {
       id: String(user.id),
       username: user.username,
@@ -37,6 +38,30 @@ export const loginRequest = async (reqBody: LoginRequestDTO) => {
     };
   } catch (error) {
     console.error("🔴 Authentication Error:", error);
+    return null;
+  }
+};
+
+export const registrationRequest = async (reqBody: RegistrationRequestDTO) => {
+  try {
+    const res = await fetch(`${server}/${Endpoints.Register}`, {
+      method: FetchMethods.POST,
+      headers: ContentTypeAppJson,
+      body: JSON.stringify(reqBody),
+    });
+
+    if (!res.ok) {
+    }
+
+    const response: RegistrationResponse = await res.json();
+
+    if (!response) {
+      throw new Error("Invalid user response from backend");
+    }
+
+    return response;
+  } catch (error) {
+    console.error("🔴 Registration Error:", error);
     return null;
   }
 };

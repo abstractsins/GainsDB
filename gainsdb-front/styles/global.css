@@ -17,6 +17,7 @@
   --green-1: #92c965;
   --green-2: #77c538;
   --green-3: #00af54;
+  --green-4: #275b40;
 
   --blue-1: #007cbe;
 
@@ -39,8 +40,8 @@
 
   /* BUTTONS */
   --button-active: var(--green-0);
-  --action-button-enabled: var(--green-1);
-  --action-button-active: var(--green-2);
+  --action-button-enabled: var(--upper-body);
+  --action-button-active: var(--green-4);
   --footer-link-hover: var(--nice-blue);
 
   /* BORDER-RADIUS */
@@ -56,7 +57,8 @@
   --margin-text-input-1: 5px;
 
   /* OUTLINE OFFSET */
-  --outline-offset-1: 5px;
+  --outline-offset-button-1: 5px;
+  --outline-offset-fields-1: 2px;
 }
 
 html {
@@ -248,117 +250,6 @@ footer.footer {
   padding: 20px;
 }
 
-/** REGISTRATION */
-div.non-dash-page {
-  padding: 30px;
-}
-
-div.non-dash-page div.header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-div.non-dash-page div.header h1 {
-  font-family: "Oswald";
-  font-size: 44pt;
-}
-
-div.registration-body {
-  position: relative;
-  background-color: #1f2421;
-  border-radius: 20px;
-  padding: 30px;
-  justify-self: center;
-  margin: 30px;
-  width: 450px;
-}
-
-div.registration-body div.body-header {
-  margin: 0 0 20px 0;
-  padding: 20px;
-  border-bottom: 1px solid whitesmoke;
-}
-
-#registration-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-div.non-dash-page {
-  height: 95vh;
-}
-
-div.registration-body li {
-  list-style: disc;
-}
-
-div.registration-form-module div.module-label span {
-  font-size: 18pt;
-}
-
-div.registration-form-module div.module-label {
-  /* margin: 10px 0 5px 0; */
-}
-
-div.registration-form-module input {
-  background-color: var(--black);
-  font-size: 18pt;
-  padding: 10px;
-  border-radius: var(--text-input-border-radius);
-}
-
-div.registration-form-module input:focus {
-  background-color: rgb(40, 40, 40);
-}
-
-div.registration-form-module input:disabled {
-  background-color: lightgray;
-}
-
-div.registration-form-module {
-  margin: 15px;
-}
-
-p.field-subtitle {
-  margin: 0 0 1rem 0;
-}
-
-button.register-button,
-button.popup-button#submit-button {
-  background-color: lightgray;
-  font-size: 16pt;
-  font-family: "Oswald";
-  color: black;
-  border-radius: 10px;
-  padding: 10px;
-  height: 60px;
-  width: 140px;
-  transition: background-color 150ms ease-out;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-button.register-button.active:active {
-  background-color: whitesmoke;
-  color: black;
-}
-
-div.registration-footer {
-  display: flex;
-  padding: 20px;
-  justify-content: center;
-}
-
-p.field-subtitle {
-  font-size: 10pt;
-  font-style: italic;
-  height: 20px;
-}
-
 /** NEW SET */
 form#new-set-form {
   border-radius: 10px;
@@ -397,22 +288,6 @@ input[type="date"] {
 .form-xl-row#footer {
   display: flex;
   justify-content: center;
-}
-
-button#submit-button.active {
-  background-color: var(--button-active);
-  color: black;
-  font-size: 16pt;
-}
-
-button#submit-button.active:hover {
-  background-color: green;
-  color: whitesmoke;
-}
-
-button#submit-button.active:active {
-  background-color: whitesmoke;
-  color: black;
 }
 
 button.new-workout-button {
@@ -2487,12 +2362,6 @@ aside.mobile h2 {
     left: 0;
   }
 
-  button.popup-button#submit-button {
-    font-size: 14pt;
-    width: 140px;
-    height: 70px;
-  }
-
   div#about-page {
     width: 100vw;
     height: unset;
@@ -2584,34 +2453,6 @@ aside.mobile h2 {
   .about-body .img-app-window,
   .about-body .img-notes-app {
     margin: 0px;
-  }
-
-  div.non-dash-page h1.page-header {
-    font-size: 2rem !important;
-  }
-
-  div.registration-body {
-    width: 90vw;
-    padding: 15px;
-  }
-
-  .registration-form-module input {
-    font-size: 1.25rem !important;
-    width: 90% !important;
-  }
-
-  div.registration-form-module div.module-label span {
-    font-size: 14pt;
-  }
-
-  button.register-button {
-    width: 150px;
-    font-size: 14pt;
-  }
-
-  div.non-dash-page {
-    padding-bottom: 150px;
-    overflow: scroll;
   }
 
   .link:active {
