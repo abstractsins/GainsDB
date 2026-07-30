@@ -27,14 +27,12 @@ export default function Footer() {
 
   return (
     <footer className="footer">
-      {isLoggedIn ? (
-        <button
-          onClick={() => signOut({ callbackUrl: "/" })}
-          className={`${styles.footerLink} ${oswald.className}`}
-        >
-          Logout
-        </button>
-      ) : null}
+      <button
+        onClick={() => signOut({ callbackUrl: "/" })}
+        className={`${styles.footerLink} ${oswald.className}`}
+      >
+        Logout
+      </button>
       <Link
         href="/about"
         className={`${styles.footerLink} ${oswald.className}`}

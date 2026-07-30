@@ -3,10 +3,12 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { charMin, CredentialsFormData } from "@/constants/formConstants";
 import { InputTypes } from "@/constants/generalConstants";
 import { charMax } from "@/constants/formConstants";
+import { cacheLoginRegisterFormStrings as cacheStrings } from "@/constants/formConstants";
 
 import { FormState } from "@/components/LoginRegister";
 import styles from "@/components/LoginRegister.module.css";
-import { FORMERR } from "dns";
+
+import RegistrationFields from "./RegistrationFields";
 
 interface Props {
   formState: FormState;
@@ -27,33 +29,14 @@ export default function LoginRegisterForm({
   registrationError,
   formStateChange,
 }: Props) {
-  const [credentialFormStrings, setCredentialFormStrings] =
-    useState<Record<string, string>>();
   const [isPasswordValid, setPasswordValid] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isConfirmPasswordValid, setConfirmPasswordValid] = useState(false);
   const [isValidUsername, setValidUsername] = useState(false);
-
-  //* create utility for loading the placeholder/label/etc strings into an object for easy referencing inline
-  const cacheStrings = (formState: FormState): Record<string, string> => {
-    const loginStrings = {
-      placeholderUsername: "Username",
-      placeholderPassword: "Password",
-    };
-    const registerStrings = {
-      placeholderUsername: "Create username",
-      placeholderPassword: "Create password",
-      placeholderConfirmPassword: "Confirm password",
-    };
-
-    if (formState === FormState.Login) {
-      return loginStrings;
-    } else if (formState === FormState.Register) {
-      return registerStrings;
-    }
-    return {};
-  };
+  const [credentialFormStrings, setCredentialFormStrings] = useState<
+    Record<string, string>
+  >(cacheStrings(FormState.Login));
 
   // Confirm password validation function
   const validateConfirmPassword = (confirmPassword: string) => {
@@ -100,6 +83,7 @@ export default function LoginRegisterForm({
     }
   };
 
+  // Handle form input
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
@@ -132,6 +116,7 @@ export default function LoginRegisterForm({
     const strings = cacheStrings(formState);
     setCredentialFormStrings(strings);
     formStateChange();
+    setConfirmPasswordValid(false);
   }, [formState]);
 
   // Clear the confirmation password field if 'create password' becomes invalid
@@ -145,9 +130,7 @@ export default function LoginRegisterForm({
     if (formState === FormState.Register) {
       // Validate Form
       setFormValid(
-        isValidUsername &&
-          isPasswordValid &&
-          validateConfirmPassword(formData.passwordConfirm || ""),
+        isValidUsername && isPasswordValid && isConfirmPasswordValid,
       );
       // Clear password confirm error if field is empty
       if (formData.passwordConfirm === "") {
@@ -187,48 +170,15 @@ export default function LoginRegisterForm({
         </div>
       )}
       {formState === FormState.Register && (
-        <div className={styles.errorMessageWrapper}>
-          {passwordError && (
-            <p className={`${styles.fieldSubtitle} error`}>{passwordError}</p>
-          )}
-          {registrationError && (
-            <p className={`${styles.fieldSubtitle} error`}>
-              {registrationError}
-            </p>
-          )}
-        </div>
-      )}
-      {formState === FormState.Register && (
-        <>
-          <input
-            className={styles.credentialField}
-            type={InputTypes.Password}
-            placeholder={credentialFormStrings?.placeholderConfirmPassword}
-            name="passwordConfirm"
-            value={formData.passwordConfirm || ""}
-            autoCorrect="off"
-            spellCheck="false"
-            onChange={(e) => (isPasswordValid ? handleChange(e) : null)}
-            aria-disabled={!isPasswordValid} // Disable until password is valid
-            readOnly={!isPasswordValid}
-            required
-          />
-          <div className={styles.errorMessageWrapper}>
-            {isPasswordValid && confirmPasswordError && (
-              <p className={styles.fieldSubtitle}>{confirmPasswordError}</p>
-            )}
-          </div>
-          <div className={styles.registrationNotesWrapper}>
-            <ul className={styles.registrationNotesList}>
-              <li className={styles.registrationNoteItem}>
-                We store only the data you enter.
-              </li>
-              <li className={styles.registrationNoteItem}>
-                No email or personal info required.
-              </li>
-            </ul>
-          </div>
-        </>
+        <RegistrationFields
+          passwordError={passwordError}
+          registrationError={registrationError}
+          isPasswordValid={isPasswordValid}
+          confirmPasswordError={confirmPasswordError}
+          credentialFormStrings={credentialFormStrings}
+          formData={formData}
+          handleChange={handleChange}
+        />
       )}
     </div>
   );

@@ -27,6 +27,7 @@
   font-family: monospace;
   font-size: 20pt;
   color: var(--black);
+  visibility: hidden;
 }
 
 @media (max-width: 753px) {

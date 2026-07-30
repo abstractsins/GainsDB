@@ -11,22 +11,44 @@ interface WaiterContextProps {
 const WaiterContext = createContext<WaiterContextProps | undefined>(undefined);
 
 export const WaiterProvider = ({ children }: { children: ReactNode }) => {
-  const [waiterText, setWaiterText] = useState("");
+  const [waiterText, setWaiterText] = useState<WaiterMessage | null>(null);
   const [isWaiting, setIsWaiting] = useState(false);
+
+  const msgPositioner = (el: HTMLElement) => {
+    const bounds = el.getBoundingClientRect();
+    const width = bounds.width;
+    const halfWidth = width / 2;
+    const elContainer = el.parentElement;
+    if (elContainer) {
+      elContainer.style.transform = "translateX(-" + halfWidth + "px)";
+    }
+  };
+
+  const setTextWrapperElement = (el: HTMLElement) => {
+    if (el.textContent) {
+      msgPositioner(el);
+      el.style.visibility = "visible";
+    }
+  };
 
   const setWaiter = (setting: WaiterMessage | false) => {
     if (typeof setting === "string") {
       setWaiterText(setting);
       setIsWaiting(true);
     } else if (setting === false) {
-      setWaiterText("");
+      setWaiterText(null);
       setIsWaiting(false);
     }
   };
 
   return (
     <WaiterContext.Provider value={{ setWaiter, isWaiting }}>
-      {waiterText && <Waiter msg={waiterText} />}
+      {waiterText && (
+        <Waiter
+          msg={waiterText}
+          setTextWrapperElement={setTextWrapperElement}
+        />
+      )}
       {children}
     </WaiterContext.Provider>
   );

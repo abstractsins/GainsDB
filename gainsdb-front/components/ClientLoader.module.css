@@ -1,0 +1,24 @@
+.clientLoaderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--padding-standard-1);
+  margin: var(--margin-standard-1);
+  width: 100%;
+}
+
+.clientLoaderTitle {
+  padding: var(--padding-standard-1);
+  margin: var(--margin-standard-1);
+  font-size: 3.5rem;
+  font-family: "Tourney";
+}
+
+.clientLoaderMusclesWrapper {
+  padding: var(--padding-standard-1);
+  margin: var(--margin-standard-1);
+}
+
+.muscles {
+  font-size: 7.5rem;
+}

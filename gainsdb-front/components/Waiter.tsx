@@ -1,29 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toTitleCase } from "@/utils/utils";
 
 import styles from "./Waiter.module.css";
 
 export enum WaiterMessage {
   LoggingIn = "Logging\u00A0In",
-  Registering = "Registering"
-  Off = "",
+  Registering = "Registering",
 }
 
 interface Props {
   msg: string;
+  setTextWrapperElement: (el: HTMLElement) => void;
 }
 
-export default function Waiter({ msg }: Props) {
+export default function Waiter({ msg, setTextWrapperElement }: Props) {
   const [waitText, setLoadText] = useState(msg);
+
+  const waitTextSpanRef = useRef(null);
 
   msg = msg.toLowerCase();
 
   useEffect(() => {
     setTimeout(() => {
       const cap = toTitleCase(msg);
-      console.log(waitText);
       switch (waitText.toLowerCase()) {
         case msg:
           setLoadText(cap + ".");
@@ -35,18 +36,32 @@ export default function Waiter({ msg }: Props) {
           setLoadText(cap + "...");
           break;
         case msg + "...":
+          setLoadText(cap + "....");
+          break;
+        case msg + "....":
+          setLoadText(cap + ".....");
+          break;
+        case msg + ".....":
           setLoadText(cap);
           break;
       }
-    }, 250);
+    }, 150);
   });
+
+  useEffect(() => {
+    if (waitTextSpanRef?.current) {
+      setTextWrapperElement(waitTextSpanRef.current);
+    }
+  }, []);
 
   return (
     <>
       <div className={styles.waiterShield}></div>
       <div className={styles.waiter}>
         <div className={styles.waitTextWrapper}>
-          <span className={styles.waitText}>{waitText}</span>
+          <span ref={waitTextSpanRef} className={styles.waitText}>
+            {waitText}
+          </span>
         </div>
       </div>
     </>

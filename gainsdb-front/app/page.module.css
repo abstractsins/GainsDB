@@ -2,8 +2,8 @@
   background-image: url("/bg3.webp");
   background-size: cover;
   background-position: center;
-  filter: blur(5);
-  height: 100vh;
+  filter: blur(4.5);
+  height: 100%;
 }
 
 .splashBody {

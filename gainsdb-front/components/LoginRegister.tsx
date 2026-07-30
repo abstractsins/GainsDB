@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 
 import LoginRegisterForm from "./forms/LoginRegisterForm";
-import Register from "./forms/RegistrationFields";
 
 import {
   blankCredentials,
@@ -30,16 +29,14 @@ export default function LoginRegister() {
   const [registrationError, setRegistrationError] = useState<string>();
 
   const { setWaiter, isWaiting } = useWaiter();
-
   const { setIsLoggedIn } = useFooter();
 
-  const formStateChange = () => {
+  const onFormStateChange = () => {
     setRegistrationError(undefined);
     setLoginError(undefined);
   };
 
   const handleLoginSubmit = async (event: React.SubmitEvent) => {
-    event.preventDefault();
     setLoginError(undefined);
     setWaiter(WaiterMessage.LoggingIn);
 
@@ -69,7 +66,6 @@ export default function LoginRegister() {
   };
 
   const handleRegisterSubmit = async (event: React.SubmitEvent) => {
-    event.preventDefault();
     setRegistrationError(undefined);
     setWaiter(WaiterMessage.Registering);
 
@@ -78,8 +74,6 @@ export default function LoginRegister() {
       password: formData.password,
       date: new Date(),
     });
-
-    setWaiter(false);
 
     if (!response) {
       alert("error registering");
@@ -97,56 +91,55 @@ export default function LoginRegister() {
         }
       } else {
         alert(response.message);
-        console.log(response);
+        window.location.reload();
+      }
+    }
+
+    setWaiter(false);
+  };
+
+  const handleFormSubmission = (event: React.SubmitEvent) => {
+    event.preventDefault();
+    if (isFormValid) {
+      switch (formState) {
+        case FormState.Login:
+          handleLoginSubmit(event);
+          break;
+        case FormState.Register:
+          handleRegisterSubmit(event);
+          break;
       }
     }
   };
 
-  const handleFormSubmission = (event: React.SubmitEvent) => {
-    switch (formState) {
-      case FormState.Login:
-        handleLoginSubmit(event);
-        break;
-      case FormState.Register:
-        handleRegisterSubmit(event);
-        break;
-    }
-  };
-
   const renderCredentialsPrompt = (currentState: FormState) => {
-    if (currentState === FormState.Login) {
-      return (
-        <span className={styles.credentialsPrompt}>
-          Login below, or sign up{" "}
-          <span
-            className={styles.formStateSwitch}
-            onClick={() => setFormState(FormState.Register)}
-            onKeyDown={(key) =>
-              key.code === "Enter" ? setFormState(FormState.Register) : null
-            }
-            tabIndex={0}
-          >
-            here
+    const switchFormState = (prev: FormState) =>
+      prev === FormState.Login ? FormState.Register : FormState.Login;
+
+    return (
+      <>
+        {currentState === FormState.Login && (
+          <span className={styles.credentialsPrompt}>
+            Login below, or sign up{" "}
           </span>
-        </span>
-      );
-    } else if (currentState === FormState.Register) {
-      return (
-        <span className={styles.credentialsPrompt}>
-          Already a user? Login{" "}
-          <span
-            className={styles.formStateSwitch}
-            onClick={() => setFormState(FormState.Login)}
-            onKeyDown={(key) =>
-              key.code === "Enter" ? setFormState(FormState.Login) : null
-            }
-            tabIndex={0}
-          >
-            here
+        )}
+        {currentState === FormState.Register && (
+          <span className={styles.credentialsPrompt}>
+            Already a user? Login{" "}
           </span>
+        )}
+        <span
+          className={styles.formStateSwitch}
+          onClick={() => setFormState(switchFormState)}
+          onKeyDown={(key) =>
+            key.code === "Enter" ? setFormState(switchFormState) : null
+          }
+          tabIndex={0}
+        >
+          here
         </span>
-      );
-    }
+      </>
+    );
   };
 
   useEffect(() => {
@@ -158,11 +151,13 @@ export default function LoginRegister() {
 
   return (
     <div className={styles.loginRegisterContainer}>
+      {/* HEADER */}
       <h1 className={styles.title}>GainsDB</h1>
       <h2 className={styles.subTitle}>
         Track your workouts and visualize progress!
       </h2>
 
+      {/* FORM AREA */}
       <div className={styles.formContainer}>
         <div className={styles.credentialsPromptWrapper}>
           {renderCredentialsPrompt(formState)}
@@ -179,9 +174,10 @@ export default function LoginRegister() {
             setFormValid={setFormValid}
             loginError={loginError}
             registrationError={registrationError}
-            formStateChange={formStateChange}
+            formStateChange={onFormStateChange}
           />
 
+          {/* SUBMIT BUTTON */}
           <button
             id="submit-button"
             type="submit"

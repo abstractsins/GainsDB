@@ -23,10 +23,11 @@ import { FooterProvider } from "@/contexts/FooterContext";
 import { Analytics } from "@vercel/analytics/next";
 
 // COMPONENTS
-import ClientLoader from "../components/ClientLoader";
 import Footer from "../components/Footer";
 import AuthProvider from "../components/AuthProvider";
 import { WaiterProvider } from "@/contexts/WaiterContext";
+
+import styles from "./layout.module.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,13 +95,11 @@ export default function RootLayout({
         <link rel="manifest" href="/webmanifest.json" />
       </head>
       <body
-        className={`${tourney.variable} ${oswald.variable} ${inter.className} antialiased relative`}
+        className={`${styles.LandingBody} ${tourney.variable} ${oswald.variable} ${inter.className} antialiased relative`}
       >
         <AuthProvider>
           <FooterProvider>
-            <ClientLoader>
-              <WaiterProvider>{children}</WaiterProvider>
-            </ClientLoader>
+            <WaiterProvider>{children}</WaiterProvider>
             <Analytics />
             <Footer />
           </FooterProvider>

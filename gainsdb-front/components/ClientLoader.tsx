@@ -1,21 +1,61 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
-export default function ClientLoader({ children }: { children: React.ReactNode }) {
-  const [isRendered, setIsRendered] = useState(false);
+import styles from "./ClientLoader.module.css";
 
-  useEffect(() => {
-    setIsRendered(true);
-    document.body.classList.add("loaded");
+export default function ClientLoader({}: {}) {
+  // const musclesRef = useRef<any[]>(undefined);
+  const muscles = ["💪", "💪🏻", "💪🏼", "💪🏽", "💪🏾", "💪🏿"];
+
+  const shuffleEls = useCallback((els: any[]) => {
+    if (!els.length || els.length === 0) return [];
+    let numUnchosen = els.length;
+    const sortedArray = [];
+    const mutatedEls = els.slice();
+
+    for (let i = numUnchosen; i--; i === 0) {
+      const numAvailableEls = i + 1;
+      const randomNumber = Math.floor(Math.random() * numAvailableEls);
+      sortedArray.push(mutatedEls[randomNumber]);
+      mutatedEls.splice(randomNumber, 1);
+    }
+
+    return sortedArray;
   }, []);
 
+  const shuffledMuscles = shuffleEls(muscles);
+  const [randomizedMuscles, setRandomizedMuscles] = useState(shuffledMuscles);
+  const [randomMusclesLoading, setRandomMusclesLoading] = useState<string[]>(
+    [],
+  );
+
+  const accumulator = (prev: string[]) =>
+    !prev
+      ? [randomizedMuscles[0]]
+      : [...prev, randomizedMuscles[randomMusclesLoading.length]];
+
+  useEffect(() => {
+    const clearAndResetLoading = () => {
+      setRandomizedMuscles(shuffleEls(muscles));
+      setRandomMusclesLoading([]);
+    };
+
+    const timeout = setTimeout(() => {
+      randomMusclesLoading.length === randomizedMuscles.length
+        ? clearAndResetLoading()
+        : setRandomMusclesLoading(accumulator);
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, [randomMusclesLoading, randomizedMuscles, shuffleEls]);
+
   return (
-    isRendered ? children : (
-      <div className="flex items-center justify-center w-screen h-[100vh]">
-        <div className="text-[30pt] sm:text-[40pt] md:text-[50pt] lg:text-[60pt] xl:text-[80pt] animate-pulse">
-          {/* 💪💪🏻💪🏼💪🏽💪🏾💪🏿 */}
-        </div>
-      </div>)
-  )
+    <div className={styles.clientLoaderContainer}>
+      <span className={styles.clientLoaderTitle}>loading user data</span>
+      <div className={styles.clientLoaderMusclesWrapper}>
+        <span className={styles.muscles}>{randomMusclesLoading}</span>
+      </div>
+    </div>
+  );
 }

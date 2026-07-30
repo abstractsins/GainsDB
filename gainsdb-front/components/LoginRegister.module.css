@@ -11,6 +11,7 @@
   padding: 30px;
   margin-top: 2rem;
   z-index: 2;
+  filter: drop-shadow(-75px 100px 10px rgba(20, 20, 20, 0.8));
 }
 
 .title {

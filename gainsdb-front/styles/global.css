@@ -52,9 +52,11 @@
   --padding-text-input-1: 7px 10px;
   --padding-text-input-2: 10px;
   --padding-submit-button: 8px 25px;
+  --padding-standard-1: 5px 10px;
 
   /* MARGIN */
   --margin-text-input-1: 5px;
+  --margin-standard-1: 5px 10px;
 
   /* OUTLINE OFFSET */
   --outline-offset-button-1: 5px;
@@ -245,8 +247,7 @@ footer.footer {
 #charts-page,
 #settings-page,
 #profile-page,
-#coming-soon-page,
-.dashboard-body {
+#coming-soon-page {
   padding: 20px;
 }
 
@@ -841,7 +842,7 @@ div.workout-card-glance-body ul li {
   border-radius: 8px;
   font-size: 16px;
   height: 89px;
-  padding: 5px 10px;
+  padding: var(--padding-standard-1);
   cursor: pointer;
   border: 2px solid transparent;
   transition: border 300ms ease;
@@ -984,14 +985,13 @@ span.exercise-name {
 
 header.nav-header {
   background-color: var(--darkGray);
-  position: fixed;
-  width: 100%;
+  /* position: fixed; */
   z-index: 1000;
   color: whitesmoke;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 60px 20px 20px;
+  padding: 0 20px;
   height: 65px;
 }
 
@@ -1008,28 +1008,11 @@ header.mobile-nav-header {
   height: 65px;
 }
 
-header.nav-header + main,
-header.mobile-nav-header + main {
-  margin-top: 58px !important;
-}
-
 div.dashboard-body {
   background-image: url("data:image/webp;base64,AAA...tiny...");
   background-size: cover;
   background-position: center;
-  filter: blur(8px);
   transition: filter 300ms ease;
-}
-
-body.loaded div.dashboard-body {
-  height: calc(100vh - 65px);
-  background-image: url("/bg5.webp");
-  background-size: cover;
-  background-repeat: repeat;
-  background-position: center;
-  top: 0;
-  left: 0;
-  filter: blur(0);
 }
 
 @media (max-aspect-ratio: 1/1) {
@@ -1042,7 +1025,7 @@ body.loaded div.dashboard-body {
 }
 
 div.dashboard-card {
-  background-color: rgba(10, 10, 10, 0.8);
+  background-color: rgba(10, 10, 10, 1);
   display: flex;
   flex-direction: column;
   width: 365px;
@@ -1051,13 +1034,14 @@ div.dashboard-card {
   /* border: 3px solid whitesmoke; */
   border: 3px solid rgb(195, 250, 237);
   position: relative;
+  filter: drop-shadow(-10px 10px 5px rgba(20, 20, 20, 0.8)) !important;
 }
 
 header.dashboard-card {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 10px;
+  padding: var(--padding-standard-1);
   /* background-color: whitesmoke; */
   background-color: rgb(195, 250, 237);
   color: black;
@@ -1068,9 +1052,10 @@ header.dashboard-card {
 }
 
 header.dashboard-card h3 {
-  padding: 5px 10px;
+  padding: var(--padding-standard-1);
   font-weight: 600;
   font-size: 14pt;
+  margin: var(--margin-standard-1);
 }
 
 .dashboard-card-body {
@@ -1114,6 +1099,7 @@ ul.dashboard-list {
 
 li.dashboard-list {
   margin: 10px;
+  list-style: none;
 }
 
 #logged-workouts {
@@ -3104,7 +3090,7 @@ div#nav-signal-container-left {
 
 div.nav-signal-line {
   position: absolute;
-  padding: 5px 10px;
+  padding: var(--padding-standard-1);
   color: white;
   font-size: 16pt;
   width: 100px;
