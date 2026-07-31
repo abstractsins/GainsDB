@@ -71,6 +71,7 @@ router.post("/login", async (req, res) => {
       "SELECT * FROM users WHERE username = $1",
       [username.toLowerCase()],
     );
+
     if (userResult.rows.length === 0) {
       console.error("❌ Login unsuccessful, username not found");
       return res.status(401).json({ error: "Invalid credentials" });

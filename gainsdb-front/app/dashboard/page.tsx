@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import InfoCard from "../../components/DashboardCard";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,9 @@ import { DashboardData } from "@/types/types";
 import { useFooter } from "@/contexts/FooterContext";
 
 import { useLoaded } from "@/contexts/LoadedContext";
+import Image from "next/image";
+
+import styles from "./page.module.css";
 
 export default function DashboardPage() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
@@ -34,8 +37,6 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("🔄 Session Status:", status);
-
     if (status === "loading") return;
 
     if (status === "unauthenticated" || !session?.user?.authToken) {
@@ -101,84 +102,116 @@ export default function DashboardPage() {
     }
   }, [dashboardData]);
 
-  if (error) return <p>{error}</p>;
+  const loggedAuthStatus = useRef(false);
+  const loggedDashboardData = useRef(false);
+  useEffect(() => {
+    if (!loggedAuthStatus.current && status) {
+      console.log("🔄 Session Status:", status);
+      loggedAuthStatus.current = true;
+    }
+    if (!loggedDashboardData.current && dashboardData) {
+      console.group("📈 Dashboard Data: ");
+      console.dir(dashboardData);
+      console.groupEnd();
+      loggedDashboardData.current = true;
+    }
+  }, [status, dashboardData]);
 
-  return (
-    <div id="dashboard-page">
-      <button className="temp-logout" onClick={() => signOut()}>
-        LOG OUT
-      </button>
-      <div className="dashboard-body">
-        <ul className="dashboard-list">
-          <li className="dashboard-list">
-            <InfoCard
-              icon={<FaClipboardList />}
-              title="Logged Workouts"
-              value={dashboardData?.totalWorkouts || "N/A"}
-              description={`over ${totalWeeks || 0} week${totalWeeks === 1 ? "" : "s"}`}
-              id="logged-workouts"
-            />
-          </li>
-
-          <li className="dashboard-list">
-            <InfoCard
-              icon={<IoRibbon />}
-              title="Most Logged"
-              value={
-                toTitleCase(dashboardData?.mostLoggedExe?.[0]?.exercise_name) ||
-                "N/A"
-              }
-              description={`${mostLogged || 0} workout${mostLogged === 1 ? "" : "s"}`}
-              id="most-logged"
-            />
-          </li>
-
-          <li className="dashboard-list">
-            <InfoCard
-              icon={<BsExclamationTriangle />}
-              title="Least Logged"
-              value={
-                toTitleCase(
-                  dashboardData?.mostLoggedExe?.slice(-1)[0]?.exercise_name,
-                ) || "N/A"
-              }
-              description={`${leastLogged || 0} workout${leastLogged === 1 ? "" : "s"}`}
-              id="least-logged"
-            />
-          </li>
-
-          <li className="dashboard-list">
-            <InfoCard
-              icon={<FaWeightHanging />}
-              title="Most Weight"
-              value={`${Number(dashboardData?.theMostWeight?.[0]?.max_weight).toFixed() || 0} lbs`}
-              description={
-                toTitleCase(dashboardData?.theMostWeight?.[0]?.exercise_name) ||
-                "N/A"
-              }
-              id="most-weight"
-            />
-          </li>
-
-          <li className="dashboard-list">
-            <InfoCard
-              icon={<BsGraphUpArrow />}
-              title="Gained Most Volume"
-              value={
-                toTitleCase(
-                  dashboardData?.mostVolumeChange?.[0]?.exercise_name,
-                ) || "N/A"
-              }
-              description={toTitleCase(
-                `${dashboardData?.mostVolumeChange?.[0]?.min_volume || 0} -> ${
-                  dashboardData?.mostVolumeChange?.[0]?.max_volume || 0
-                }`,
-              )}
-              id="gained-most-volume"
-            />
-          </li>
-        </ul>
+  return error ? (
+    <p>{error}</p>
+  ) : (
+    <>
+      {/* Background container */}
+      <div className={styles.background}>
+        <Image
+          src="/bg5.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          priority
+          quality={70}
+          className={styles.backgroundImage}
+        />
       </div>
-    </div>
+
+      <div id="dashboard-page">
+        <button className="temp-logout" onClick={() => signOut()}>
+          LOG OUT
+        </button>
+        <div className="dashboard-body">
+          <ul className="dashboard-list">
+            <li className="dashboard-list">
+              <InfoCard
+                icon={<FaClipboardList />}
+                title="Logged Workouts"
+                value={dashboardData?.totalWorkouts || "N/A"}
+                description={`over ${totalWeeks || 0} week${totalWeeks === 1 ? "" : "s"}`}
+                id="logged-workouts"
+              />
+            </li>
+
+            <li className="dashboard-list">
+              <InfoCard
+                icon={<IoRibbon />}
+                title="Most Logged"
+                value={
+                  toTitleCase(
+                    dashboardData?.mostLoggedExe?.[0]?.exercise_name,
+                  ) || "N/A"
+                }
+                description={`${mostLogged || 0} workout${mostLogged === 1 ? "" : "s"}`}
+                id="most-logged"
+              />
+            </li>
+
+            <li className="dashboard-list">
+              <InfoCard
+                icon={<BsExclamationTriangle />}
+                title="Least Logged"
+                value={
+                  toTitleCase(
+                    dashboardData?.mostLoggedExe?.slice(-1)[0]?.exercise_name,
+                  ) || "N/A"
+                }
+                description={`${leastLogged || 0} workout${leastLogged === 1 ? "" : "s"}`}
+                id="least-logged"
+              />
+            </li>
+
+            <li className="dashboard-list">
+              <InfoCard
+                icon={<FaWeightHanging />}
+                title="Most Weight"
+                value={`${Number(dashboardData?.theMostWeight?.[0]?.max_weight).toFixed() || 0} lbs`}
+                description={
+                  toTitleCase(
+                    dashboardData?.theMostWeight?.[0]?.exercise_name,
+                  ) || "N/A"
+                }
+                id="most-weight"
+              />
+            </li>
+
+            <li className="dashboard-list">
+              <InfoCard
+                icon={<BsGraphUpArrow />}
+                title="Gained Most Volume"
+                value={
+                  toTitleCase(
+                    dashboardData?.mostVolumeChange?.[0]?.exercise_name,
+                  ) || "N/A"
+                }
+                description={toTitleCase(
+                  `${dashboardData?.mostVolumeChange?.[0]?.min_volume || 0} -> ${
+                    dashboardData?.mostVolumeChange?.[0]?.max_volume || 0
+                  }`,
+                )}
+                id="gained-most-volume"
+              />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </>
   );
 }

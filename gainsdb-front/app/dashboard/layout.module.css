@@ -1,4 +1,40 @@
-.dashboardLayout {
+.dashboardContainer {
   display: flex;
   height: 100%;
+}
+
+/** MOBILE */
+
+aside.mobile {
+  background-color: rgba(17, 24, 39, 0.95);
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 14rem;
+  height: 100vh;
+  z-index: 100;
+  transition: right 500ms ease-in-out;
+}
+
+aside.mobile.active {
+  right: 0;
+}
+
+aside.mobile h2 {
+  font-size: 2rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dashboardLink {
+  padding: var(--padding-standard-1);
+  border-radius: var(--border-radius-text-link);
+}
+
+.dashboardLink:hover {
+  background-color: var(--darkGray);
 }

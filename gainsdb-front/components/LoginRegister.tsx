@@ -36,7 +36,7 @@ export default function LoginRegister() {
     setLoginError(undefined);
   };
 
-  const handleLoginSubmit = async (event: React.SubmitEvent) => {
+  const handleLoginSubmit = async () => {
     setLoginError(undefined);
     setWaiter(WaiterMessage.LoggingIn);
 
@@ -48,8 +48,6 @@ export default function LoginRegister() {
 
     if (!user || !user.ok) {
       setWaiter(false);
-      // handle authentication error notification
-      // TODO make custom modal? or just inline messaging
       if (user) {
         switch (user.status) {
           case 401:
@@ -65,7 +63,7 @@ export default function LoginRegister() {
     }
   };
 
-  const handleRegisterSubmit = async (event: React.SubmitEvent) => {
+  const handleRegisterSubmit = async () => {
     setRegistrationError(undefined);
     setWaiter(WaiterMessage.Registering);
 
@@ -103,10 +101,10 @@ export default function LoginRegister() {
     if (isFormValid) {
       switch (formState) {
         case FormState.Login:
-          handleLoginSubmit(event);
+          handleLoginSubmit();
           break;
         case FormState.Register:
-          handleRegisterSubmit(event);
+          handleRegisterSubmit();
           break;
       }
     }

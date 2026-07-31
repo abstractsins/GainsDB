@@ -5,6 +5,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -19,10 +20,14 @@ const LoadedContext = createContext<LoadedContextType | undefined>(undefined);
 export function LoadedProvider({ children }: { children: ReactNode }) {
   const [isLoaded, setLoaded] = useState(false);
 
-  const setPageLoaded = useCallback((loaded: boolean) => {
+  const loggedLoaded = useRef(false);
+  const setPageLoaded = (loaded: boolean) => {
     setLoaded(loaded);
-    console.log(loaded);
-  }, []);
+    if (!loggedLoaded.current) {
+      console.log("content loaded: " + loaded);
+      loggedLoaded.current = true;
+    }
+  };
 
   return (
     <LoadedContext.Provider value={{ isLoaded, setPageLoaded }}>

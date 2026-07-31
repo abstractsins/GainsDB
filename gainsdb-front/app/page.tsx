@@ -11,6 +11,7 @@ import { Environments, Routes } from "@/constants/generalConstants";
 import { Endpoints } from "@/constants/fetchConstants";
 
 import styles from "./page.module.css";
+import Image from "next/image";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -53,7 +54,17 @@ export default function Home() {
       {env === Environments.Prod && <CheckingUsOut />}
 
       {/* Background container */}
-      <div className={`${styles.splashBackground}`} />
+      <div className={styles.background}>
+        <Image
+          src="/bg3.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          priority
+          quality={70}
+          className={styles.backgroundImage}
+        />
+      </div>
 
       <div className={`${styles.splashBody}`}>
         {/* LOGIN/REGISTER Popup */}

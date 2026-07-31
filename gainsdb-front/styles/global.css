@@ -47,6 +47,7 @@
   /* BORDER-RADIUS */
   --popup-border-radius: 7px;
   --text-input-border-radius: 5px;
+  --border-radius-text-link: 2px;
 
   /* PADDING */
   --padding-text-input-1: 7px 10px;
@@ -66,6 +67,10 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+}
+
+main {
+  height: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -973,12 +978,6 @@ span.exercise-name {
 }
 
 /** DASHBOARD */
-#dashboard-page {
-  display: flex;
-  flex-direction: column;
-  overflow: scroll;
-}
-
 .dashboard-list.skeleton header.dashboard-card {
   min-height: 58px;
 }
@@ -1009,8 +1008,7 @@ header.mobile-nav-header {
 }
 
 div.dashboard-body {
-  background-image: url("data:image/webp;base64,AAA...tiny...");
-  background-size: cover;
+  /* background-image: url("data:image/webp;base64,AAA...tiny..."); */
   background-position: center;
   transition: filter 300ms ease;
 }
@@ -1741,25 +1739,6 @@ html, body {
 }
 
 /** MOBILE */
-
-aside.mobile {
-  background-color: rgba(17, 24, 39, 0.95);
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 14rem;
-  height: 100vh;
-  z-index: 100;
-  transition: right 500ms ease-in-out;
-}
-
-aside.mobile.active {
-  right: 0;
-}
-
-aside.mobile h2 {
-  font-size: 2rem;
-}
 
 .hamburger-menu-container {
   cursor: pointer;

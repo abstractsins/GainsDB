@@ -8,6 +8,7 @@ import styles from "./Waiter.module.css";
 export enum WaiterMessage {
   LoggingIn = "Logging\u00A0In",
   Registering = "Registering",
+  Syncing = "Syncing",
 }
 
 interface Props {
