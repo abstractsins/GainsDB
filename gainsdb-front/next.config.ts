@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    qualities: [25, 50, 75],
+    qualities: [25, 50, 70, 75],
   },
 };
 
