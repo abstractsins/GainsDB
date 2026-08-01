@@ -1,15 +1,29 @@
 "use client";
 
+// React
+import { useEffect, useState, useRef } from "react";
+
+// Next
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Oswald, Tourney } from "next/font/google";
+import { useRouter, usePathname } from "next/navigation";
+
+// Components
 import Navbar from "@/components/Navbar";
 import MobileNavbar from "@/components/MobileNavbar";
-import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+
+// Constants
+import {
+  AuthenticationStatus,
+  mobileMaxWidth,
+} from "@/constants/generalConstants";
+
+// Contexts
 import { useWaiter } from "@/contexts/WaiterContext";
 import { LoadedProvider } from "@/contexts/LoadedContext";
 
+// Styles
 import styles from "./layout.module.css";
 
 const oswald = Oswald({
@@ -29,47 +43,51 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { data: session, status } = useSession();
-  const router = useRouter();
   const pathname = usePathname();
-  const [isChecking, setIsChecking] = useState(true);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [isMenuActive, setIsMenuActive] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const { status } = useSession();
+  const { setWaiter } = useWaiter();
 
-  // UNTIL SETTINGS IS RELEASED
+  const [isCheckingAuthentication, setIsCheckingAuthentication] =
+    useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuActive, setIsMenuActive] = useState(false);
+
+  // UNTIL SETTINGS IS RELEASED, hard code to false
   const settings = false;
   const charts = false;
   const comingSoon = true;
 
   const closeMenu = () => setIsMenuActive(false);
 
-  const { setWaiter } = useWaiter();
-
+  // Remove waiter and add window event listener for resizing
   useEffect(() => {
     setWaiter(false);
-    setIsMobile(window.innerWidth <= 768);
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    setIsMobile(window.innerWidth <= mobileMaxWidth);
+    const handleResize = () => setIsMobile(window.innerWidth <= mobileMaxWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Authentication check and routing fallback
   useEffect(() => {
-    if (status === "loading") return;
-    if (status === "unauthenticated") {
+    if (status === AuthenticationStatus.Loading) return;
+    if (status === AuthenticationStatus.Unauthenticated) {
       console.warn("🚨 Redirecting: No session found.");
       router.push("/");
     } else {
-      setIsChecking(false);
+      setIsCheckingAuthentication(false);
     }
   }, [status, router]);
 
+  // Close menu when clicking outside of it
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsMenuActive(false);
       }
-    }
+    };
 
     if (isMenuActive) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -80,11 +98,7 @@ export default function DashboardLayout({
     };
   }, [isMenuActive]);
 
-  useEffect(() => {
-    setIsMenuActive(false);
-  }, [pathname]);
-
-  if (status === "loading" || isChecking) {
+  if (status === AuthenticationStatus.Loading || isCheckingAuthentication) {
     return <p>Checking authentication...</p>;
   }
 
@@ -97,11 +111,7 @@ export default function DashboardLayout({
           onBlur={closeMenu}
           className={`${isMobile ? styles.mobile : ""} ${isMenuActive ? styles.active : ""}`}
         >
-          <h2
-            className={`${tourney.className} text-[12pt] sm:text-[18pt] md:text-[22pt] lg:text-[28pt] xl:text-[28pt]`}
-          >
-            GainsDB
-          </h2>
+          <h2 className={`${tourney.className}`}>GainsDB</h2>
           <nav className={styles.nav}>
             <Link
               href="/dashboard/new-workout"

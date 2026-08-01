@@ -15,6 +15,7 @@
 .footerLink:hover {
   color: var(--footer-link-hover);
   text-decoration: underline;
+  cursor: pointer;
 }
 
 @media (max-width: 1699px) {

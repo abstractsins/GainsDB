@@ -1,29 +1,35 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import InfoCard from "../../components/DashboardCard";
+// React / Next
+import { useState, useEffect, useRef } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
+// Icons
 import { IoRibbon } from "react-icons/io5";
 import { FaClipboardList, FaWeightHanging } from "react-icons/fa";
 import { BsGraphUpArrow, BsExclamationTriangle } from "react-icons/bs";
 
+// Utils
 import { toTitleCase } from "@/utils/utils";
+
+// Types
 import { DashboardData } from "@/types/types";
 
+// Conexts
 import { useFooter } from "@/contexts/FooterContext";
-
 import { useLoaded } from "@/contexts/LoadedContext";
-import Image from "next/image";
 
+// Components
+import InfoCard from "@/components/DashboardCard";
+
+// Styles
 import styles from "./page.module.css";
 
 export default function DashboardPage() {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
-    null,
-  );
-  const [error, setError] = useState<string | null>(null);
+  const [dashboardData, setDashboardData] = useState<DashboardData>();
+  const [pageLevelError, setPageLevelError] = useState<string>();
 
   const { data: session, status } = useSession();
   const server = process.env.NEXT_PUBLIC_BACKEND || "http://localhost:5000";
@@ -40,11 +46,11 @@ export default function DashboardPage() {
     if (status === "loading") return;
 
     if (status === "unauthenticated" || !session?.user?.authToken) {
-      console.warn("🚨 No valid session found, redirecting...");
+      console.warn("🚨 No valid session found, redirecting to login...");
       if (typeof window !== "undefined") router.replace("/");
       return;
     } else {
-      setIsLoggedIn(false);
+      setIsLoggedIn(true);
     }
 
     fetchData();
@@ -70,10 +76,10 @@ export default function DashboardPage() {
 
         const data: DashboardData = await response.json();
 
-        setDashboardData(data.totalWorkouts ? data : null);
+        setDashboardData((prev) => (data.totalWorkouts ? data : prev));
       } catch (error) {
         console.error("❌ Error fetching dashboard data:", error);
-        setError("Failed to load dashboard data.");
+        setPageLevelError("Failed to load dashboard data.");
       } finally {
         setPageLoaded(true);
       }
@@ -117,8 +123,10 @@ export default function DashboardPage() {
     }
   }, [status, dashboardData]);
 
-  return error ? (
-    <p>{error}</p>
+  return pageLevelError ? (
+    <div className={styles.pageLevelError}>
+      <p className={styles.pageLevelErrorText}>{pageLevelError}</p>
+    </div>
   ) : (
     <>
       {/* Background container */}
@@ -135,9 +143,6 @@ export default function DashboardPage() {
       </div>
 
       <div id="dashboard-page">
-        <button className="temp-logout" onClick={() => signOut()}>
-          LOG OUT
-        </button>
         <div className="dashboard-body">
           <ul className="dashboard-list">
             <li className="dashboard-list">

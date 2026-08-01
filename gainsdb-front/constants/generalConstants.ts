@@ -13,3 +13,11 @@ export enum InputTypes {
   Password = "password",
   Number = "number",
 }
+
+export const mobileMaxWidth = 768;
+
+export enum AuthenticationStatus {
+  Authenticated = "authenticated",
+  Loading = "loading",
+  Unauthenticated = "unauthenticated",
+}

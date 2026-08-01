@@ -9,3 +9,9 @@
   object-fit: cover;
   object-position: center;
 }
+
+div.pageLevelError {
+}
+
+p.pageLevelErrorText {
+}
