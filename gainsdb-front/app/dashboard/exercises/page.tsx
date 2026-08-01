@@ -10,7 +10,7 @@ import ExercisesLegend from "@/components/ExercisesLegend";
 import NewExercisePopup from "@/components/NewExercisePopup";
 import ExerciseCards from "@/components/ExerciseCards";
 
-import { ExerciseCard } from "@/app/types/types";
+import { ExerciseCard } from "@/types/types";
 
 const server = process.env.NEXT_PUBLIC_BACKEND;
 
@@ -18,7 +18,9 @@ export default function Exercises() {
   const { data: session, status } = useSession();
   const [exercises, setExercises] = useState<ExerciseCard[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [filteredExercises, setFilteredExercises] = useState<ExerciseCard[]>([]);
+  const [filteredExercises, setFilteredExercises] = useState<ExerciseCard[]>(
+    [],
+  );
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [popupVisible, setPopupVisible] = useState<boolean>(false);
@@ -29,78 +31,80 @@ export default function Exercises() {
 
   // Popup Log trial
   const [popupLog, setPopupLog] = useState<boolean>(false);
-  const [logExeId, setLogExeId] = useState<string>('0');
+  const [logExeId, setLogExeId] = useState<string>("0");
 
   const [inputValue, setInputValue] = useState("");
 
   const handlePopupLog = (popup: boolean, id: string) => {
     setPopupLog(popup);
     setLogExeId(id);
-    console.log('Log was clicked for ' + id);
-    console.log('popupLog is ' + popupLog);
-  }
+    console.log("Log was clicked for " + id);
+    console.log("popupLog is " + popupLog);
+  };
 
-  const refreshContent = () => setDataUpdated(prev => prev + 1);
+  const refreshContent = () => setDataUpdated((prev) => prev + 1);
 
   const handleCategorySelect = (category: string) => {
     const normalizedCategory = category.toLowerCase().replace(/\s/g, "-");
 
-    setSelectedCategory(prev => prev === normalizedCategory ? null : normalizedCategory);
+    setSelectedCategory((prev) =>
+      prev === normalizedCategory ? null : normalizedCategory,
+    );
 
     console.log("Selected Category:", normalizedCategory);
 
     if (selectedCategory === normalizedCategory) {
-      setFilteredExercises(searchTerm
-        ? exercises.filter(exe => exe.name.toLowerCase().includes(searchTerm))
-        : exercises
+      setFilteredExercises(
+        searchTerm
+          ? exercises.filter((exe) =>
+              exe.name.toLowerCase().includes(searchTerm),
+            )
+          : exercises,
       );
       return;
     }
 
-
-    if (normalizedCategory === 'all') {
+    if (normalizedCategory === "all") {
       setFilteredExercises(exercises);
       setSelectedCategory(null);
     } else {
-      const filteredByCategory = exercises.filter(exe => exe.category === normalizedCategory);
+      const filteredByCategory = exercises.filter(
+        (exe) => exe.category === normalizedCategory,
+      );
       const filteredBySearch = searchTerm
-        ? filteredByCategory.filter(exe => exe.name.toLowerCase().includes(searchTerm))
+        ? filteredByCategory.filter((exe) =>
+            exe.name.toLowerCase().includes(searchTerm),
+          )
         : filteredByCategory;
       setFilteredExercises(filteredBySearch);
     }
-
 
     setResetInnerExpansion(true);
 
     setTimeout(() => {
       setResetInnerExpansion(false); // Allow expansion again after a short delay
     }, 100);
-
-
   };
 
-
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
+    setInputValue(e.target.value);
     const input = e.target.value.toLowerCase();
     setSearchTerm(input);
 
-
     const filteredBySearch = input
-      ? exercises.filter(exe => exe.name.toLowerCase().includes(input))
+      ? exercises.filter((exe) => exe.name.toLowerCase().includes(input))
       : exercises;
 
     const filteredByCategory = selectedCategory
-      ? filteredBySearch.filter(exe => exe.category === selectedCategory)
+      ? filteredBySearch.filter((exe) => exe.category === selectedCategory)
       : filteredBySearch;
 
     const sortedExercises = [...filteredByCategory].sort((a, b) =>
-      a.name.localeCompare(b.name)
+      a.name.localeCompare(b.name),
     );
 
     setFilteredExercises(sortedExercises);
-  }
+  };
 
   const handleClearSearch = () => {
     setInputValue(""); // Clears input field
@@ -110,20 +114,18 @@ export default function Exercises() {
 
   const newExerciseHandler = () => {
     setPopupVisible(true);
-  }
+  };
 
   const closeFunctions = () => {
     setPopupLog(false);
     setPopupVisible(false);
     refreshContent();
-  }
+  };
 
   const handleResetExpansions = () => {
     setResetInnerExpansion(true);
     setTimeout(() => setResetInnerExpansion(false), 100);
   };
-
-
 
   const hasFetchedRef = useRef(false);
 
@@ -148,12 +150,19 @@ export default function Exercises() {
 
       try {
         const res = await fetch(`${server}/api/user/${userId}/exercises`, {
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
-        if (!res.ok) throw new Error((await res.json()).message || "Failed to fetch exercises");
+        if (!res.ok)
+          throw new Error(
+            (await res.json()).message || "Failed to fetch exercises",
+          );
 
         const data: ExerciseCard[] = await res.json();
-        if (!Array.isArray(data)) throw new Error("API did not return an array");
+        if (!Array.isArray(data))
+          throw new Error("API did not return an array");
 
         const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name));
         setExercises(sorted);
@@ -171,20 +180,16 @@ export default function Exercises() {
     // Only include the minimal deps that truly affect fetching:
   }, [status, session?.user?.authToken, dataUpdated, userId]);
 
-
-
-
   return (
-
     <div id="exercises-page">
-
       {error && <p className="text-red-500">{error}</p>}
 
       <div className="exe-header flex items-center">
-
         <div className="flex flex-col items-center header-left">
           <h1 className="page-header">Your Exercises</h1>
-          <span className="w-[100%]">Total exercises logged: {exercises.length}</span>
+          <span className="w-[100%]">
+            Total exercises logged: {exercises.length}
+          </span>
         </div>
 
         <input
@@ -196,15 +201,10 @@ export default function Exercises() {
           onChange={handleSearch}
         />
         {inputValue && (
-          <button
-            onClick={handleClearSearch}
-            className="clear-button"
-          >
+          <button onClick={handleClearSearch} className="clear-button">
             <IoClose className="text-lg" />
           </button>
         )}
-
-
       </div>
 
       <ExercisesLegend
@@ -221,9 +221,20 @@ export default function Exercises() {
         popupData={handlePopupLog}
       />
 
-      {popupVisible && <div className="click-block"><NewExercisePopup visible={popupVisible} onClose={closeFunctions} /></div>}
-      {popupLog && <div className="click-block"><LogWorkoutPopup visible={popupLog} exeId={logExeId} onClose={closeFunctions} /></div>}
-
+      {popupVisible && (
+        <div className="click-block">
+          <NewExercisePopup visible={popupVisible} onClose={closeFunctions} />
+        </div>
+      )}
+      {popupLog && (
+        <div className="click-block">
+          <LogWorkoutPopup
+            visible={popupLog}
+            exeId={logExeId}
+            onClose={closeFunctions}
+          />
+        </div>
+      )}
     </div>
   );
 }

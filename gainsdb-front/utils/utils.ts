@@ -1,4 +1,4 @@
-import { WorkoutsObj } from "@/app/types/types";
+import { WorkoutsObj } from "@/types/types";
 
 export const toTitleCase = (text: string | undefined) => {
   if (text !== undefined) {
