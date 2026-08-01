@@ -10,7 +10,7 @@ import { useEffect, useState, useRef, useContext } from "react";
 
 import { MdDashboard } from "react-icons/md";
 import { AiFillHome } from "react-icons/ai";
-import { useFooter } from "@/contexts/FooterContext";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -89,7 +89,7 @@ export default function DashboardLayout({
             </h1>
             {session ? (
               <Link
-                href="/dashboard"
+                href="/user"
                 className="hover:text-blue-300 flex items-center"
               >
                 <MdDashboard className="mr-2 text-xl" />

@@ -11,9 +11,10 @@ import {
 import styles from "./LoginRegister.module.css";
 import { useWaiter } from "@/contexts/WaiterContext";
 import { WaiterMessage } from "./Waiter";
-import { useFooter } from "@/contexts/FooterContext";
+import { useAuthContext } from "@/contexts/AuthContext";
 import { registrationRequest } from "@/utils/fetchRequests";
 import { LoginError, RegistrationError } from "@/constants/errorMessages";
+import { createServerSearchParamsForServerPage } from "next/dist/server/request/search-params";
 
 export enum FormState {
   Login = "login",
@@ -29,7 +30,7 @@ export default function LoginRegister() {
   const [registrationError, setRegistrationError] = useState<string>();
 
   const { setWaiter, isWaiting } = useWaiter();
-  const { setIsLoggedIn } = useFooter();
+  const { setUserLoggedIn } = useAuthContext();
 
   const onFormStateChange = () => {
     setRegistrationError(undefined);
@@ -59,7 +60,7 @@ export default function LoginRegister() {
         }
       }
     } else {
-      setIsLoggedIn(true);
+      setUserLoggedIn();
     }
   };
 

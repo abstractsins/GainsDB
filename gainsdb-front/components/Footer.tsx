@@ -4,7 +4,7 @@ import styles from "./Footer.module.css";
 import { Roboto_Slab } from "next/font/google";
 import { Oswald } from "next/font/google";
 import { signOut } from "next-auth/react";
-import { useFooter } from "@/contexts/FooterContext";
+import { useAuthContext } from "@/contexts/AuthContext";
 import Link from "next/link";
 
 const robotoSlab = Roboto_Slab({
@@ -23,7 +23,7 @@ export default function Footer() {
   // const router = useRouter();
   // const { pathname, asPath } = router;
 
-  const { isLoggedIn } = useFooter();
+  const { isLoggedIn } = useAuthContext();
 
   return (
     <footer className="footer">

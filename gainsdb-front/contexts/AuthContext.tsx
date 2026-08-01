@@ -1,4 +1,14 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
+"use client";
+
+import {
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useContext,
+  useCallback,
+  useMemo,
+} from "react";
 import { User, UserSettings } from "@/types/types";
 
 interface AuthContextType {
@@ -6,15 +16,15 @@ interface AuthContextType {
   preferences: UserSettings;
   setUser: (user: User | null) => void;
   setPreferences: (prefs: UserSettings) => void;
+  isLoggedIn: boolean;
+  setUserLoggedIn: () => void;
+  setUserLoggedOut: () => void;
 }
 
 // Create Context with default values
-export const AuthContext = createContext<AuthContextType>({
-  user: null,
-  preferences: {} as UserSettings,
-  setUser: () => {},
-  setPreferences: () => {},
-});
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);
 
 // AuthProvider Component
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -34,6 +44,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const [user, setUser] = useState<User | null>(getUser);
   const [preferences, setPreferences] = useState<UserSettings>(getPreferences);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const setUserLoggedIn = () => setIsLoggedIn(true);
+  const setUserLoggedOut = () => setIsLoggedIn(false);
 
   // Update localStorage when user changes
   useEffect(() => {
@@ -51,11 +65,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [preferences]);
 
-  return (
-    <AuthContext.Provider
-      value={{ user, setUser, preferences, setPreferences }}
-    >
-      {children}
-    </AuthContext.Provider>
+  useEffect(() => {}, [isLoggedIn]);
+
+  const value = useMemo(
+    () => ({
+      user,
+      setUser,
+      preferences,
+      setPreferences,
+      isLoggedIn,
+      setUserLoggedIn,
+      setUserLoggedOut,
+    }),
+    [user, preferences, isLoggedIn, setUserLoggedIn, setUserLoggedOut],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (!context)
+    throw new Error("useAuthContext must be used within AuthProvider");
+  return context;
+};

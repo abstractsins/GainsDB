@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-// STYLES
-import "@/styles/global.css";
-
 // FONTS
 import {
   Geist,
@@ -17,16 +12,20 @@ import {
 import type { Metadata } from "next";
 
 // CONTEXT
-import { FooterProvider } from "@/contexts/FooterContext";
+import { WaiterProvider } from "@/contexts/WaiterContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 // ANALYTICS
 import { Analytics } from "@vercel/analytics/next";
 
 // COMPONENTS
-import Footer from "../components/Footer";
-import AuthProvider from "../components/AuthProvider";
-import { WaiterProvider } from "@/contexts/WaiterContext";
+import Footer from "@/components/Footer";
 
+// PROVIDERS
+import SessionProvider from "@/components/SessionProvider";
+
+// STYLES
+import "@/styles/global.css";
 import styles from "./layout.module.css";
 
 const geistSans = Geist({
@@ -97,13 +96,13 @@ export default function RootLayout({
       <body
         className={`${styles.LandingBody} ${tourney.variable} ${oswald.variable} ${inter.className} antialiased relative`}
       >
-        <AuthProvider>
-          <FooterProvider>
+        <SessionProvider>
+          <AuthProvider>
             <WaiterProvider>{children}</WaiterProvider>
             <Analytics />
             <Footer />
-          </FooterProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </SessionProvider>
       </body>
     </html>
   );

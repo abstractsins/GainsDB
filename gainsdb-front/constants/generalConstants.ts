@@ -6,6 +6,7 @@ export enum Environments {
 
 export enum Routes {
   Dashboard = "dashboard",
+  User = "user",
 }
 
 export enum InputTypes {
