@@ -1,0 +1,29 @@
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.backgroundImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.splashBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.splashBody .loginPopup {
+  border: 3px solid var(--darkGray);
+}
+
+.disabled {
+  background-color: gray;
+}

@@ -1,0 +1,248 @@
+.loginRegisterContainer {
+  background-color: var(--near-black);
+  /* background-color: color-mix(in srgb, var(--near-black) 97.5%, transparent); */
+  /* border: 1px solid silver; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: var(--popup-border-radius);
+  width: clamp(400px, 50%, 650px);
+  padding: 30px;
+  margin-top: 2rem;
+  z-index: 2;
+  filter: drop-shadow(-75px 100px 10px rgba(20, 20, 20, 0.8));
+}
+
+.title {
+  /* color: rgb(141, 255, 137); */
+  color: var(--upper-body);
+  font-size: 6rem;
+  margin-bottom: 1rem;
+}
+
+.subTitle {
+  /* font-size: clamp(2rem, 4vw, 2.5rem); */
+  font-size: 2rem;
+}
+
+.formContainer {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.loginRegisterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.submitButton {
+  background-color: var(--action-button-enabled);
+}
+
+.submitButton[aria-disabled="true"] {
+  background-color: var(--lightGray1);
+  color: var(--lightGray2);
+  pointer-events: none;
+}
+
+.submitButton:hover {
+  outline-offset: var(--outline-offset-button-1);
+  outline: 2px solid whitesmoke;
+}
+
+.submitButton.disabled {
+  background-color: lightgray !important;
+  color: gray !important;
+}
+
+.submitButton.disabled:hover {
+  border-color: transparent !important;
+  cursor: unset !important;
+}
+
+.submitButton:focus-visible {
+  outline-offset: var(--outline-offset-button-1);
+}
+
+button.submitButton:active {
+  background-color: var(--action-button-active);
+  outline: none;
+}
+
+.loginContainer {
+  padding: 30px;
+  opacity: 0.9;
+}
+
+.credentialField {
+  background-color: var(--black);
+  color: whitesmoke;
+  margin: var(--margin-text-input-1);
+  padding: var(--padding-text-input-2);
+  border-radius: var(--text-input-border-radius);
+  width: 100%;
+}
+
+.credentialField:focus {
+  background-color: rgb(45, 45, 45);
+  outline: none;
+}
+
+.credentialField:focus-visible {
+  outline: 2px solid var(--lower-body);
+  outline-offset: var(--outline-offset-fields-1);
+}
+
+.credentialField[aria-disabled="true"] {
+  background-color: var(--lightGray2);
+  pointer-events: none;
+  user-select: none;
+}
+
+.credentialField:disabled::placeholder {
+  color: gray;
+}
+
+.credentialFieldsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  width: 275px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.credentialsPromptWrapper {
+  margin-bottom: 0.75rem;
+  width: 100%;
+  text-align: center;
+}
+
+span.credentialsPrompt {
+  color: silver;
+}
+
+span.formStateSwitch {
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--silver-light);
+}
+
+span.formStateSwitch:hover {
+  cursor: pointer;
+  color: var(--lower-body);
+  text-decoration: underline;
+}
+
+span.formStateSwitch:active {
+  color: var(--core);
+}
+
+span.formStateSwitch:focus {
+  outline: none;
+}
+
+span.formStateSwitch:focus-visible {
+  outline-offset: var(--outline-offset-fields-1);
+  outline: 2px solid var(--lower-body);
+  border-radius: 5px;
+  text-decoration: underline;
+}
+
+div.registrationNotesWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+ul.registrationNotesList {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  list-style: circle;
+}
+
+li.registrationNoteItem {
+  color: silver;
+}
+
+.errorMessageWrapper {
+  display: flex;
+  justify-content: center;
+  max-width: inherit;
+  flex-wrap: wrap;
+  color: var(--core);
+  height: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.fieldSubtitle {
+  margin: 0;
+}
+
+@media (max-width: 1199px) {
+  .title {
+    font-size: 5rem;
+  }
+  .subTitle {
+    font-size: 1.75rem;
+  }
+
+  .loginRegisterContainer {
+    width: 575px;
+  }
+
+  .credentialField {
+    font-size: 1rem;
+  }
+
+  .submitButton {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 848px) {
+  .loginPopup {
+    width: 75%;
+  }
+}
+
+@media (max-width: 753px) {
+  .loginPopup {
+    width: 80%;
+  }
+  .loginRegisterContainer {
+    width: 70%;
+  }
+  .title {
+    font-size: 4.5rem;
+  }
+  .subTitle {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 3rem;
+  }
+  .subTitle {
+    font-size: 1rem;
+  }
+
+  li.registrationNoteItem,
+  .credentialsPrompt,
+  .fieldSubtitle {
+    font-size: 0.85rem;
+  }
+}

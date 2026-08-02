@@ -1,0 +1,199 @@
+"use client";
+
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+
+import { gsap } from "gsap";
+
+import About1 from "@/components/about/About1";
+import About2 from "@/components/about/About2";
+import About3 from "@/components/about/About3";
+import About4 from "@/components/about/About4";
+import About5 from "@/components/about/About5";
+import RightArrows from "@/components/about/RightArrows";
+import LeftArrows from "@/components/about/LeftArrows";
+
+export default function About() {
+  const [width, setWidth] = useState<number>(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const pinRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      setWidth(window.innerWidth);
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    updateDimensions();
+
+    window.addEventListener("resize", updateDimensions);
+
+    return () => {
+      window.removeEventListener("resize", updateDimensions);
+    };
+  }, []);
+
+  //* ─────────────────────────────────────────
+  //* 🌀 Scroll-triggered animation
+  //* ─────────────────────────────────────────
+  useLayoutEffect(() => {
+    let cleanup: (() => void) | undefined;
+
+    const setupAnimation = async () => {
+      const { default: ScrollTrigger } = await import("gsap/ScrollTrigger");
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const context = gsap.context(() => {
+        const parallaxElement =
+          document.querySelector<HTMLElement>(".parallax-bg");
+
+        const sections = gsap.utils.toArray<HTMLElement>(
+          ".about-section-container",
+        );
+
+        const sectionsLess = sections.length - 1;
+
+        if (sectionsLess <= 0) {
+          return;
+        }
+
+        gsap.to(sections, {
+          xPercent: -100 * sectionsLess,
+          ease: "none",
+          scrollTrigger: {
+            trigger: pinRef.current,
+            pin: true,
+            scrub: true,
+            snap: 1 / sectionsLess,
+            end: () => `+=${window.innerWidth * sections.length}`,
+            onUpdate: (self) => {
+              if (parallaxElement) {
+                const parallaxOffset = self.progress * -35;
+
+                parallaxElement.style.transform = `translateX(${parallaxOffset}vw)`;
+              }
+            },
+          },
+        });
+
+        ScrollTrigger.refresh();
+      }, pinRef);
+
+      cleanup = () => {
+        context.revert();
+      };
+    };
+
+    void setupAnimation();
+
+    return () => {
+      cleanup?.();
+    };
+  }, []);
+
+  //* ─────────────────────────────────
+  //* 🔁 Arrow signal timeline
+  //* ─────────────────────────────────
+  useEffect(() => {
+    const leftArrows = gsap.timeline({ repeat: -1 });
+    const rightArrows = gsap.timeline({ repeat: -1 });
+
+    leftArrows
+      .to("#nav-signal-line-left-1", {
+        x: "-50px",
+        duration: 1.5,
+        ease: "power3.inOut",
+        opacity: 0,
+      })
+      .to(
+        "#nav-signal-line-left-2",
+        {
+          x: "-100px",
+          duration: 1.5,
+          ease: "power3.inOut",
+          opacity: 0,
+        },
+        "<",
+      );
+
+    rightArrows
+      .to("#nav-signal-line-right-1", {
+        x: "50px",
+        duration: 1.5,
+        ease: "power3.inOut",
+        opacity: 0,
+      })
+      .to(
+        "#nav-signal-line-right-2",
+        {
+          x: "100px",
+          duration: 1.5,
+          ease: "power3.inOut",
+          opacity: 0,
+        },
+        "<",
+      );
+  }, []);
+
+  //* ──────────────────────────────
+  //* ⌨️ Keyboard remapping
+  //* ──────────────────────────────
+
+  useEffect(() => {
+    const handleKeys = (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        window.scrollBy({ top: 100, behavior: "smooth" });
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        window.scrollBy({ top: -100, behavior: "smooth" });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeys);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeys);
+    };
+  }, []);
+
+  return (
+    <div ref={pinRef} id="about-page">
+      {/* Parallax Background */}
+      <div className="parallax-bg"></div>
+
+      {/* Content */}
+      <div ref={trackRef} className="about-track">
+        <div className="about-section-container" id="about-section-container-1">
+          <About1 isMobile={isMobile} width={width} />
+          <RightArrows />
+        </div>
+
+        <div className="about-section-container" id="about-section-container-2">
+          <About2 isMobile={isMobile} width={width} />
+        </div>
+
+        <div className="about-section-container" id="about-section-container-3">
+          <About3 isMobile={isMobile} width={width} />
+        </div>
+
+        <div className="about-section-container" id="about-section-container-4">
+          <About4 isMobile={isMobile} width={width} />
+        </div>
+
+        <div className="about-section-container" id="about-section-container-5">
+          <LeftArrows />
+          <About5 isMobile={isMobile} width={width} />
+        </div>
+      </div>
+
+      <div className="instruction">
+        <span>Scroll to Explore</span>
+      </div>
+    </div>
+  );
+}

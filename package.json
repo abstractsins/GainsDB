@@ -1,4 +1,11 @@
 {
   "private": true,
-  "packageManager": "pnpm@11.18.0"
+  "packageManager": "pnpm@11.18.0",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "start:backend": "node gainsdb-back/src/server.js",
+    "build:frontend": "pnpm --filter gym-progress-frontend build"
+  }
 }

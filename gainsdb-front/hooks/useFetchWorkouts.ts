@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import { WorkoutsObj, WorkoutListContainer } from "@/app/types/types";
+import { WorkoutsObj, WorkoutListContainer } from "@/types/types";
 import { useSession } from "next-auth/react";
 
 export const useFetchWorkouts = (page: number, timeframe: string) => {
@@ -18,12 +18,12 @@ export const useFetchWorkouts = (page: number, timeframe: string) => {
   const sessionToken = session?.user?.authToken ?? null;
   const token = useMemo(
     () => sessionToken ?? localStorage.getItem("token") ?? "",
-    [sessionToken]
+    [sessionToken],
   );
   const sessionUserId = session?.user?.id ?? null;
   const userId = useMemo(
     () => sessionUserId ?? localStorage.getItem("userId") ?? "",
-    [sessionUserId]
+    [sessionUserId],
   );
   const isAuthed = status === "authenticated" && !!token;
 
@@ -68,7 +68,7 @@ export const useFetchWorkouts = (page: number, timeframe: string) => {
       setTotalPages(data.totalPages);
       setLoading(false);
     },
-    [server] // ← only server can change; function stays stable across focus
+    [server], // ← only server can change; function stays stable across focus
   );
 
   useEffect(() => {

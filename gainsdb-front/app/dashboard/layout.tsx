@@ -1,65 +1,93 @@
 "use client";
 
+// React
+import { useEffect, useState, useRef } from "react";
+
+// Next
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Oswald, Tourney } from "next/font/google";
+import { useRouter, usePathname } from "next/navigation";
+
+// Components
 import Navbar from "@/components/Navbar";
 import MobileNavbar from "@/components/MobileNavbar";
-import ClientLoader from "../../components/ClientLoader";
-import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+
+// Constants
+import {
+  AuthenticationStatus,
+  mobileMaxWidth,
+} from "@/constants/generalConstants";
+
+// Contexts
+import { useWaiter } from "@/contexts/WaiterContext";
+import { LoadedProvider } from "@/contexts/LoadedContext";
+
+// Styles
+import styles from "./layout.module.css";
 
 const oswald = Oswald({
   subsets: ["latin"],
   weight: ["400", "700"],
-  display: "swap"
+  display: "swap",
 });
 
 const tourney = Tourney({
   subsets: ["latin"],
   weight: ["100", "400", "700"],
-  display: "swap"
+  display: "swap",
 });
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
-  const [isChecking, setIsChecking] = useState(true);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [isMenuActive, setIsMenuActive] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const { status } = useSession();
+  const { setWaiter } = useWaiter();
 
-  // UNTIL SETTINGS IS RELEASED
+  const [isCheckingAuthentication, setIsCheckingAuthentication] =
+    useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuActive, setIsMenuActive] = useState(false);
+
+  // UNTIL SETTINGS IS RELEASED, hard code to false
   const settings = false;
   const charts = false;
   const comingSoon = true;
 
   const closeMenu = () => setIsMenuActive(false);
 
+  // Remove waiter and add window event listener for resizing
   useEffect(() => {
-    setIsMobile(window.innerWidth <= 768);
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    setWaiter(false);
+    setIsMobile(window.innerWidth <= mobileMaxWidth);
+    const handleResize = () => setIsMobile(window.innerWidth <= mobileMaxWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Authentication check and routing fallback
   useEffect(() => {
-    if (status === "loading") return;
-    if (status === "unauthenticated") {
+    if (status === AuthenticationStatus.Loading) return;
+    if (status === AuthenticationStatus.Unauthenticated) {
       console.warn("🚨 Redirecting: No session found.");
       router.push("/");
     } else {
-      setIsChecking(false);
+      setIsCheckingAuthentication(false);
     }
   }, [status, router]);
 
+  // Close menu when clicking outside of it
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsMenuActive(false);
       }
-    }
+    };
 
     if (isMenuActive) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -70,37 +98,62 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     };
   }, [isMenuActive]);
 
-  useEffect(() => {
-    setIsMenuActive(false);
-  }, [pathname]);
-
-  if (status === "loading" || isChecking) {
+  if (status === AuthenticationStatus.Loading || isCheckingAuthentication) {
     return <p>Checking authentication...</p>;
   }
 
   return (
-    <div className="flex h-screen">
-      {/* Sidebar */}
-      <aside ref={menuRef} onBlur={closeMenu} className={`${isMobile ? "mobile" : ""} ${isMenuActive ? "active" : ""} w-64 bg-gray-900 text-white p-5 flex flex-col space-y-4`}>
-        <h2 className={`${tourney.className} text-[12pt] sm:text-[18pt] md:text-[22pt] lg:text-[28pt] xl:text-[28pt]`}>GainsDB</h2>
-        <nav className="flex flex-col space-y-2">
-          <Link href="/dashboard/new-workout" className="dashboard-link hover:bg-gray-700 p-2 rounded">💪 Log Workout</Link>
-          <Link href="/dashboard/history" className="dashboard-link hover:bg-gray-700 p-2 rounded">📜 Workout History</Link>
-          <Link href="/dashboard/exercises" className="dashboard-link hover:bg-gray-700 p-2 rounded">🏋️‍♂️ Exercises</Link>
-          {charts && <Link href="/dashboard/charts" className="dashboard-link hover:bg-gray-700 p-2 rounded">📈 Charts</Link>}
-          {settings && <Link href="/dashboard/settings" className="dashboard-link hover:bg-gray-700 p-2 rounded">⚙️ Settings</Link>}
-          {comingSoon && <Link href="/dashboard/coming-soon" className="dashboard-link hover:bg-gray-700 p-2 rounded">✨ Coming Soon...</Link>}
-        </nav>
-      </aside>
+    <LoadedProvider>
+      <div className={styles.dashboardContainer}>
+        {/* Sidebar */}
+        <aside
+          ref={menuRef}
+          onBlur={closeMenu}
+          className={`${isMobile ? styles.mobile : ""} ${isMenuActive ? styles.active : ""}`}
+        >
+          <h2 className={`${tourney.className}`}>GainsDB</h2>
+          <nav className={styles.nav}>
+            <Link href="/user/new-workout" className={styles.dashboardLink}>
+              💪 Log Workout
+            </Link>
+            <Link href="/user/history" className={styles.dashboardLink}>
+              📜 Workout History
+            </Link>
+            <Link href="/user/exercises" className={styles.dashboardLink}>
+              🏋️‍♂️ Exercises
+            </Link>
+            {charts && (
+              <Link href="/user/charts" className={styles.dashboardLink}>
+                📈 Charts
+              </Link>
+            )}
+            {settings && (
+              <Link href="/dashboard/settings" className={styles.dashboardLink}>
+                ⚙️ Settings
+              </Link>
+            )}
+            {comingSoon && (
+              <Link
+                href="/dashboard/coming-soon"
+                className={styles.dashboardLink}
+              >
+                ✨ Coming Soon...
+              </Link>
+            )}
+          </nav>
+        </aside>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Navbar */}
-        {isMobile ? <MobileNavbar sidebar={{ isMenuActive, setIsMenuActive }} /> : <Navbar />}
-        <ClientLoader>
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col">
+          {/* Navbar */}
+          {isMobile ? (
+            <MobileNavbar sidebar={{ isMenuActive, setIsMenuActive }} />
+          ) : (
+            <Navbar />
+          )}
           <main className="overflow-auto">{children}</main>
-        </ClientLoader>
+        </div>
       </div>
-    </div>
+    </LoadedProvider>
   );
 }

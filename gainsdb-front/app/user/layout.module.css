@@ -1,0 +1,58 @@
+.dashboardContainer {
+  display: flex;
+  height: 100%;
+}
+
+aside.fullView {
+  padding: 1rem;
+  background-color: #222d3a;
+  /* background-color: var(--black); */
+}
+
+aside.fullView h2 {
+  font-size: 2.25rem;
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dashboardLink {
+  display: flex;
+  padding: var(--padding-standard-2);
+  border-radius: var(--border-radius-text-link);
+  border: 1px solid transparent;
+}
+
+.dashboardLink a {
+  text-decoration: none;
+}
+
+.dashboardLink:hover {
+  background-color: var(--skeleton-gray);
+  border: 1px solid var(--lightGray2);
+}
+
+/** MOBILE */
+
+aside.mobile {
+  background-color: rgba(17, 24, 39, 0.95);
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 14rem;
+  height: 100vh;
+  z-index: 100;
+  transition: right 500ms ease-in-out;
+}
+
+aside.mobile.active {
+  right: 0;
+}
+
+aside.mobile h2 {
+  font-size: 2rem;
+}
