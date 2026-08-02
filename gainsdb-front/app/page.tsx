@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <>
       {/* Popup for demo credentials */}
-      {env === Environments.Local && <CheckingUsOut />}
+      {env === Environments.Prod && <CheckingUsOut />}
 
       {/* Background container */}
       <div className={styles.background}>
