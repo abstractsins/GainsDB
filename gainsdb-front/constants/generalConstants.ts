@@ -1,3 +1,5 @@
+import NewWorkout from "@/app/user/new-workout/page";
+
 export enum Environments {
   Prod = "production",
   Local = "local",
@@ -7,6 +9,11 @@ export enum Environments {
 export enum Routes {
   Dashboard = "dashboard",
   User = "user",
+  Profile = "profile",
+  Exercises = "exercises",
+  Charts = "charts",
+  History = "history",
+  NewWorkout = "new-workout",
 }
 
 export enum InputTypes {

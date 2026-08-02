@@ -132,12 +132,12 @@ export default function DashboardLayout({
             )}
             {settings && (
               <div className={styles.dashboardLink}>
-                <Link href="/dashboard/settings">⚙️ Settings</Link>
+                <Link href="/user/settings">⚙️ Settings</Link>
               </div>
             )}
             {comingSoon && (
               <div className={styles.dashboardLink}>
-                <Link href="/dashboard/coming-soon">✨ Coming Soon...</Link>
+                <Link href="/user/coming-soon">✨ Coming Soon...</Link>
               </div>
             )}
           </nav>
