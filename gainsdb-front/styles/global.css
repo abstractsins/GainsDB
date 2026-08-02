@@ -2431,49 +2431,6 @@ html, body {
 @media (max-width: 768px) {
 }
 
-div.popup#demo-creds {
-  position: fixed;
-  top: 5%;
-  left: 40%;
-  filter: drop-shadow(5px 5px 3px gray);
-  border-radius: 10px;
-  background-color: var(--lower-body);
-  color: white;
-  width: fit-content;
-  height: fit-content;
-  padding: 20px 40px 20px 20px;
-}
-
-div.popup#demo-creds header {
-  border-bottom: 1px solid white;
-  margin-bottom: 5px;
-  /* font-weight: bold; */
-  text-transform: uppercase;
-}
-
-div.popup#demo-creds span.label {
-  color: silver;
-}
-
-div.demo-creds-body {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-div.popup#demo-creds .close-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  font-size: 16pt;
-  cursor: pointer;
-  color: silver;
-}
-
-div.popup#demo-creds .close-button:hover {
-  color: white;
-}
-
 /** ABOUT PAGE MEDIA QUERIES */
 @media screen and (max-width: 2120px) {
   #p1 .left {

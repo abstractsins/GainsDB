@@ -16,7 +16,7 @@ import LoginRegister from "@/components/LoginRegister";
 import { Environments, Routes } from "@/constants/generalConstants";
 import { Endpoints } from "@/constants/fetchConstants";
 
-// STYLES 
+// STYLES
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -26,7 +26,7 @@ export default function Home() {
   const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
   const server = process.env.NEXT_PUBLIC_BACKEND;
 
-  // Redirect authenticated users to the dashboard  
+  // Redirect authenticated users to the dashboard
   useEffect(() => {
     const checkAuth = async () => {
       const token = session?.user?.authToken;
@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <>
       {/* Popup for demo credentials */}
-      {env === Environments.Prod && <CheckingUsOut />}
+      {env === Environments.Local && <CheckingUsOut />}
 
       {/* Background container */}
       <div className={styles.background}>

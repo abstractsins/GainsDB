@@ -11,18 +11,19 @@ export default function CheckingUsOut() {
   return (
     <>
       {showPopup && (
-        <div className={`${styles.popup}`} id="demo-creds">
-          <div className="demo-creds-body">
+        <div className={`${styles.popup} ${styles.demoCreds}`}>
+          <div className={styles.demoCredsBody}>
             <header>
               <span>Checking us out?</span>
             </header>
             <div className="creds">
-              <span className="label">user:</span> <span>demo</span>
+              <span className={styles.label}>user:</span> <span>demo</span>
               <br></br>
-              <span className="label">pass:</span> <span>DanBerlin!</span>
+              <span className={styles.label}>pass:</span>{" "}
+              <span>DanBerlin!</span>
             </div>
           </div>
-          <div className="close-button" onClick={closePopup}>
+          <div className={styles.closeButton} onClick={closePopup}>
             <RiCloseFill />
           </div>
         </div>
