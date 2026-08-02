@@ -17,6 +17,7 @@ import MobileNavbar from "@/components/MobileNavbar";
 import {
   AuthenticationStatus,
   mobileMaxWidth,
+  Routes,
 } from "@/constants/generalConstants";
 
 // Contexts
@@ -44,6 +45,24 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  useEffect(() => {
+    const pathArr = pathname.split("/").filter((el) => el);
+    if (pathArr[0] === Routes.User) {
+      console.log("user path");
+      const currentNavPath = pathArr[1];
+      switch (currentNavPath) {
+        case Routes.Exercises:
+          break;
+        case Routes.NewWorkout:
+          break;
+        case Routes.ComingSoon:
+          break;
+        case Routes.History:
+          break;
+      }
+    }
+  }, [pathname]);
+
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { status } = useSession();
@@ -54,6 +73,10 @@ export default function DashboardLayout({
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuActive, setIsMenuActive] = useState(false);
 
+  // Cache reusable string
+  const user = Routes.User;
+
+  // Easily turn off or on extended nav options for now
   // UNTIL SETTINGS IS RELEASED, hard code to false
   const settings = false;
   const charts = false;
@@ -114,30 +137,34 @@ export default function DashboardLayout({
           <h2 className={`${tourney.className}`}>GainsDB</h2>
           <nav className={styles.nav}>
             <div className={styles.dashboardLink}>
-              <Link href="/user/new-workout">💪 Log Workout</Link>
+              <Link href={`/${user}/${Routes.NewWorkout}`}>💪 Log Workout</Link>
             </div>
 
             <div className={styles.dashboardLink}>
-              <Link href="/user/history">📜 Workout History</Link>
+              <Link href={`/${user}/${Routes.History}`}>
+                📜 Workout History
+              </Link>
             </div>
 
             <div className={styles.dashboardLink}>
-              <Link href="/user/exercises">🏋️‍♂️ Exercises</Link>
+              <Link href={`/${user}/${Routes.Exercises}`}>🏋️‍♂️ Exercises</Link>
             </div>
 
             {charts && (
               <div className={styles.dashboardLink}>
-                <Link href="/user/charts">📈 Charts</Link>
+                <Link href={`/${user}/${Routes.Charts}}`}>📈 Charts</Link>
               </div>
             )}
             {settings && (
               <div className={styles.dashboardLink}>
-                <Link href="/user/settings">⚙️ Settings</Link>
+                <Link href={`/${user}/${Routes.Settings}`}>⚙️ Settings</Link>
               </div>
             )}
             {comingSoon && (
               <div className={styles.dashboardLink}>
-                <Link href="/user/coming-soon">✨ Coming Soon...</Link>
+                <Link href={`/${user}/${Routes.ComingSoon}`}>
+                  ✨ Coming Soon...
+                </Link>
               </div>
             )}
           </nav>

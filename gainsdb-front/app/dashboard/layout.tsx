@@ -17,6 +17,7 @@ import MobileNavbar from "@/components/MobileNavbar";
 import {
   AuthenticationStatus,
   mobileMaxWidth,
+  Routes,
 } from "@/constants/generalConstants";
 
 // Contexts
@@ -54,6 +55,10 @@ export default function DashboardLayout({
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuActive, setIsMenuActive] = useState(false);
 
+  // Cache reusable string
+  const user = Routes.User;
+
+  // Easily turn off or on extended nav options for now
   // UNTIL SETTINGS IS RELEASED, hard code to false
   const settings = false;
   const charts = false;
@@ -113,28 +118,43 @@ export default function DashboardLayout({
         >
           <h2 className={`${tourney.className}`}>GainsDB</h2>
           <nav className={styles.nav}>
-            <Link href="/user/new-workout" className={styles.dashboardLink}>
+            <Link
+              href={`/${user}/${Routes.NewWorkout}`}
+              className={styles.dashboardLink}
+            >
               💪 Log Workout
             </Link>
-            <Link href="/user/history" className={styles.dashboardLink}>
+            <Link
+              href={`/${user}/${Routes.History}`}
+              className={styles.dashboardLink}
+            >
               📜 Workout History
             </Link>
-            <Link href="/user/exercises" className={styles.dashboardLink}>
+            <Link
+              href={`/${user}/${Routes.Exercises}`}
+              className={styles.dashboardLink}
+            >
               🏋️‍♂️ Exercises
             </Link>
             {charts && (
-              <Link href="/user/charts" className={styles.dashboardLink}>
+              <Link
+                href={`/${user}/${Routes.Charts}}`}
+                className={styles.dashboardLink}
+              >
                 📈 Charts
               </Link>
             )}
             {settings && (
-              <Link href="/dashboard/settings" className={styles.dashboardLink}>
+              <Link
+                href={`/${user}/${Routes.Settings}`}
+                className={styles.dashboardLink}
+              >
                 ⚙️ Settings
               </Link>
             )}
             {comingSoon && (
               <Link
-                href="/dashboard/coming-soon"
+                href={`/${user}/${Routes.ComingSoon}`}
                 className={styles.dashboardLink}
               >
                 ✨ Coming Soon...

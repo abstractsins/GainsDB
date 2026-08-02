@@ -14,6 +14,8 @@ export enum Routes {
   Charts = "charts",
   History = "history",
   NewWorkout = "new-workout",
+  ComingSoon = "coming-soon",
+  Settings = "settings",
 }
 
 export enum InputTypes {
