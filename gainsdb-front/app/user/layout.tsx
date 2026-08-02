@@ -109,36 +109,36 @@ export default function DashboardLayout({
         <aside
           ref={menuRef}
           onBlur={closeMenu}
-          className={`${isMobile ? styles.mobile : ""} ${isMenuActive ? styles.active : ""}`}
+          className={`${isMobile ? styles.mobile : styles.fullView} ${isMenuActive ? styles.active : ""}`}
         >
           <h2 className={`${tourney.className}`}>GainsDB</h2>
           <nav className={styles.nav}>
-            <Link href="/user/new-workout" className={styles.dashboardLink}>
-              💪 Log Workout
-            </Link>
-            <Link href="/user/history" className={styles.dashboardLink}>
-              📜 Workout History
-            </Link>
-            <Link href="/user/exercises" className={styles.dashboardLink}>
-              🏋️‍♂️ Exercises
-            </Link>
+            <div className={styles.dashboardLink}>
+              <Link href="/user/new-workout">💪 Log Workout</Link>
+            </div>
+
+            <div className={styles.dashboardLink}>
+              <Link href="/user/history">📜 Workout History</Link>
+            </div>
+
+            <div className={styles.dashboardLink}>
+              <Link href="/user/exercises">🏋️‍♂️ Exercises</Link>
+            </div>
+
             {charts && (
-              <Link href="/user/charts" className={styles.dashboardLink}>
-                📈 Charts
-              </Link>
+              <div className={styles.dashboardLink}>
+                <Link href="/user/charts">📈 Charts</Link>
+              </div>
             )}
             {settings && (
-              <Link href="/dashboard/settings" className={styles.dashboardLink}>
-                ⚙️ Settings
-              </Link>
+              <div className={styles.dashboardLink}>
+                <Link href="/dashboard/settings">⚙️ Settings</Link>
+              </div>
             )}
             {comingSoon && (
-              <Link
-                href="/dashboard/coming-soon"
-                className={styles.dashboardLink}
-              >
-                ✨ Coming Soon...
-              </Link>
+              <div className={styles.dashboardLink}>
+                <Link href="/dashboard/coming-soon">✨ Coming Soon...</Link>
+              </div>
             )}
           </nav>
         </aside>

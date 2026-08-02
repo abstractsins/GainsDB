@@ -47,13 +47,14 @@
   /* BORDER-RADIUS */
   --popup-border-radius: 7px;
   --text-input-border-radius: 5px;
-  --border-radius-text-link: 2px;
+  --border-radius-text-link: 5px;
 
   /* PADDING */
   --padding-text-input-1: 7px 10px;
   --padding-text-input-2: 10px;
   --padding-submit-button: 8px 25px;
   --padding-standard-1: 5px 10px;
+  --padding-standard-2: 10px 15px;
 
   /* MARGIN */
   --margin-text-input-1: 5px;

@@ -9,6 +9,7 @@ export enum WaiterMessage {
   LoggingIn = "Logging\u00A0In",
   Registering = "Registering",
   Syncing = "Syncing",
+  Submitting = "Submitting",
 }
 
 interface Props {

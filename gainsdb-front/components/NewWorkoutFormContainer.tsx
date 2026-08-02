@@ -1,7 +1,8 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
 import { toTitleCase } from "@/utils/utils";
-import Loader from "@/components/Waiter";
+import Loader, { WaiterMessage } from "@/components/Waiter";
+import { useWaiter } from "@/contexts/WaiterContext";
 import ExercisesList from "@/components/ExercisesList";
 
 interface Props {
@@ -49,6 +50,8 @@ export default function NewWorkoutFormContainer({
     weight: "",
     reps: "",
   });
+
+  const { setWaiter } = useWaiter();
 
   const userId = session?.user?.id || localStorage.getItem("userId");
 
@@ -136,10 +139,14 @@ export default function NewWorkoutFormContainer({
     );
   };
 
+  useEffect(() => {
+    if (waiting) {
+      setWaiter(WaiterMessage.Submitting);
+    }
+  }, [waiting]);
+
   return (
     <div className="new-workout-form-container">
-      {waiting && <Loader msg={"Submitting"}></Loader>}
-
       {isXXLarge && (
         <form onSubmit={handleSubmit} id="new-set-form" className="xxl">
           <div className="form-xxl-row">

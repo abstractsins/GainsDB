@@ -2,8 +2,9 @@
 
 import { RiCloseLargeFill } from "react-icons/ri";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
-import Loader from "@/components/Waiter";
+import { useEffect, useState } from "react";
+import { useWaiter } from "@/contexts/WaiterContext";
+import { WaiterMessage } from "./Waiter";
 
 interface Props {
   visible: boolean;
@@ -22,8 +23,10 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
 
   const server = process.env.NEXT_PUBLIC_BACKEND || `http://localhost:5000`;
 
+  const { setWaiter } = useWaiter();
+
   const submitNewExercise = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault(); // ← stop native form submission
+    if (e) e.preventDefault();
     if (!entryValue) return;
     setWaiting(true);
     const token = session?.user?.authToken || localStorage.getItem("token");
@@ -64,10 +67,14 @@ export default function NewExercisePopup({ visible, onClose }: Props) {
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setEntryValue(e.target.value.trim());
 
+  useEffect(() => {
+    if (waiting) {
+      setWaiter(WaiterMessage.Submitting);
+    }
+  }, [waiting]);
+
   return (
     <div className="popup" id="new-exercise-popup">
-      {waiting && <Loader msg={"Submitting"}></Loader>}
-
       <div className="popup-header-container">
         <h2 className="popup-header">Enter New Exercise</h2>
         <span>You will only see your own exercises</span>
