@@ -17,7 +17,7 @@ import MobileNavbar from "@/components/MobileNavbar";
 import {
   AuthenticationStatus,
   mobileMaxWidth,
-  Routes,
+  RouteSegment,
 } from "@/constants/generalConstants";
 
 // Contexts
@@ -45,36 +45,21 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  useEffect(() => {
-    const pathArr = pathname.split("/").filter((el) => el);
-    if (pathArr[0] === Routes.User) {
-      console.log("user path");
-      const currentNavPath = pathArr[1];
-      switch (currentNavPath) {
-        case Routes.Exercises:
-          break;
-        case Routes.NewWorkout:
-          break;
-        case Routes.ComingSoon:
-          break;
-        case Routes.History:
-          break;
-      }
-    }
-  }, [pathname]);
-
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { status } = useSession();
   const { setWaiter } = useWaiter();
 
+  const [currentUserNavPath, setCurrentUserNavPath] = useState<RouteSegment>(
+    RouteSegment.User,
+  );
   const [isCheckingAuthentication, setIsCheckingAuthentication] =
     useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuActive, setIsMenuActive] = useState(false);
 
   // Cache reusable string
-  const user = Routes.User;
+  const user = RouteSegment.User;
 
   // Easily turn off or on extended nav options for now
   // UNTIL SETTINGS IS RELEASED, hard code to false
@@ -121,11 +106,30 @@ export default function DashboardLayout({
     };
   }, [isMenuActive]);
 
-  if (status === AuthenticationStatus.Loading || isCheckingAuthentication) {
-    return <p>Checking authentication...</p>;
-  }
+  // Stylize the sidenav link if it is the current path
+  useEffect(() => {
+    const pathArr = pathname.split("/").filter((el) => el);
 
-  return (
+    if (pathArr[0] === RouteSegment.User) {
+      if (Object.values(RouteSegment).includes(pathArr[1] as RouteSegment)) {
+        setCurrentUserNavPath(pathArr[1] as RouteSegment);
+      } else {
+        throw new Error(
+          "CUSTOM ERROR: The destructured path does not exist as a known user-based RouteSegment: " +
+            pathArr[1],
+        );
+      }
+    } else {
+      throw new Error(
+        "CUSTOM ERROR: This route was somehow accessed outside of the /user path: " +
+          pathname,
+      );
+    }
+  }, [pathname]);
+
+  return status === AuthenticationStatus.Loading || isCheckingAuthentication ? (
+    <p>Checking authentication...</p>
+  ) : (
     <LoadedProvider>
       <div className={styles.dashboardContainer}>
         {/* Sidebar */}
@@ -136,33 +140,51 @@ export default function DashboardLayout({
         >
           <h2 className={`${tourney.className}`}>GainsDB</h2>
           <nav className={styles.nav}>
-            <div className={styles.dashboardLink}>
-              <Link href={`/${user}/${Routes.NewWorkout}`}>💪 Log Workout</Link>
+            <div
+              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.NewWorkout ? styles.currentUserNavPath : ""}`}
+            >
+              <Link href={`/${user}/${RouteSegment.NewWorkout}`}>
+                💪 Log Workout
+              </Link>
             </div>
 
-            <div className={styles.dashboardLink}>
-              <Link href={`/${user}/${Routes.History}`}>
+            <div
+              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.History ? styles.currentUserNavPath : ""}`}
+            >
+              <Link href={`/${user}/${RouteSegment.History}`}>
                 📜 Workout History
               </Link>
             </div>
 
-            <div className={styles.dashboardLink}>
-              <Link href={`/${user}/${Routes.Exercises}`}>🏋️‍♂️ Exercises</Link>
+            <div
+              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Exercises ? styles.currentUserNavPath : ""}`}
+            >
+              <Link href={`/${user}/${RouteSegment.Exercises}`}>
+                🏋️‍♂️ Exercises
+              </Link>
             </div>
 
             {charts && (
-              <div className={styles.dashboardLink}>
-                <Link href={`/${user}/${Routes.Charts}}`}>📈 Charts</Link>
+              <div
+                className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Charts ? styles.currentUserNavPath : ""}`}
+              >
+                <Link href={`/${user}/${RouteSegment.Charts}}`}>📈 Charts</Link>
               </div>
             )}
             {settings && (
-              <div className={styles.dashboardLink}>
-                <Link href={`/${user}/${Routes.Settings}`}>⚙️ Settings</Link>
+              <div
+                className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Settings ? styles.currentUserNavPath : ""}`}
+              >
+                <Link href={`/${user}/${RouteSegment.Settings}`}>
+                  ⚙️ Settings
+                </Link>
               </div>
             )}
             {comingSoon && (
-              <div className={styles.dashboardLink}>
-                <Link href={`/${user}/${Routes.ComingSoon}`}>
+              <div
+                className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.ComingSoon ? styles.currentUserNavPath : ""}`}
+              >
+                <Link href={`/${user}/${RouteSegment.ComingSoon}`}>
                   ✨ Coming Soon...
                 </Link>
               </div>

@@ -6,7 +6,7 @@ export enum Environments {
   Dev = "development",
 }
 
-export enum Routes {
+export enum RouteSegment {
   Dashboard = "dashboard",
   User = "user",
   Profile = "profile",

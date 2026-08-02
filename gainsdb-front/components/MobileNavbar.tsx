@@ -6,7 +6,7 @@ import { Oswald } from "next/font/google";
 import { FaUser } from "react-icons/fa"; // FontAwesome icons
 import { MdDashboard } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { Routes } from "@/constants/generalConstants";
+import { RouteSegment } from "@/constants/generalConstants";
 
 interface SidebarInfo {
   isMenuActive: boolean;
@@ -39,7 +39,7 @@ export default function Navbar({ sidebar }: Props) {
     <header className="mobile-nav-header">
       {username ? (
         <Link
-          href={`/${Routes.User}/${Routes.Dashboard}`}
+          href={`/${RouteSegment.User}/${RouteSegment.Dashboard}`}
           className="hover:text-blue-300 flex items-center"
         >
           <MdDashboard className="mr-2 text-xl" />
@@ -57,7 +57,7 @@ export default function Navbar({ sidebar }: Props) {
 
       {profile ? (
         <Link
-          href={`/${Routes.User}/${Routes.Profile}`}
+          href={`/${RouteSegment.User}/${RouteSegment.Profile}`}
           className="hover:text-blue-300 flex items-center"
         >
           <FaUser className="mr-2 text-xl" />

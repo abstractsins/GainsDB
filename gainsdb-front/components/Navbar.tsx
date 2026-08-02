@@ -3,7 +3,7 @@ import { MdDashboard } from "react-icons/md"; // Material Icons
 import { Oswald } from "next/font/google";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Routes } from "@/constants/generalConstants";
+import { RouteSegment } from "@/constants/generalConstants";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -24,7 +24,7 @@ export default function Navbar() {
         <header className="nav-header">
           {username && (
             <Link
-              href={`/${Routes.User}/${Routes.Dashboard}`}
+              href={`/${RouteSegment.User}/${RouteSegment.Dashboard}`}
               className="hover:text-blue-300 flex items-center"
             >
               <MdDashboard className="mr-2 text-xl" />

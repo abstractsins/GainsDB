@@ -31,7 +31,7 @@ aside.fullView h2 {
   text-decoration: none;
 }
 
-.dashboardLink.currentPath,
+.dashboardLink.currentUserNavPath,
 .dashboardLink:hover {
   background-color: var(--skeleton-gray);
   border: 1px solid var(--lightGray2);

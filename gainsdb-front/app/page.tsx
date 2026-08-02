@@ -13,7 +13,7 @@ import CheckingUsOut from "@/components/CheckingUsOut";
 import LoginRegister from "@/components/LoginRegister";
 
 // CONSTANTS
-import { Environments, Routes } from "@/constants/generalConstants";
+import { Environments, RouteSegment } from "@/constants/generalConstants";
 import { Endpoints } from "@/constants/fetchConstants";
 
 // STYLES
@@ -43,7 +43,7 @@ export default function Home() {
         }
 
         if (status === "authenticated" && session?.user?.authToken) {
-          router.replace(`/${Routes.User}/${Routes.Dashboard}`);
+          router.replace(`/${RouteSegment.User}/${RouteSegment.Dashboard}`);
         }
       } catch (err) {
         console.error(err);

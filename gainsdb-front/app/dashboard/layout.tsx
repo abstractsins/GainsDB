@@ -17,7 +17,7 @@ import MobileNavbar from "@/components/MobileNavbar";
 import {
   AuthenticationStatus,
   mobileMaxWidth,
-  Routes,
+  RouteSegment,
 } from "@/constants/generalConstants";
 
 // Contexts
@@ -56,7 +56,7 @@ export default function DashboardLayout({
   const [isMenuActive, setIsMenuActive] = useState(false);
 
   // Cache reusable string
-  const user = Routes.User;
+  const user = RouteSegment.User;
 
   // Easily turn off or on extended nav options for now
   // UNTIL SETTINGS IS RELEASED, hard code to false
@@ -119,26 +119,26 @@ export default function DashboardLayout({
           <h2 className={`${tourney.className}`}>GainsDB</h2>
           <nav className={styles.nav}>
             <Link
-              href={`/${user}/${Routes.NewWorkout}`}
+              href={`/${user}/${RouteSegment.NewWorkout}`}
               className={styles.dashboardLink}
             >
               💪 Log Workout
             </Link>
             <Link
-              href={`/${user}/${Routes.History}`}
+              href={`/${user}/${RouteSegment.History}`}
               className={styles.dashboardLink}
             >
               📜 Workout History
             </Link>
             <Link
-              href={`/${user}/${Routes.Exercises}`}
+              href={`/${user}/${RouteSegment.Exercises}`}
               className={styles.dashboardLink}
             >
               🏋️‍♂️ Exercises
             </Link>
             {charts && (
               <Link
-                href={`/${user}/${Routes.Charts}}`}
+                href={`/${user}/${RouteSegment.Charts}}`}
                 className={styles.dashboardLink}
               >
                 📈 Charts
@@ -146,7 +146,7 @@ export default function DashboardLayout({
             )}
             {settings && (
               <Link
-                href={`/${user}/${Routes.Settings}`}
+                href={`/${user}/${RouteSegment.Settings}`}
                 className={styles.dashboardLink}
               >
                 ⚙️ Settings
@@ -154,7 +154,7 @@ export default function DashboardLayout({
             )}
             {comingSoon && (
               <Link
-                href={`/${user}/${Routes.ComingSoon}`}
+                href={`/${user}/${RouteSegment.ComingSoon}`}
                 className={styles.dashboardLink}
               >
                 ✨ Coming Soon...
