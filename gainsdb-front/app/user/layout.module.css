@@ -6,6 +6,7 @@
 aside.fullView {
   padding: 1rem;
   background-color: var(--charcoal-blue);
+  /* border-right: 1px solid black; */
 }
 
 aside.fullView h2 {

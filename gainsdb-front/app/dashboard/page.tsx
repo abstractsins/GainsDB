@@ -22,7 +22,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { useLoaded } from "@/contexts/LoadedContext";
 
 // Components
-import InfoCard from "@/components/DashboardCard";
+import InfoCard from "@/components/dashboard/DashboardCard";
 
 // Styles
 import styles from "./page.module.css";

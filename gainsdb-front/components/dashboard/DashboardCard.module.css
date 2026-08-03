@@ -1,0 +1,71 @@
+div.dashboardCard {
+  background-color: rgba(10, 10, 10, 1);
+  display: flex;
+  flex-direction: column;
+  width: 365px;
+  height: 225px;
+  border-radius: 10px;
+  /* border: 3px solid whitesmoke; */
+  border: 3px solid rgb(195, 250, 237);
+  position: relative;
+  filter: drop-shadow(-10px 10px 5px rgba(20, 20, 20, 0.8)) !important;
+}
+
+header.dashboardCard {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-standard-1);
+  /* background-color: whitesmoke; */
+  background-color: rgb(195, 250, 237);
+  color: black;
+}
+
+.dashboardCardIcon {
+  font-size: 16pt;
+}
+
+div.dashboardCardIcon path,
+header.dashboardCard h3 {
+  color: var(--black);
+}
+
+header.dashboardCard h3 {
+  padding: var(--padding-standard-1);
+  font-weight: 600;
+  font-size: 14pt;
+  margin: var(--margin-standard-1);
+}
+
+.dashboardCardBody {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboardCardValueContainer {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+span.dashboardCardValue {
+  width: fit-content;
+  text-align: center;
+  font-family: "oswald";
+  font-size: calc(3rem - 0.03rem * var(--char-count));
+}
+
+.dashboardCardDescContainer {
+  display: flex;
+  width: 100%;
+  bottom: 0;
+  padding: var(--padding-standard-2);
+  justify-content: center;
+  text-align: center;
+}

@@ -22,10 +22,11 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { useLoaded } from "@/contexts/LoadedContext";
 
 // Components
-import InfoCard from "@/components/DashboardCard";
+import InfoCard from "@/components/dashboard/DashboardCard";
 
 // Styles
 import styles from "./page.module.css";
+import DashboardCardLoader from "@/components/dashboard/DashboardCardLoader";
 
 export default function DashboardPage() {
   const [dashboardData, setDashboardData] = useState<DashboardData>();
@@ -41,6 +42,10 @@ export default function DashboardPage() {
   const { setPageLoaded } = useLoaded();
   const { setUserLoggedIn } = useAuthContext();
   const router = useRouter();
+
+  const mostWeightCalculation = () => {
+    return false;
+  };
 
   useEffect(() => {
     if (status === "loading") return;
@@ -149,7 +154,7 @@ export default function DashboardPage() {
               <InfoCard
                 icon={<FaClipboardList />}
                 title="Logged Workouts"
-                value={dashboardData?.totalWorkouts || "N/A"}
+                value={dashboardData?.totalWorkouts || <DashboardCardLoader />}
                 description={`over ${totalWeeks || 0} week${totalWeeks === 1 ? "" : "s"}`}
                 id="logged-workouts"
               />
@@ -162,7 +167,7 @@ export default function DashboardPage() {
                 value={
                   toTitleCase(
                     dashboardData?.mostLoggedExe?.[0]?.exercise_name,
-                  ) || "N/A"
+                  ) || <DashboardCardLoader />
                 }
                 description={`${mostLogged || 0} workout${mostLogged === 1 ? "" : "s"}`}
                 id="most-logged"
@@ -176,7 +181,7 @@ export default function DashboardPage() {
                 value={
                   toTitleCase(
                     dashboardData?.mostLoggedExe?.slice(-1)[0]?.exercise_name,
-                  ) || "N/A"
+                  ) || <DashboardCardLoader />
                 }
                 description={`${leastLogged || 0} workout${leastLogged === 1 ? "" : "s"}`}
                 id="least-logged"
@@ -187,12 +192,11 @@ export default function DashboardPage() {
               <InfoCard
                 icon={<FaWeightHanging />}
                 title="Most Weight"
-                value={`${Number(dashboardData?.theMostWeight?.[0]?.max_weight).toFixed() || 0} lbs`}
-                description={
-                  toTitleCase(
-                    dashboardData?.theMostWeight?.[0]?.exercise_name,
-                  ) || "N/A"
-                }
+                //!
+                value={mostWeightCalculation() || <DashboardCardLoader />}
+                description={toTitleCase(
+                  dashboardData?.theMostWeight?.[0]?.exercise_name,
+                )}
                 id="most-weight"
               />
             </li>
@@ -204,7 +208,7 @@ export default function DashboardPage() {
                 value={
                   toTitleCase(
                     dashboardData?.mostVolumeChange?.[0]?.exercise_name,
-                  ) || "N/A"
+                  ) || <DashboardCardLoader />
                 }
                 description={toTitleCase(
                   `${dashboardData?.mostVolumeChange?.[0]?.min_volume || 0} -> ${
