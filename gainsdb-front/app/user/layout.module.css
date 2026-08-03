@@ -5,8 +5,7 @@
 
 aside.fullView {
   padding: 1rem;
-  background-color: #222d3a;
-  /* background-color: var(--black); */
+  background-color: var(--charcoal-blue);
 }
 
 aside.fullView h2 {
@@ -27,14 +26,53 @@ aside.fullView h2 {
   border: 1px solid transparent;
 }
 
-.dashboardLink a {
+.dashboardLinkText {
   text-decoration: none;
+  color: whitesmoke;
+}
+
+.dashboardLinkText:visited {
+  color: inherit;
 }
 
 .dashboardLink.currentUserNavPath,
 .dashboardLink:hover {
-  background-color: var(--skeleton-gray);
+  background-color: var(--near-black);
   border: 1px solid var(--lightGray2);
+  color: var(--core);
+}
+
+.dashboardLinkText {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.asideHeader {
+  color: var(--core);
+  font-family: var(--tourney);
+  font-weight: 400;
+}
+
+.profileNook {
+  display: flex;
+  background-color: var(--charcoal-blue-dark);
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--lightGray2);
+  border-radius: var(--popup-border-radius);
+  padding: var(--padding-standard-2);
+  box-shadow: inset 2px 2px 2px var(--near-black);
+}
+
+.userIcon {
+  background-color: var(--near-black);
+  color: color-mix(in srgb, var(--upper-body) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--upper-body) 75%, transparent);
+  border-radius: 50%;
+  padding: 0.25rem;
+  font-size: 2rem;
 }
 
 /** MOBILE */

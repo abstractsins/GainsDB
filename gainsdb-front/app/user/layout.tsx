@@ -6,7 +6,6 @@ import { useEffect, useState, useRef } from "react";
 // Next
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Oswald, Tourney } from "next/font/google";
 import { useRouter, usePathname } from "next/navigation";
 
 // Components
@@ -24,20 +23,19 @@ import {
 import { useWaiter } from "@/contexts/WaiterContext";
 import { LoadedProvider } from "@/contexts/LoadedContext";
 
+// Icons
+import {
+  FaRunning,
+  FaUser,
+  FaChartLine,
+  FaClipboardList,
+} from "react-icons/fa";
+import { FaTimeline } from "react-icons/fa6";
+import { IoSparklesSharp, IoSettingsSharp } from "react-icons/io5";
+import { MdDashboard } from "react-icons/md";
+
 // Styles
 import styles from "./layout.module.css";
-
-const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
-
-const tourney = Tourney({
-  subsets: ["latin"],
-  weight: ["100", "400", "700"],
-  display: "swap",
-});
 
 export default function DashboardLayout({
   children,
@@ -47,8 +45,10 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const { status } = useSession();
   const { setWaiter } = useWaiter();
+  const { status, data: session } = useSession();
+
+  const username = session?.user?.name;
 
   const [currentUserNavPath, setCurrentUserNavPath] = useState<RouteSegment>(
     RouteSegment.User,
@@ -66,6 +66,7 @@ export default function DashboardLayout({
   const settings = false;
   const charts = false;
   const comingSoon = true;
+  const profile = false;
 
   const closeMenu = () => setIsMenuActive(false);
 
@@ -138,29 +139,54 @@ export default function DashboardLayout({
           onBlur={closeMenu}
           className={`${isMobile ? styles.mobile : styles.fullView} ${isMenuActive ? styles.active : ""}`}
         >
-          <h2 className={`${tourney.className}`}>GainsDB</h2>
+          <div className={styles.profileNook}>
+            <FaUser className={styles.userIcon} />
+            <span>Hi, {username}!</span>
+          </div>
+
+          <h2 className={styles.asideHeader}>GainsDB</h2>
           <nav className={styles.nav}>
+            <div
+              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Dashboard ? styles.currentUserNavPath : ""}`}
+            >
+              <Link
+                className={styles.dashboardLinkText}
+                href={`/${user}/${RouteSegment.Dashboard}`}
+              >
+                <MdDashboard /> Dashboard
+              </Link>
+            </div>
+
             <div
               className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.NewWorkout ? styles.currentUserNavPath : ""}`}
             >
-              <Link href={`/${user}/${RouteSegment.NewWorkout}`}>
-                💪 Log Workout
+              <Link
+                className={styles.dashboardLinkText}
+                href={`/${user}/${RouteSegment.NewWorkout}`}
+              >
+                <FaClipboardList /> Log Workout
               </Link>
             </div>
 
             <div
               className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.History ? styles.currentUserNavPath : ""}`}
             >
-              <Link href={`/${user}/${RouteSegment.History}`}>
-                📜 Workout History
+              <Link
+                href={`/${user}/${RouteSegment.History}`}
+                className={styles.dashboardLinkText}
+              >
+                <FaTimeline /> Workout History
               </Link>
             </div>
 
             <div
               className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Exercises ? styles.currentUserNavPath : ""}`}
             >
-              <Link href={`/${user}/${RouteSegment.Exercises}`}>
-                🏋️‍♂️ Exercises
+              <Link
+                href={`/${user}/${RouteSegment.Exercises}`}
+                className={styles.dashboardLinkText}
+              >
+                <FaRunning /> Exercises
               </Link>
             </div>
 
@@ -168,15 +194,23 @@ export default function DashboardLayout({
               <div
                 className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Charts ? styles.currentUserNavPath : ""}`}
               >
-                <Link href={`/${user}/${RouteSegment.Charts}}`}>📈 Charts</Link>
+                <Link
+                  href={`/${user}/${RouteSegment.Charts}}`}
+                  className={styles.dashboardLinkText}
+                >
+                  <FaChartLine /> Charts
+                </Link>
               </div>
             )}
             {settings && (
               <div
                 className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Settings ? styles.currentUserNavPath : ""}`}
               >
-                <Link href={`/${user}/${RouteSegment.Settings}`}>
-                  ⚙️ Settings
+                <Link
+                  href={`/${user}/${RouteSegment.Settings}`}
+                  className={styles.dashboardLinkText}
+                >
+                  <IoSettingsSharp /> Settings
                 </Link>
               </div>
             )}
@@ -184,8 +218,11 @@ export default function DashboardLayout({
               <div
                 className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.ComingSoon ? styles.currentUserNavPath : ""}`}
               >
-                <Link href={`/${user}/${RouteSegment.ComingSoon}`}>
-                  ✨ Coming Soon...
+                <Link
+                  href={`/${user}/${RouteSegment.ComingSoon}`}
+                  className={styles.dashboardLinkText}
+                >
+                  <IoSparklesSharp /> Coming Soon
                 </Link>
               </div>
             )}
@@ -195,10 +232,8 @@ export default function DashboardLayout({
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col">
           {/* Navbar */}
-          {isMobile ? (
+          {isMobile && (
             <MobileNavbar sidebar={{ isMenuActive, setIsMenuActive }} />
-          ) : (
-            <Navbar />
           )}
           <main className="overflow-auto">{children}</main>
         </div>
