@@ -31,20 +31,30 @@ import DashboardCardLoader from "@/components/dashboard/DashboardCardLoader";
 export default function DashboardPage() {
   const [dashboardData, setDashboardData] = useState<DashboardData>();
   const [pageLevelError, setPageLevelError] = useState<string>();
-
-  const { data: session, status } = useSession();
-  const server = process.env.NEXT_PUBLIC_BACKEND || "http://localhost:5000";
-
   const [leastLogged, setLeastLogged] = useState<number>(0);
   const [mostLogged, setMostLogged] = useState<number>(0);
   const [totalWeeks, setTotalWeeks] = useState<number>(0);
 
+  const loggedAuthStatus = useRef(false);
+  const loggedDashboardData = useRef(false);
+
+  const { data: session, status } = useSession();
   const { setPageLoaded } = useLoaded();
   const { setUserLoggedIn } = useAuthContext();
   const router = useRouter();
 
-  const mostWeightCalculation = () => {
-    return false;
+  const server = process.env.NEXT_PUBLIC_BACKEND || "http://localhost:5000";
+
+  const mostWeightCalculation = (): string | false => {
+    const weight = dashboardData?.theMostWeight?.[0]?.max_weight;
+    return weight ? Number(weight) + " lbs" : false;
+  };
+
+  const gainedMostVolumeDesc = (): string => {
+    const from = Number(dashboardData?.mostVolumeChange?.[0]?.min_volume) || 0;
+    const to = Number(dashboardData?.mostVolumeChange?.[0]?.max_volume) || 0;
+    const div = "->";
+    return to > 0 ? `${from} ${div} ${to}` : "";
   };
 
   useEffect(() => {
@@ -113,8 +123,6 @@ export default function DashboardPage() {
     }
   }, [dashboardData]);
 
-  const loggedAuthStatus = useRef(false);
-  const loggedDashboardData = useRef(false);
   useEffect(() => {
     if (!loggedAuthStatus.current && status) {
       console.log("🔄 Session Status:", status);
@@ -192,7 +200,6 @@ export default function DashboardPage() {
               <InfoCard
                 icon={<FaWeightHanging />}
                 title="Most Weight"
-                //!
                 value={mostWeightCalculation() || <DashboardCardLoader />}
                 description={toTitleCase(
                   dashboardData?.theMostWeight?.[0]?.exercise_name,
@@ -210,11 +217,7 @@ export default function DashboardPage() {
                     dashboardData?.mostVolumeChange?.[0]?.exercise_name,
                   ) || <DashboardCardLoader />
                 }
-                description={toTitleCase(
-                  `${dashboardData?.mostVolumeChange?.[0]?.min_volume || 0} -> ${
-                    dashboardData?.mostVolumeChange?.[0]?.max_volume || 0
-                  }`,
-                )}
+                description={gainedMostVolumeDesc()}
                 id="gained-most-volume"
               />
             </li>

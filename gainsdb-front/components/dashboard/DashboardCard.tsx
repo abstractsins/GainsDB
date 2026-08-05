@@ -11,11 +11,8 @@ import styles from "./DashboardCard.module.css";
 const InfoCard = ({ icon, title, value, description, id }: Props) => {
   let textLength;
   if (typeof value === "string") {
-    console.warn("dashboard card value is a string");
     textLength = value.toString().length;
   } else if (typeof value === "object") {
-    console.warn("dashboard card value is an object");
-    console.log(value);
     textLength = 5;
   }
   const style = { "--char-count": textLength } as React.CSSProperties;
