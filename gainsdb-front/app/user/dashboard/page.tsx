@@ -158,6 +158,7 @@ export default function DashboardPage() {
       <div id="dashboard-page">
         <div className="dashboard-body">
           <ul className="dashboard-list">
+            {/* TOTAL WORKOUTS */}
             <li className="dashboard-list">
               <InfoCard
                 icon={<FaClipboardList />}
@@ -168,6 +169,7 @@ export default function DashboardPage() {
               />
             </li>
 
+            {/* MOST LOGGED EXERCISE */}
             <li className="dashboard-list">
               <InfoCard
                 icon={<IoRibbon />}
@@ -182,6 +184,7 @@ export default function DashboardPage() {
               />
             </li>
 
+            {/* LEAST LOGGED EXERCISE */}
             <li className="dashboard-list">
               <InfoCard
                 icon={<BsExclamationTriangle />}
@@ -196,6 +199,7 @@ export default function DashboardPage() {
               />
             </li>
 
+            {/* LEAST LOGGED EXERCISE */}
             <li className="dashboard-list">
               <InfoCard
                 icon={<FaWeightHanging />}
@@ -208,6 +212,7 @@ export default function DashboardPage() {
               />
             </li>
 
+            {/* GAINED MOST VOLUME */}
             <li className="dashboard-list">
               <InfoCard
                 icon={<BsGraphUpArrow />}
