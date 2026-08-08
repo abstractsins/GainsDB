@@ -195,14 +195,6 @@ h2.popup-header {
   font-size: 32pt;
 }
 
-footer.footer {
-  display: flex;
-  justify-content: flex-end;
-  position: fixed;
-  bottom: 0;
-  right: 20px;
-}
-
 .exe-tooltip {
   background-color: lightgray;
   color: black;
@@ -1037,7 +1029,7 @@ li.dashboard-list {
 }
 
 #logged-workouts {
-  font-size: 5rem;
+  font-size: 4.25rem;
 }
 
 /* * ABOUT PAGE */

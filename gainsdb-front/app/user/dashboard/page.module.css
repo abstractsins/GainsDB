@@ -11,7 +11,16 @@
 }
 
 div.pageLevelError {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  background-color: var(--other);
+  margin: var(--margin-standard-1);
+  padding: var(--padding-standard-1);
 }
 
 p.pageLevelErrorText {
+  font-size: 1.5rem;
+  margin: var(--margin-standard-1);
+  padding: var(--padding-standard-1);
 }

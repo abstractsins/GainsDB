@@ -14,7 +14,6 @@ import { WaiterMessage } from "./Waiter";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { registrationRequest } from "@/utils/fetchRequests";
 import { LoginError, RegistrationError } from "@/constants/errorMessages";
-import { createServerSearchParamsForServerPage } from "next/dist/server/request/search-params";
 
 export enum FormState {
   Login = "login",

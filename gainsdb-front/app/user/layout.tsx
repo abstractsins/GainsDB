@@ -36,6 +36,7 @@ import { MdDashboard } from "react-icons/md";
 
 // Styles
 import styles from "./layout.module.css";
+import { ErrorProvider } from "@/contexts/ErrorContext";
 
 export default function DashboardLayout({
   children,
@@ -231,11 +232,13 @@ export default function DashboardLayout({
 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col">
-          {/* Navbar */}
-          {isMobile && (
-            <MobileNavbar sidebar={{ isMenuActive, setIsMenuActive }} />
-          )}
-          <main className="overflow-auto">{children}</main>
+          <ErrorProvider>
+            {/* Navbar */}
+            {isMobile && (
+              <MobileNavbar sidebar={{ isMenuActive, setIsMenuActive }} />
+            )}
+            <main className="overflow-auto">{children}</main>
+          </ErrorProvider>
         </div>
       </div>
     </LoadedProvider>

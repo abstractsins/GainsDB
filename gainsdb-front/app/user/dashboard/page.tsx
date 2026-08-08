@@ -20,6 +20,7 @@ import { DashboardData } from "@/types/types";
 // Conexts
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLoaded } from "@/contexts/LoadedContext";
+import { ErrorReportType, useErrorReporter } from "@/contexts/ErrorContext";
 
 // Components
 import InfoCard from "@/components/dashboard/DashboardCard";
@@ -27,6 +28,7 @@ import InfoCard from "@/components/dashboard/DashboardCard";
 // Styles
 import styles from "./page.module.css";
 import DashboardCardLoader from "@/components/dashboard/DashboardCardLoader";
+import { Environments } from "@/constants/generalConstants";
 
 export default function DashboardPage() {
   const [dashboardData, setDashboardData] = useState<DashboardData>();
@@ -38,14 +40,15 @@ export default function DashboardPage() {
   const loggedAuthStatus = useRef(false);
   const loggedDashboardData = useRef(false);
 
-  const { data: session, status } = useSession();
+  const { data: session, status: authStatus } = useSession();
   const { setPageLoaded } = useLoaded();
   const { setUserLoggedIn } = useAuthContext();
   const router = useRouter();
+  const { setBannerError } = useErrorReporter();
 
   const server = process.env.NEXT_PUBLIC_BACKEND || "http://localhost:5000";
 
-  const mostWeightCalculation = (): string | false => {
+  const mostWeightStringification = (): string | false => {
     const weight = dashboardData?.theMostWeight?.[0]?.max_weight;
     return weight ? Number(weight) + " lbs" : false;
   };
@@ -57,10 +60,13 @@ export default function DashboardPage() {
     return to > 0 ? `${from} ${div} ${to}` : "";
   };
 
-  useEffect(() => {
-    if (status === "loading") return;
+  useEffect(() => {}, [pageLevelError]);
 
-    if (status === "unauthenticated" || !session?.user?.authToken) {
+  // Check authentication status and load fetch data
+  useEffect(() => {
+    if (authStatus === "loading") return;
+
+    if (authStatus === "unauthenticated" || !session?.user?.authToken) {
       console.warn("🚨 No valid session found, redirecting to login...");
       if (typeof window !== "undefined") router.replace("/");
       return;
@@ -93,14 +99,22 @@ export default function DashboardPage() {
 
         setDashboardData((prev) => (data.totalWorkouts ? data : prev));
       } catch (error) {
-        console.error("❌ Error fetching dashboard data:", error);
-        setPageLevelError("Failed to load dashboard data.");
+        if (process.env.NEXT_PUBLIC_VERCEL_ENV !== Environments.Prod) {
+          console.error("❌ Error fetching dashboard data:", error);
+          setBannerError(
+            "⚠️ Failed to load dashboard data. Check console for more information.",
+          );
+        } else {
+          setBannerError(
+            "Failed to load dashboard data. Please try again later.",
+          );
+        }
       } finally {
         setPageLoaded(true);
       }
     }
   }, [
-    status,
+    authStatus,
     server,
     session?.user?.id,
     session?.user?.authToken,
@@ -124,8 +138,8 @@ export default function DashboardPage() {
   }, [dashboardData]);
 
   useEffect(() => {
-    if (!loggedAuthStatus.current && status) {
-      console.log("🔄 Session Status:", status);
+    if (!loggedAuthStatus.current && authStatus) {
+      console.log("🔄 Session Status:", authStatus);
       loggedAuthStatus.current = true;
     }
     if (!loggedDashboardData.current && dashboardData) {
@@ -134,13 +148,9 @@ export default function DashboardPage() {
       console.groupEnd();
       loggedDashboardData.current = true;
     }
-  }, [status, dashboardData]);
+  }, [authStatus, dashboardData]);
 
-  return pageLevelError ? (
-    <div className={styles.pageLevelError}>
-      <p className={styles.pageLevelErrorText}>{pageLevelError}</p>
-    </div>
-  ) : (
+  return (
     <>
       {/* Background container */}
       <div className={styles.background}>
@@ -154,6 +164,12 @@ export default function DashboardPage() {
           className={styles.backgroundImage}
         />
       </div>
+
+      {pageLevelError && (
+        <div className={styles.pageLevelError}>
+          <p className={styles.pageLevelErrorText}>{pageLevelError}</p>
+        </div>
+      )}
 
       <div id="dashboard-page">
         <div className="dashboard-body">
@@ -204,7 +220,7 @@ export default function DashboardPage() {
               <InfoCard
                 icon={<FaWeightHanging />}
                 title="Most Weight"
-                value={mostWeightCalculation() || <DashboardCardLoader />}
+                value={mostWeightStringification() || <DashboardCardLoader />}
                 description={toTitleCase(
                   dashboardData?.theMostWeight?.[0]?.exercise_name,
                 )}
