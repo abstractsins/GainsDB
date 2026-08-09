@@ -1908,7 +1908,6 @@ html, body {
 
   #history-page {
     width: 100vw;
-    overflow: hidden;
     padding-left: 5px;
     padding-bottom: 150px;
   }
@@ -2013,11 +2012,9 @@ html, body {
   }
 
   body {
-    overflow: hidden;
   }
 
   main {
-    overflow: hidden;
   }
 
   h1.page-header {
@@ -2027,7 +2024,6 @@ html, body {
   .dashboard-body {
     width: 100%;
     padding: 0;
-    overflow: hidden;
   }
 
   div.dashboard-card {
