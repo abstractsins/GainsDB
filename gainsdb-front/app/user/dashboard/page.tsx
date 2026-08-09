@@ -11,40 +11,39 @@ import { IoRibbon } from "react-icons/io5";
 import { FaClipboardList, FaWeightHanging } from "react-icons/fa";
 import { BsGraphUpArrow, BsExclamationTriangle } from "react-icons/bs";
 
-// Utils
-import { toTitleCase } from "@/utils/utils";
-
 // Types
 import { DashboardData } from "@/types/types";
+
+// Constants
+import { Environments } from "@/constants/generalConstants";
 
 // Conexts
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLoaded } from "@/contexts/LoadedContext";
-import { ErrorReportType, useErrorReporter } from "@/contexts/ErrorContext";
+import { useErrorReporter } from "@/contexts/ErrorContext";
 
 // Components
 import InfoCard from "@/components/dashboard/DashboardCard";
 
 // Styles
 import styles from "./page.module.css";
-import DashboardCardLoader from "@/components/dashboard/DashboardCardLoader";
-import { Environments } from "@/constants/generalConstants";
+import { FetchMethods, ResponseLikeObject } from "@/constants/fetchConstants";
 
 export default function DashboardPage() {
-  const [dashboardData, setDashboardData] = useState<DashboardData>();
-  const [pageLevelError, setPageLevelError] = useState<string>();
-  const [leastLogged, setLeastLogged] = useState<number>(0);
-  const [mostLogged, setMostLogged] = useState<number>(0);
-  const [totalWeeks, setTotalWeeks] = useState<number>(0);
-
-  const loggedAuthStatus = useRef(false);
-  const loggedDashboardData = useRef(false);
-
   const { data: session, status: authStatus } = useSession();
   const { setPageLoaded } = useLoaded();
   const { setUserLoggedIn } = useAuthContext();
   const router = useRouter();
-  const { setBannerError } = useErrorReporter();
+  const { handleResponseError } = useErrorReporter();
+
+  // For Logging
+  const loggedAuthStatus = useRef(false);
+  const loggedDashboardData = useRef(false);
+
+  const [dashboardData, setDashboardData] = useState<DashboardData>();
+  const [leastLogged, setLeastLogged] = useState<number>(0);
+  const [mostLogged, setMostLogged] = useState<number>(0);
+  const [totalWeeks, setTotalWeeks] = useState<number>(0);
 
   const server = process.env.NEXT_PUBLIC_BACKEND || "http://localhost:5000";
 
@@ -59,8 +58,6 @@ export default function DashboardPage() {
     const div = "->";
     return to > 0 ? `${from} ${div} ${to}` : "";
   };
-
-  useEffect(() => {}, [pageLevelError]);
 
   // Check authentication status and load fetch data
   useEffect(() => {
@@ -82,39 +79,26 @@ export default function DashboardPage() {
 
       if (!token || !userId) return;
 
-      try {
-        const response = await fetch(`${server}/api/user/${userId}/dashboard`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const response = await fetch(`${server}/api/user/${userId}/dashboard`, {
+        method: FetchMethods.GET,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch workout data");
-        }
-
-        const data: DashboardData = await response.json();
-
-        setDashboardData((prev) => (data.totalWorkouts ? data : prev));
-      } catch (error) {
-        if (process.env.NEXT_PUBLIC_VERCEL_ENV !== Environments.Prod) {
-          console.error("❌ Error fetching dashboard data:", error);
-          setBannerError(
-            "⚠️ Failed to load dashboard data. Check console for more information.",
-          );
-        } else {
-          setBannerError(
-            "Failed to load dashboard data. Please try again later.",
-          );
-        }
-      } finally {
-        setPageLoaded(true);
+      if (!response.ok) {
+        handleResponseError(response as ResponseLikeObject);
+        return;
       }
+
+      const data: DashboardData = await response.json();
+
+      setDashboardData((prev) => (data.totalWorkouts ? data : prev));
     }
   }, [
     authStatus,
+    router,
     server,
     session?.user?.id,
     session?.user?.authToken,
@@ -137,16 +121,19 @@ export default function DashboardPage() {
     }
   }, [dashboardData]);
 
+  // For logging
   useEffect(() => {
-    if (!loggedAuthStatus.current && authStatus) {
-      console.log("🔄 Session Status:", authStatus);
-      loggedAuthStatus.current = true;
-    }
-    if (!loggedDashboardData.current && dashboardData) {
-      console.group("📈 Dashboard Data: ");
-      console.dir(dashboardData);
-      console.groupEnd();
-      loggedDashboardData.current = true;
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV !== Environments.Prod) {
+      if (!loggedAuthStatus.current && authStatus) {
+        console.log("🔄 Session Status:", authStatus);
+        loggedAuthStatus.current = true;
+      }
+      if (!loggedDashboardData.current && dashboardData) {
+        console.group("📈 Dashboard Data: ");
+        console.dir(dashboardData);
+        console.groupEnd();
+        loggedDashboardData.current = true;
+      }
     }
   }, [authStatus, dashboardData]);
 
@@ -165,12 +152,6 @@ export default function DashboardPage() {
         />
       </div>
 
-      {pageLevelError && (
-        <div className={styles.pageLevelError}>
-          <p className={styles.pageLevelErrorText}>{pageLevelError}</p>
-        </div>
-      )}
-
       <div id="dashboard-page">
         <div className="dashboard-body">
           <ul className="dashboard-list">
@@ -179,8 +160,11 @@ export default function DashboardPage() {
               <InfoCard
                 icon={<FaClipboardList />}
                 title="Logged Workouts"
-                value={dashboardData?.totalWorkouts || <DashboardCardLoader />}
-                description={`over ${totalWeeks || 0} week${totalWeeks === 1 ? "" : "s"}`}
+                value={dashboardData?.totalWorkouts}
+                description={
+                  dashboardData &&
+                  `over ${totalWeeks || 0} week${totalWeeks === 1 ? "" : "s"}`
+                }
                 id="logged-workouts"
               />
             </li>
@@ -190,12 +174,11 @@ export default function DashboardPage() {
               <InfoCard
                 icon={<IoRibbon />}
                 title="Most Logged"
-                value={
-                  toTitleCase(
-                    dashboardData?.mostLoggedExe?.[0]?.exercise_name,
-                  ) || <DashboardCardLoader />
+                value={dashboardData?.mostLoggedExe?.[0]?.exercise_name}
+                description={
+                  dashboardData &&
+                  `${mostLogged || 0} workout${mostLogged === 1 ? "" : "s"}`
                 }
-                description={`${mostLogged || 0} workout${mostLogged === 1 ? "" : "s"}`}
                 id="most-logged"
               />
             </li>
@@ -206,24 +189,26 @@ export default function DashboardPage() {
                 icon={<BsExclamationTriangle />}
                 title="Least Logged"
                 value={
-                  toTitleCase(
-                    dashboardData?.mostLoggedExe?.slice(-1)[0]?.exercise_name,
-                  ) || <DashboardCardLoader />
+                  dashboardData?.mostLoggedExe?.slice(-1)[0]?.exercise_name
                 }
-                description={`${leastLogged || 0} workout${leastLogged === 1 ? "" : "s"}`}
+                description={
+                  dashboardData &&
+                  `${leastLogged || 0} workout${leastLogged === 1 ? "" : "s"}`
+                }
                 id="least-logged"
               />
             </li>
 
-            {/* LEAST LOGGED EXERCISE */}
+            {/* MOST WEIGHT */}
             <li className="dashboard-list">
               <InfoCard
                 icon={<FaWeightHanging />}
                 title="Most Weight"
-                value={mostWeightStringification() || <DashboardCardLoader />}
-                description={toTitleCase(
-                  dashboardData?.theMostWeight?.[0]?.exercise_name,
-                )}
+                value={mostWeightStringification()}
+                description={
+                  dashboardData &&
+                  dashboardData?.theMostWeight?.[0]?.exercise_name
+                }
                 id="most-weight"
               />
             </li>
@@ -233,12 +218,8 @@ export default function DashboardPage() {
               <InfoCard
                 icon={<BsGraphUpArrow />}
                 title="Gained Most Volume"
-                value={
-                  toTitleCase(
-                    dashboardData?.mostVolumeChange?.[0]?.exercise_name,
-                  ) || <DashboardCardLoader />
-                }
-                description={gainedMostVolumeDesc()}
+                value={dashboardData?.mostVolumeChange?.[0]?.exercise_name}
+                description={dashboardData && gainedMostVolumeDesc()}
                 id="gained-most-volume"
               />
             </li>

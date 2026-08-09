@@ -41,3 +41,24 @@ export interface RegistrationResponse {
   message?: string;
   user?: SimpleUser;
 }
+
+export interface ResponseLikeObject {
+  body: ReadableStream;
+  bodyUsed: boolean;
+  headers: Headers;
+  ok: boolean;
+  redirected: boolean;
+  status: number;
+  statusText: string;
+  type: string;
+  url: string;
+}
+
+export enum HttpResponseCodes {
+  Ok = 200,
+  BadRequest = 400,
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404,
+  InternalError = 500,
+}

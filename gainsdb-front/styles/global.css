@@ -1683,6 +1683,12 @@ html, body {
   align-items: center;
 }
 
+@media (max-width: 1378px) {
+  ul.dashboard-list {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 1320px) {
   .coming-soon-page-body {
     flex-direction: column;
@@ -1735,10 +1741,6 @@ html, body {
 @media (max-width: 768px) {
   input#exe-search {
     font-size: 14pt;
-  }
-
-  ul.dashboard-list {
-    justify-content: center;
   }
 
   #coming-soon-page {

@@ -1,12 +1,5 @@
 // FONTS
-import {
-  Geist,
-  Geist_Mono,
-  Inter,
-  Roboto,
-  Oswald,
-  Tourney,
-} from "next/font/google";
+import { Inter, Oswald, Tourney } from "next/font/google";
 
 // TYPES
 import type { Metadata } from "next";
@@ -28,25 +21,9 @@ import SessionProvider from "@/components/SessionProvider";
 import "@/styles/global.css";
 import styles from "./layout.module.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 const inter = Inter({
   subsets: ["latin"],
   weight: "400",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  display: "swap",
 });
 
 const oswald = Oswald({

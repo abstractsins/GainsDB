@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import styles from "./DashboardCardLoader.module.css";
+
 export default function DashboardCardLoader() {
   const [loaderText, setLoaderText] = useState("");
 
@@ -34,5 +36,5 @@ export default function DashboardCardLoader() {
     }, 150);
   });
 
-  return <>{loaderText}</>;
+  return <div className={styles.loaderText}>{loaderText}</div>;
 }
