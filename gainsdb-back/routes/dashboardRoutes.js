@@ -6,32 +6,27 @@ const router = express.Router();
 
 //* Dashboard
 router.get("/:userId/dashboard", authMiddleware, async (req, res) => {
+  const { userId } = req.params;
+  console.log("Fetching Dashboard for user " + userId);
 
-    const { userId } = req.params;
-    console.log('Fetching Dashboard for user ' + userId);
-
-
-    //* TOTAL WEEKS
-    const numWeeks = await pool.query(
-        `SELECT COUNT(DISTINCT DATE_TRUNC('week', workout_date)) AS total_weeks 
+  //* TOTAL WEEKS
+  const numWeeks = await pool.query(
+    `SELECT COUNT(DISTINCT DATE_TRUNC('week', workout_date)) AS total_weeks 
       FROM workouts WHERE user_id = $1`,
-        [userId]
-    );
-    const totalWeeks = Number(numWeeks.rows[0]['total_weeks']);
+    [userId],
+  );
+  const totalWeeks = Number(numWeeks.rows[0]["total_weeks"]);
 
+  //* TOTAL WORKOUTS
+  const numWorkouts = await pool.query(
+    `SELECT COUNT(*) AS total_workouts FROM workouts WHERE user_id = $1`,
+    [userId],
+  );
+  const totalWorkouts = numWorkouts.rows[0].total_workouts;
 
-    //* TOTAL WORKOUTS
-    const numWorkouts = await pool.query(
-        `SELECT COUNT(*) AS total_workouts FROM workouts WHERE user_id = $1`, 
-        [userId]
-    );
-    const totalWorkouts = numWorkouts.rows[0].total_workouts;
-    
-
-
-    //* MOST LOGGED
-    const mostLogged = await pool.query(
-        `SELECT 
+  //* MOST LOGGED
+  const mostLogged = await pool.query(
+    `SELECT 
           e.id AS exercise_id, 
           e.name AS exercise_name, 
       COUNT(we.exercise_id) AS log_count
@@ -41,14 +36,13 @@ router.get("/:userId/dashboard", authMiddleware, async (req, res) => {
       WHERE w.user_id = $1 
       GROUP BY e.id, e.name
       ORDER BY log_count DESC;`,
-        [userId]
-    );
-    const mostLoggedExe = mostLogged.rows
+    [userId],
+  );
+  const mostLoggedExe = mostLogged.rows;
 
-
-    //* MOST WEIGHT
-    const mostWeight = await pool.query(
-        `SELECT 
+  //* MOST WEIGHT
+  const mostWeight = await pool.query(
+    `SELECT 
           e.id AS exercise_id, 
           e.name AS exercise_name, 
           MAX(s.weight) AS max_weight
@@ -59,14 +53,13 @@ router.get("/:userId/dashboard", authMiddleware, async (req, res) => {
       WHERE w.user_id = $1
       GROUP BY e.id, e.name
       ORDER BY max_weight DESC;`,
-        [userId]
-    );
-    const theMostWeight = mostWeight.rows;
+    [userId],
+  );
+  const theMostWeight = mostWeight.rows;
 
-
-    //* MOST CHANGE
-    const mostChange = await pool.query(
-        `WITH VolumeProgress AS (
+  //* MOST CHANGE
+  const mostChange = await pool.query(
+    `WITH VolumeProgress AS (
           SELECT 
               we.exercise_id, 
               e.name AS exercise_name,
@@ -88,21 +81,19 @@ router.get("/:userId/dashboard", authMiddleware, async (req, res) => {
       FROM VolumeProgress
       WHERE min_volume IS NOT NULL AND max_volume IS NOT NULL
       ORDER BY volume_change DESC LIMIT 1;`,
-        [userId]
-    )
-    const mostVolumeChange = mostChange.rows;
+    [userId],
+  );
+  const mostVolumeChange = mostChange.rows;
 
+  const dashboardObj = {
+    totalWorkouts,
+    totalWeeks,
+    mostLoggedExe,
+    theMostWeight,
+    mostVolumeChange,
+  };
 
-
-    const dashboardObj = {
-        totalWorkouts,
-        totalWeeks,
-        mostLoggedExe,
-        theMostWeight,
-        mostVolumeChange
-    }
-
-    res.json(dashboardObj);
+  res.json(dashboardObj);
 });
 
 export default router;
