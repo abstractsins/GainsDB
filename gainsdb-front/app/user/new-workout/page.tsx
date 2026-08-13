@@ -8,10 +8,9 @@ export default function NewWorkout() {
   const [isXXLarge, setIsXXLarge] = useState(false);
   const [isRegular, setIsRegular] = useState(false);
 
-
   useEffect(() => {
     const handleResize = () => {
-      console.log('resizing')
+      console.log("resizing");
       if (window.innerWidth > 1699) {
         setIsXXLarge(true);
         setIsMobile(false);
@@ -19,21 +18,18 @@ export default function NewWorkout() {
       } else if (window.innerWidth >= 768) {
         setIsXXLarge(false);
         setIsMobile(false);
-        setIsRegular(true)
+        setIsRegular(true);
       } else if (window.innerWidth < 768) {
         setIsXXLarge(false);
         setIsMobile(true);
         setIsRegular(false);
       }
-    }
+    };
 
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [window.innerWidth]);
-
-
-
 
   return (
     <div id="new-workout-page">
@@ -46,7 +42,6 @@ export default function NewWorkout() {
         isMobile={isMobile}
         isXXLarge={isXXLarge}
       />
-
     </div>
   );
 }

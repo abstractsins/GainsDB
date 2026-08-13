@@ -4,7 +4,8 @@ import Waiter, { WaiterMessage } from "@/components/Waiter";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 interface WaiterContextProps {
-  setWaiter: (text: WaiterMessage | false) => void;
+  setWaiter: (text: WaiterMessage) => void;
+  clearWaiter: () => void;
   isWaiting: boolean;
 }
 
@@ -31,18 +32,18 @@ export const WaiterProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const setWaiter = (setting: WaiterMessage | false) => {
-    if (typeof setting === "string") {
-      setWaiterText(setting);
-      setIsWaiting(true);
-    } else if (setting === false) {
-      setWaiterText(null);
-      setIsWaiting(false);
-    }
+  const setWaiter = (setting: WaiterMessage) => {
+    setWaiterText(setting);
+    setIsWaiting(true);
+  };
+
+  const clearWaiter = () => {
+    setWaiterText(null);
+    setIsWaiting(false);
   };
 
   return (
-    <WaiterContext.Provider value={{ setWaiter, isWaiting }}>
+    <WaiterContext.Provider value={{ setWaiter, clearWaiter, isWaiting }}>
       {waiterText && (
         <Waiter
           msg={waiterText}

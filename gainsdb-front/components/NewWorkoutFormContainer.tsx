@@ -51,7 +51,7 @@ export default function NewWorkoutFormContainer({
     reps: "",
   });
 
-  const { setWaiter } = useWaiter();
+  const { setWaiter, clearWaiter } = useWaiter();
 
   const userId = session?.user?.id || localStorage.getItem("userId");
 
@@ -120,13 +120,13 @@ export default function NewWorkoutFormContainer({
         weight: "",
         reps: "",
       });
-      setWaiting(false);
+      clearWaiter();
       if (visible && onClose !== null) {
         onClose();
       }
     } else {
       alert("Error logging workout.");
-      setWaiting(false);
+      clearWaiter();
     }
   };
 

@@ -28,7 +28,7 @@ export default function LoginRegister() {
   const [loginError, setLoginError] = useState<string>();
   const [registrationError, setRegistrationError] = useState<string>();
 
-  const { setWaiter, isWaiting } = useWaiter();
+  const { setWaiter, clearWaiter, isWaiting } = useWaiter();
   const { setUserLoggedIn } = useAuthContext();
 
   const onFormStateChange = () => {
@@ -47,7 +47,7 @@ export default function LoginRegister() {
     });
 
     if (!user || !user.ok) {
-      setWaiter(false);
+      clearWaiter();
       if (user) {
         switch (user.status) {
           case 401:
@@ -93,7 +93,7 @@ export default function LoginRegister() {
       }
     }
 
-    setWaiter(false);
+    clearWaiter();
   };
 
   const handleFormSubmission = (event: React.SubmitEvent) => {

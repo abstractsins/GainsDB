@@ -46,7 +46,7 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const { setWaiter } = useWaiter();
+  const { clearWaiter } = useWaiter();
   const { status, data: session } = useSession();
 
   const username = session?.user?.name;
@@ -73,7 +73,7 @@ export default function DashboardLayout({
 
   // Remove waiter and add window event listener for resizing
   useEffect(() => {
-    setWaiter(false);
+    clearWaiter();
     setIsMobile(window.innerWidth <= mobileMaxWidth);
     const handleResize = () => setIsMobile(window.innerWidth <= mobileMaxWidth);
     window.addEventListener("resize", handleResize);
