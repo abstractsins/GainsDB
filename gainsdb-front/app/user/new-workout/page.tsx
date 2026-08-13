@@ -8,6 +8,7 @@ export default function NewWorkout() {
   const [isXXLarge, setIsXXLarge] = useState(false);
   const [isRegular, setIsRegular] = useState(false);
 
+  // Reactive sizing
   useEffect(() => {
     const handleResize = () => {
       console.log("resizing");

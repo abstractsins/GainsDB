@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
-import { toTitleCase } from "@/utils/utils";
+import { toTitleCase, getFormattedDate } from "@/utils/utils";
 import Loader, { WaiterMessage } from "@/components/Waiter";
 import { useWaiter } from "@/contexts/WaiterContext";
 import ExercisesList from "@/components/ExercisesList";
@@ -19,18 +19,6 @@ interface NewWorkoutFormData {
   weight: string;
   reps: string;
 }
-
-const getFormattedDate = () => {
-  const today = new Date();
-  const date = today.toLocaleDateString(); // --> 5/6/2025
-  let [month, day, year] = date.split("/");
-  if (parseInt(month) < 10) month = `0${month}`;
-  if (parseInt(day) < 10) day = `0${day}`;
-  if (year.length === 2) year = `20${year}`;
-  const editedDate = `${year}-${month}-${day}`; // --> 2025-06-05
-  console.log(editedDate);
-  return editedDate;
-};
 
 export default function NewWorkoutFormContainer({
   visible,
