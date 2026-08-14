@@ -97,6 +97,5 @@ export const getFormattedDate = () => {
   if (parseInt(day) < 10) day = `0${day}`;
   if (year.length === 2) year = `20${year}`;
   const editedDate = `${year}-${month}-${day}`; // --> 2025-06-05
-  console.log(editedDate);
   return editedDate;
 };

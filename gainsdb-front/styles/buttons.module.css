@@ -1,0 +1,40 @@
+.submitButton {
+  background-color: var(--action-button-enabled);
+}
+
+.submitButton[aria-disabled="true"] {
+  background-color: var(--lightGray1);
+  color: var(--lightGray2);
+  pointer-events: none;
+}
+
+.submitButton:hover {
+  outline-offset: var(--outline-offset-button-1);
+  outline: 2px solid whitesmoke;
+}
+
+.submitButton.disabled {
+  background-color: lightgray !important;
+  color: gray !important;
+}
+
+.submitButton.disabled:hover {
+  border-color: transparent !important;
+  cursor: unset !important;
+}
+
+.submitButton:focus-visible {
+  outline-offset: var(--outline-offset-button-1);
+}
+
+button.submitButton:active {
+  background-color: var(--action-button-active);
+  outline: none;
+}
+
+@media (max-width: 1199px) {
+  .submitButton {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+}

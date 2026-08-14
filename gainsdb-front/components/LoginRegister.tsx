@@ -9,6 +9,7 @@ import {
 } from "@/constants/formConstants";
 
 import styles from "./LoginRegister.module.css";
+import buttonStyles from "@/styles/buttons.module.css";
 import { useWaiter } from "@/contexts/WaiterContext";
 import { WaiterMessage } from "./Waiter";
 import { useAuthContext } from "@/contexts/AuthContext";
@@ -179,7 +180,7 @@ export default function LoginRegister() {
           <button
             id="submit-button"
             type="submit"
-            className={styles.submitButton}
+            className={buttonStyles.submitButton}
             aria-disabled={isWaiting || !isFormValid}
           >
             {formState.toUpperCase()}

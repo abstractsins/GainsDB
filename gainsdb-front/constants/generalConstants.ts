@@ -31,3 +31,12 @@ export enum AuthenticationStatus {
   Loading = "loading",
   Unauthenticated = "unauthenticated",
 }
+
+export enum ScreenSize {
+  XXLarge = "xxLarge",
+  Mobile = "mobile",
+  Regular = "regular",
+}
+
+export const XXLargeScreenWidth = 1700;
+export const MobileScreenWidth = 768;

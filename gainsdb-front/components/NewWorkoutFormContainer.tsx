@@ -5,10 +5,12 @@ import Loader, { WaiterMessage } from "@/components/Waiter";
 import { useWaiter } from "@/contexts/WaiterContext";
 import ExercisesList from "@/components/ExercisesList";
 
+import buttonStyles from "@/styles/buttons.module.css";
+import { ScreenSize } from "@/constants/generalConstants";
+
 interface Props {
   visible: boolean;
-  isMobile: boolean;
-  isXXLarge: boolean;
+  screenSize?: ScreenSize | undefined;
   exerciseName: string | null;
   onClose: null | (() => void);
 }
@@ -22,8 +24,7 @@ interface NewWorkoutFormData {
 
 export default function NewWorkoutFormContainer({
   visible,
-  isMobile,
-  isXXLarge,
+  screenSize = ScreenSize.Regular,
   onClose,
   exerciseName,
 }: Props) {
@@ -54,7 +55,6 @@ export default function NewWorkoutFormContainer({
       ...prevFormData,
       [e.target.name]: e.target.value,
     }));
-    console.log(e.target.name, e.target.value);
   };
 
   useEffect(() => {
@@ -135,7 +135,7 @@ export default function NewWorkoutFormContainer({
 
   return (
     <div className="new-workout-form-container">
-      {isXXLarge && (
+      {screenSize === ScreenSize.XXLarge && (
         <form onSubmit={handleSubmit} id="new-set-form" className="xxl">
           <div className="form-xxl-row">
             <input
@@ -181,7 +181,7 @@ export default function NewWorkoutFormContainer({
 
           <div className="form-xxl-row">
             <button
-              className={`new-workout-button ${validForm && !waiting ? "active" : ""}`}
+              className={`${validForm && !waiting ? "active" : ""} ${buttonStyles.submitButton}`}
               type="submit"
               disabled={waiting}
             >
@@ -191,7 +191,7 @@ export default function NewWorkoutFormContainer({
         </form>
       )}
 
-      {(!isXXLarge || isMobile) && (
+      {screenSize !== ScreenSize.XXLarge && (
         <form
           onSubmit={handleSubmit}
           id="new-set-form"
@@ -247,11 +247,11 @@ export default function NewWorkoutFormContainer({
 
           <div className="form-xl-row" id="footer">
             <button
-              className={`new-workout-button ${validForm && !waiting ? "active" : ""}`}
+              className={`${validForm && !waiting ? "active" : ""} ${buttonStyles.submitButton}`}
               type="submit"
               disabled={waiting}
             >
-              Log
+              LOG
             </button>
           </div>
         </form>

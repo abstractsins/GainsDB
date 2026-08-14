@@ -1,29 +1,25 @@
 "use client";
 
-import NewWorkoutFormContainer from "@/components/NewWorkoutFormContainer";
 import { useState, useEffect } from "react";
+import NewWorkoutFormContainer from "@/components/NewWorkoutFormContainer";
+import {
+  XXLargeScreenWidth,
+  MobileScreenWidth,
+  ScreenSize,
+} from "@/constants/generalConstants";
 
 export default function NewWorkout() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isXXLarge, setIsXXLarge] = useState(false);
-  const [isRegular, setIsRegular] = useState(false);
+  const [screenSize, setScreenSize] = useState<ScreenSize>();
 
   // Reactive sizing
   useEffect(() => {
     const handleResize = () => {
-      console.log("resizing");
-      if (window.innerWidth > 1699) {
-        setIsXXLarge(true);
-        setIsMobile(false);
-        setIsRegular(false);
-      } else if (window.innerWidth >= 768) {
-        setIsXXLarge(false);
-        setIsMobile(false);
-        setIsRegular(true);
-      } else if (window.innerWidth < 768) {
-        setIsXXLarge(false);
-        setIsMobile(true);
-        setIsRegular(false);
+      if (window.innerWidth >= XXLargeScreenWidth) {
+        setScreenSize(ScreenSize.XXLarge);
+      } else if (window.innerWidth >= MobileScreenWidth) {
+        setScreenSize(ScreenSize.Regular);
+      } else if (window.innerWidth < MobileScreenWidth) {
+        setScreenSize(ScreenSize.Mobile);
       }
     };
 
@@ -35,13 +31,11 @@ export default function NewWorkout() {
   return (
     <div id="new-workout-page">
       <h1 className="page-header">Record a Set!</h1>
-
       <NewWorkoutFormContainer
         visible={true}
         onClose={null}
         exerciseName={null}
-        isMobile={isMobile}
-        isXXLarge={isXXLarge}
+        screenSize={screenSize}
       />
     </div>
   );
