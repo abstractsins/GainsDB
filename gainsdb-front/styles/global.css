@@ -89,7 +89,7 @@ button[type="submit"] {
   font-weight: 600;
   margin: 10px;
   width: fit-content;
-  font-family: "Oswald";
+  font-family: var(--oswald);
   border: none;
 }
 
@@ -151,7 +151,7 @@ span.coming-soon {
 
 h1.page-header {
   font-size: 28pt;
-  font-family: "Oswald";
+  font-family: var(--oswald);
 }
 
 div.popup-footer {
@@ -191,7 +191,7 @@ button#cancel-button:hover {
 }
 
 h2.popup-header {
-  font-family: "Oswald";
+  font-family: var(--oswald);
   font-size: 32pt;
 }
 
@@ -514,7 +514,7 @@ div.lvl-1-exe-data span {
 
 h2.exercise-list {
   font-size: 28pt;
-  font-family: "oswald";
+  font-family: var(--oswald);
   line-height: 1.25;
 }
 
@@ -764,7 +764,7 @@ li.workout-card {
 }
 
 div.workout-card-header span.day {
-  font-family: "Oswald";
+  font-family: var(--oswald);
   font-size: 24pt;
 }
 
@@ -1291,7 +1291,7 @@ div.nav-arrow {
 }
 
 #new-workout-popup h2 {
-  font-family: "oswald";
+  font-family: var(--oswald);
   font-size: 32pt;
   padding: 30px;
 }
@@ -1396,7 +1396,7 @@ span.app-signature {
 
 .coming-soon-module h2 {
   font-size: 18pt;
-  font-family: "Oswald";
+  font-family: var(--oswald);
   display: flex;
   align-items: center;
 }
@@ -1958,7 +1958,7 @@ html, body {
     width: 150px;
     height: 75px;
     text-transform: uppercase;
-    font-family: "Oswald";
+    font-family: var(--oswald);
   }
 
   form#new-set-form {
@@ -2136,7 +2136,7 @@ html, body {
   }
 
   li#add-exercise-card h2 {
-    font-family: "Oswald";
+    font-family: var(--oswald);
     font-size: 1.25rem;
   }
 
@@ -2723,7 +2723,7 @@ div.pin-container {
 /* .body h1 {
   font-size: 72pt;
   font-weight: 600;
-  font-family: "Oswald";
+  font-family: var(--oswald);
 }
 
 .body h2 {

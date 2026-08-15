@@ -1,5 +1,5 @@
 // FONTS
-import { Inter, Oswald, Tourney } from "next/font/google";
+import { Inter, Oswald, Roboto_Slab, Tourney } from "next/font/google";
 
 // TYPES
 import type { Metadata } from "next";
@@ -40,6 +40,12 @@ const tourney = Tourney({
   display: "block",
 });
 
+const robotoSlab = Roboto_Slab({
+  variable: "--roboto-slab",
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "600", "700", "800"],
+});
+
 export const metadata: Metadata = {
   title: "GainsDB",
   description: "Track your workouts efficiently",
@@ -71,7 +77,7 @@ export default function RootLayout({
         <link rel="manifest" href="/webmanifest.json" />
       </head>
       <body
-        className={`${styles.LandingBody} ${tourney.variable} ${oswald.variable} ${inter.className} antialiased relative`}
+        className={`${styles.LandingBody} ${robotoSlab.variable} ${tourney.variable} ${oswald.variable} ${inter.className} antialiased relative`}
       >
         <SessionProvider>
           <AuthProvider>
