@@ -5,9 +5,18 @@
   overflow: hidden;
 }
 
+.background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.05);
+}
+
 .backgroundImage {
   object-fit: cover;
   object-position: center;
+  filter: blur(4px);
+  transform: scale(1.02);
 }
 
 .splashBody {

@@ -47,8 +47,8 @@
   --footer-link-hover: var(--nice-blue);
 
   /* BORDER-RADIUS */
-  --popup-border-radius: 7px;
-  --text-input-border-radius: 5px;
+  --border-radius-popup: 7px;
+  --border-radius-text-input: 5px;
   --border-radius-text-link: 5px;
 
   /* PADDING */
@@ -252,29 +252,9 @@ h2.popup-header {
 }
 
 /** NEW SET */
-form#new-set-form {
-  border-radius: 10px;
-  background-color: var(--darkGray);
-  padding: 0 30px 20px 30px;
-  width: fit-content;
-}
-
 div.new-workout-form-container {
   display: flex;
   justify-content: center;
-}
-
-.new-workout-field {
-  background-color: whitesmoke;
-  color: black;
-  border-radius: 10px;
-  font-size: 18pt;
-  margin: 10px;
-  /* width: 95%; */
-}
-
-select.new-workout-field[name="exercise"] {
-  padding-right: 40px;
 }
 
 input[type="date"] {
@@ -291,31 +271,8 @@ input[type="date"] {
   justify-content: center;
 }
 
-select.new-workout-field {
-  padding: 10px;
-  appearance: none;
-  /* Removes default styling */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  border: 1px solid #ccc;
-  width: 100%;
-  cursor: pointer;
-  position: relative;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="black"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 22pt;
-  max-width: 50vw;
-}
-
 option {
   /* color:black; */
-}
-
-#new-set-form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
 }
 
 input#input-weight,
@@ -1294,11 +1251,6 @@ div.nav-arrow {
   font-family: var(--oswald);
   font-size: 32pt;
   padding: 30px;
-}
-
-#new-set-form.xxl {
-  padding: 30px;
-  margin-top: 30px;
 }
 
 .lower-body {

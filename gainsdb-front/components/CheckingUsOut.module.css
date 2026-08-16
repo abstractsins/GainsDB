@@ -1,14 +1,14 @@
 .popup {
   background-color: slateblue;
   padding: 30px;
-  border-radius: var(--popup-border-radius);
+  border-radius: var(--border-radius-popup);
   left: 10%;
   position: absolute;
   margin-top: 2rem;
   display: flex;
   z-index: 2000;
   filter: drop-shadow(5px 5px 3px gray);
-  border-radius: var(--popup-border-radius);
+  border-radius: var(--border-radius-popup);
   color: white;
   padding: 30px 40px 20px 20px;
 }

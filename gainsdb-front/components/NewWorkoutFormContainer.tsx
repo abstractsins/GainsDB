@@ -1,12 +1,20 @@
-import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect, SubmitEvent } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
 import { toTitleCase, getFormattedDate } from "@/utils/utils";
-import Loader, { WaiterMessage } from "@/components/Waiter";
+import { WaiterMessage } from "@/components/Waiter";
 import { useWaiter } from "@/contexts/WaiterContext";
 import ExercisesList from "@/components/ExercisesList";
 
 import buttonStyles from "@/styles/buttons.module.css";
 import { ScreenSize } from "@/constants/generalConstants";
+import { useErrorReporter } from "@/contexts/ErrorContext";
+import {
+  ContentTypes,
+  FetchMethods,
+  ResponseLikeObject,
+} from "@/constants/fetchConstants";
+
+import styles from "./NewWorkoutFormContainer.module.css";
 
 interface Props {
   visible: boolean;
@@ -29,9 +37,11 @@ export default function NewWorkoutFormContainer({
   exerciseName,
 }: Props) {
   const { data: session } = useSession(); // Get authentication session
+  const { setWaiter, clearWaiter } = useWaiter();
+  const { handleNoToken, handleResponseError } = useErrorReporter();
+
   const [validForm, setValidForm] = useState(false);
   const [waiting, setWaiting] = useState(false);
-  const server = process.env.NEXT_PUBLIC_BACKEND;
 
   const [formData, setFormData] = useState({
     date: getFormattedDate(), // Sets the default date to today
@@ -40,8 +50,7 @@ export default function NewWorkoutFormContainer({
     reps: "",
   });
 
-  const { setWaiter, clearWaiter } = useWaiter();
-
+  const server = process.env.NEXT_PUBLIC_BACKEND;
   const userId = session?.user?.id || localStorage.getItem("userId");
 
   if (typeof exerciseName === "string") {
@@ -50,27 +59,39 @@ export default function NewWorkoutFormContainer({
   }
 
   //* On Change
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
     }));
   };
 
+  //* Form Validation
   useEffect(() => {
+    const formComplete = (formData: NewWorkoutFormData): boolean => {
+      return (
+        formData.date.trim() !== "" &&
+        formData.exercise.trim() !== "" &&
+        Number(formData.weight) > 0 && // Ensures weight is positive
+        Number(formData.reps) > 0 // Ensures reps are positive
+      );
+    };
+
     setValidForm(formComplete(formData));
   }, [formData]);
 
   //* SUBMIT
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setWaiting(true);
 
     const token = session?.user?.authToken || localStorage.getItem("token");
 
     if (!token) {
+      // TODO: error popup
       alert("User not authenticated.");
-      setWaiting(false);
+      // redirect them to login
+      handleNoToken();
       return;
     }
 
@@ -88,20 +109,20 @@ export default function NewWorkoutFormContainer({
     };
     console.log("🟢 Final Payload:", payload);
 
-    const res = await fetch(`${server}/api/user/${userId}/log-workout`, {
-      method: "POST",
+    const response = await fetch(`${server}/api/user/${userId}/log-workout`, {
+      method: FetchMethods.POST,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": ContentTypes.AppJson,
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    const responseData = await res.json();
+    const responseData = await response.json();
     console.log("🔵 API Response:", responseData);
 
-    if (res.ok) {
-      alert("Workout logged. Keep it going!");
+    if (response.ok) {
+      alert(responseData.message);
       setFormData({
         date: formData.date,
         exercise: formData.exercise,
@@ -115,18 +136,11 @@ export default function NewWorkoutFormContainer({
     } else {
       alert("Error logging workout.");
       clearWaiter();
+      handleResponseError(response as ResponseLikeObject);
     }
   };
 
-  const formComplete = (formData: NewWorkoutFormData): boolean => {
-    return (
-      formData.date.trim() !== "" &&
-      formData.exercise.trim() !== "" &&
-      Number(formData.weight) > 0 && // Ensures weight is positive
-      Number(formData.reps) > 0 // Ensures reps are positive
-    );
-  };
-
+  //* Waiting effects
   useEffect(() => {
     if (waiting) {
       setWaiter(WaiterMessage.Submitting);
@@ -134,12 +148,11 @@ export default function NewWorkoutFormContainer({
   }, [waiting]);
 
   return (
-    <div className="new-workout-form-container">
+    <div className={styles.newWorkoutFormWrapper}>
       {screenSize === ScreenSize.XXLarge && (
-        <form onSubmit={handleSubmit} id="new-set-form" className="xxl">
+        <form onSubmit={handleSubmit} className={styles.newSetForm}>
           <div className="form-xxl-row">
             <input
-              className="m-4 p-4 new-workout-field text-[14pt] lg:text-[20pt] w-[50px] xl:w-[250px]"
               type="date"
               name="date"
               value={formData.date}
@@ -158,7 +171,7 @@ export default function NewWorkoutFormContainer({
             />
 
             <input
-              className="new-workout-field"
+              className={styles.newWorkoutField}
               type="number"
               name="weight"
               id="input-weight"
@@ -168,7 +181,7 @@ export default function NewWorkoutFormContainer({
               required
             />
             <input
-              className="new-workout-field"
+              className={styles.newWorkoutField}
               type="number"
               name="reps"
               id="input-reps"
@@ -192,14 +205,10 @@ export default function NewWorkoutFormContainer({
       )}
 
       {screenSize !== ScreenSize.XXLarge && (
-        <form
-          onSubmit={handleSubmit}
-          id="new-set-form"
-          className="flex flex-col items-center w-[100%] md:w-[80%] lg:w-[65%] p-8"
-        >
+        <form onSubmit={handleSubmit} className={styles.newSetForm}>
           <div className="form-xl-row">
             <input
-              className="new-workout-field"
+              className={styles.newWorkoutField}
               type="date"
               name="date"
               value={formData.date}
@@ -222,7 +231,7 @@ export default function NewWorkoutFormContainer({
 
           <div className="form-xl-row" id="weight-reps">
             <input
-              className="new-workout-field"
+              className={styles.newWorkoutField}
               type="number"
               name="weight"
               id="input-weight"
@@ -233,7 +242,7 @@ export default function NewWorkoutFormContainer({
               required
             />
             <input
-              className="new-workout-field"
+              className={styles.newWorkoutField}
               type="number"
               name="reps"
               id="input-reps"

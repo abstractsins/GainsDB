@@ -1,0 +1,49 @@
+.newWorkoutFormWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.newSetForm {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: var(--darkGray);
+  padding: 0 30px 20px 30px;
+  width: fit-content;
+}
+
+.newSetForm.xxl {
+  padding: 30px;
+  margin-top: 30px;
+}
+
+.newWorkoutField[name="exercise"] {
+  padding-right: 40px;
+}
+
+.newWorkoutField {
+  background-color: whitesmoke;
+  color: black;
+
+  /* Removes default styling */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  border: 1px solid #ccc;
+  padding: var(--padding-text-input-1);
+  width: 100%;
+  max-width: 50vw;
+
+  cursor: pointer;
+  position: relative;
+
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="black"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 22pt;
+
+  border-radius: var(--border-radius-text-input);
+  font-size: 18pt;
+  margin: var(--margin-text-input-1);
+}

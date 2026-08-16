@@ -68,7 +68,7 @@ aside.fullView h2 {
   align-items: center;
   gap: 0.5rem;
   border: 1px solid var(--lightGray2);
-  border-radius: var(--popup-border-radius);
+  border-radius: var(--border-radius-popup);
   padding: var(--padding-standard-2);
   box-shadow: inset 2px 2px 2px var(--near-black);
 }

@@ -14,6 +14,7 @@ export interface ErrorContextValue {
   setPopupError: (settings: SetErrorPopupOptions) => void;
   clearError: () => void;
   handleResponseError: (response: ResponseLikeObject) => void;
+  handleNoToken: () => void;
 }
 
 const ErrorContext = createContext<ErrorContextValue | undefined>(undefined);
@@ -51,6 +52,7 @@ export const ErrorProvider = ({ children }: { children: ReactNode }) => {
 
   const handleResponseError = (response: ResponseLikeObject) => {
     if (response.status === HttpResponseCodes.Forbidden) {
+      // todo: popup message that they will be redirected to log in
       router.replace("/");
     } else if (process.env.NEXT_PUBLIC_VERCEL_ENV !== Environments.Prod) {
       console.error("❌ Error fetching dashboard data:");
@@ -62,9 +64,20 @@ export const ErrorProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const handleNoToken = () => {
+    // todo: popup message that they will be redirected to log in
+    router.replace("/");
+  };
+
   return (
     <ErrorContext.Provider
-      value={{ clearError, setBannerError, setPopupError, handleResponseError }}
+      value={{
+        clearError,
+        setBannerError,
+        setPopupError,
+        handleResponseError,
+        handleNoToken,
+      }}
     >
       {isReportableError === ErrorReportType.Banner && (
         <ErrorReportBanner messageText={bannerMessageText} />

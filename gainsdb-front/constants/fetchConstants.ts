@@ -62,3 +62,8 @@ export enum HttpResponseCodes {
   NotFound = 404,
   InternalError = 500,
 }
+
+export const contentType = "Content-Type";
+export enum ContentTypes {
+  AppJson = "application/json",
+}

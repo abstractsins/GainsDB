@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
 import { LoggedExe } from "../types/types";
 
+import { useErrorReporter } from "@/contexts/ErrorContext";
+import { ResponseLikeObject } from "@/constants/fetchConstants";
+
+import styles from "@/components/NewWorkoutFormContainer.module.css";
 interface ExercisesList {
   name: string;
 }
@@ -21,6 +25,8 @@ export default function ExercisesList({ value, name, onChange }: Props) {
   const userId = session?.user?.id || localStorage.getItem("userId");
   const server = process.env.NEXT_PUBLIC_BACKEND;
 
+  const { handleResponseError } = useErrorReporter();
+
   useEffect(() => {
     if (status === "authenticated" && session?.user?.authToken) {
       fetchExercises();
@@ -37,34 +43,28 @@ export default function ExercisesList({ value, name, onChange }: Props) {
       return;
     }
 
-    try {
-      const response = await fetch(`${server}/api/user/${userId}/exercises`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Ensure token is attached if needed
-        },
-      });
+    const response = await fetch(`${server}/api/user/${userId}/exercises`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Ensure token is attached if needed
+      },
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to fetch exercises");
-      }
+    console.warn(response);
 
-      const data = await response.json();
-      console.log("Fetched Exercises:", data);
-      if (!Array.isArray(data)) {
-        console.warn("API did not return an array");
-        return;
-      }
-
-      setExercises(data);
-    } catch (error: unknown) {
-      if (error) {
-        console.error("Error fetching exercises:", error);
-        setError("Error fetching exercises:" + error);
-      }
+    if (!response.ok) {
+      handleResponseError(response as ResponseLikeObject);
     }
+
+    const data = await response.json();
+    console.log("Fetched Exercises:", data);
+    if (!Array.isArray(data)) {
+      console.warn("API did not return an array");
+      return;
+    }
+
+    setExercises(data);
   };
 
   const toTitleCase = (text: string) =>
@@ -78,7 +78,7 @@ export default function ExercisesList({ value, name, onChange }: Props) {
 
   return (
     <select
-      className="new-workout-field"
+      className={styles.newWorkoutField}
       name="exercise"
       value={value}
       onChange={handleSelect}
