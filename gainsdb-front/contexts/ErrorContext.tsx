@@ -5,15 +5,24 @@ import {
   HttpResponseCodes,
   ResponseLikeObject,
 } from "@/constants/fetchConstants";
+import { ExerciseError } from "@/constants/errorMessages";
 import { Environments } from "@/constants/generalConstants";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
+
+export interface ResponseErrorProps {
+  response: ResponseLikeObject;
+  key: ErrorKey; // contextualizes the error along with other optional params
+  exercise?: string;
+  user?: number;
+  message?: string;
+}
 
 export interface ErrorContextValue {
   setBannerError: (message: string) => void;
   setPopupError: (settings: SetErrorPopupOptions) => void;
   clearError: () => void;
-  handleResponseError: (response: ResponseLikeObject) => void;
+  handleResponseError: (props: ResponseErrorProps) => void;
   handleNoToken: () => void;
 }
 
@@ -22,6 +31,12 @@ const ErrorContext = createContext<ErrorContextValue | undefined>(undefined);
 export enum ErrorReportType {
   Banner = "banner",
   Popup = "popup",
+}
+
+export enum ErrorKey {
+  ExcerciseList = "exerciseList",
+  LatestWorkout = "latestWorkout",
+  NewWorkout = "newWorkout",
 }
 
 export interface SetErrorPopupOptions {
@@ -50,10 +65,24 @@ export const ErrorProvider = ({ children }: { children: ReactNode }) => {
     setIsReportableError(undefined);
   };
 
-  const handleResponseError = (response: ResponseLikeObject) => {
+  const handleResponseError = (props: ResponseErrorProps) => {
+    const { response, key, exercise } = props;
     if (response.status === HttpResponseCodes.Forbidden) {
       // todo: popup message that they will be redirected to log in
       router.replace("/");
+    } else if (response.status === HttpResponseCodes.NotFound) {
+      switch (key) {
+        case ErrorKey.ExcerciseList:
+          console.warn(
+            `${ExerciseError.NoWorkoutDataForExercise}: ${exercise}`,
+          );
+          break;
+        case ErrorKey.LatestWorkout:
+          console.warn(
+            `${ExerciseError.NoWorkoutDataForExercise}: ${exercise}`,
+          );
+          break;
+      }
     } else if (process.env.NEXT_PUBLIC_VERCEL_ENV !== Environments.Prod) {
       console.error("❌ Error fetching dashboard data:");
       setBannerError(

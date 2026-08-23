@@ -10,7 +10,14 @@ import { useSession } from "next-auth/react";
 import { toTitleCase } from "@/utils/utils";
 
 import WorkoutCardDetails from "./WorkoutHistory/WorkoutCardDetails";
-import { SetArr } from "../types/types";
+import { SetArr, Sets } from "../types/types";
+import {
+  ContentTypeAppJson,
+  FetchMethods,
+  HttpResponseCodes,
+  ResponseLikeObject,
+} from "@/constants/fetchConstants";
+import { ErrorKey, useErrorReporter } from "@/contexts/ErrorContext";
 
 interface Exercise {
   id: number;
@@ -25,9 +32,20 @@ interface WorkoutSet {
   reps: number;
 }
 
-interface WorkoutData {
+interface LatestWorkoutSet extends WorkoutSet {
+  user_id: number;
+  workout_date: Date;
   workout_id: number;
-  workout_date: string;
+}
+
+type LatestWorkoutResponse = LatestWorkoutSet[];
+
+interface WorkoutEntry {
+  workout_id: number;
+  workout_date: Date;
+}
+
+interface WorkoutData extends WorkoutEntry {
   sets: WorkoutSet[];
 }
 
@@ -46,14 +64,14 @@ const ExerciseCard: React.FC<Props> = ({
   resetInnerExpansion,
   popupData,
 }: Props) => {
-  const [workoutData, setWorkoutData] = useState<WorkoutData | null>(null);
+  const { handleResponseError, handleNoToken } = useErrorReporter();
+
+  const [workoutData, setWorkoutData] = useState<WorkoutData>();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [isExpanded2, setIsExpanded2] = useState(false);
   const { data: session } = useSession();
   const userId = session?.user?.id || localStorage.getItem("userId");
   const server = process.env.NEXT_PUBLIC_BACKEND;
-  const [moreDisabled, setMoreDisabled] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [logExerciseId, setLogExererciseId] = useState<string>("0");
   const [formattedData, setFormattedData] = useState<SetArr | null>([]);
@@ -82,9 +100,23 @@ const ExerciseCard: React.FC<Props> = ({
 
   const token = session?.user?.authToken || localStorage.getItem("token");
   if (!token) {
-    setError("No authentication session found. Please log in.");
+    handleNoToken();
     return;
   }
+
+  const mapWorkoutToLocalObj = (data: LatestWorkoutResponse): WorkoutData => {
+    const workout_date = data[0].workout_date;
+    const workout_id = data[0].workout_id;
+    const sets: WorkoutSet[] = data.map((set) => {
+      return {
+        set_order: set.set_order,
+        weight: set.weight,
+        reps: set.reps,
+      };
+    });
+
+    return { sets, workout_date, workout_id };
+  };
 
   const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
     console.log(`${exercise?.name} clicked`);
@@ -149,39 +181,38 @@ const ExerciseCard: React.FC<Props> = ({
         clickedLi.classList.add("active");
       }
 
-      try {
-        if (exercise) {
-          const response = await fetch(
-            `${server}/api/user/${userId}/exercises/${exercise.id}/latest-workout`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
+      if (exercise) {
+        const response = await fetch(
+          `${server}/api/user/${userId}/exercises/${exercise.id}/latest-workout`,
+          {
+            method: FetchMethods.GET,
+            headers: {
+              ...ContentTypeAppJson,
+              Authorization: `Bearer ${token}`,
             },
-          );
-          if (!response.ok) console.error("Failed to fetch workout data");
-          const data = await response.json();
-          console.log(data);
-          setWorkoutData(data.length ? data : null);
-          setFormattedData(
-            data?.map((set: WorkoutSet) => [
-              set.set_order,
-              set.weight,
-              set.reps,
-            ]),
-          );
-          if (workoutData !== null) {
-            setMoreDisabled(true);
-          }
+          },
+        );
+
+        if (!response.ok) {
+          handleResponseError({
+            response: response as ResponseLikeObject,
+            key: ErrorKey.LatestWorkout,
+            exercise: exercise.name,
+          });
+
+          return;
         }
-      } catch (error) {
-        console.error("Error fetching workout data:", error);
-        setWorkoutData(null);
-      } finally {
-        setLoading(false);
+
+        const data: LatestWorkoutResponse = await response.json();
+        const mappedData = mapWorkoutToLocalObj(data);
+
+        setWorkoutData(mappedData);
+
+        setFormattedData(
+          data.map((set: WorkoutSet) => [set.set_order, set.weight, set.reps]),
+        );
       }
+      setLoading(false);
     }
   };
 
@@ -210,22 +241,19 @@ const ExerciseCard: React.FC<Props> = ({
 
   function SkeletonLoader() {
     return (
-      <div className="set-list-skeleton animate-pulse">
-        <div className="skeleton-row"></div>
-        <div className="skeleton-row"></div>
-        <div className="skeleton-row"></div>
-        <div className="skeleton-row"></div>
-        <div className="skeleton-row"></div>
-        <div className="skeleton-row"></div>
-        <div className="skeleton-row"></div>
-        <div className="skeleton-row"></div>
+      <div className="set-list-skeleton">
+        <div className="skeleton-row animate-pulse"></div>
+        <div className="skeleton-row animate-pulse"></div>
+        <div className="skeleton-row animate-pulse"></div>
+        <div className="skeleton-row animate-pulse"></div>
+        <div className="skeleton-row animate-pulse"></div>
       </div>
     );
   }
 
-  const launchPopupLog = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    e.preventDefault();
+  const launchPopupLog = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    event.preventDefault();
     popupData(true, logExerciseId);
   };
 
@@ -253,12 +281,14 @@ const ExerciseCard: React.FC<Props> = ({
               >{`${isExpanded2 ? "Less..." : "Chart..."}`}</button>
             </div>
           )}
-
-          {exercise && (
-            <span className="text-[12pt]">
-              Last logged: {normalizeDate(exercise.last_logged_date, true)}
-            </span>
-          )}
+          //! for non logged exercises
+          <span className="text-[12pt]">
+            {exercise && formattedData ? (
+              <>Last logged: {normalizeDate(exercise.last_logged_date, true)}</>
+            ) : (
+              <>Not logged yet</>
+            )}
+          </span>
         </div>
 
         {isThisExpanded && (

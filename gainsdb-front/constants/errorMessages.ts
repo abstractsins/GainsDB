@@ -12,3 +12,8 @@ export const RegistrationError = {
   ...GenericError,
   NameTaken: "That username is taken. Try another one.",
 } as const;
+
+export const ExerciseError = {
+  ...GenericError,
+  NoWorkoutDataForExercise: "No workout data exists for this exercise",
+};

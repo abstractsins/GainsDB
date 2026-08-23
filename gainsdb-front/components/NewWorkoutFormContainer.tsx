@@ -7,8 +7,9 @@ import ExercisesList from "@/components/ExercisesList";
 
 import buttonStyles from "@/styles/buttons.module.css";
 import { ScreenSize } from "@/constants/generalConstants";
-import { useErrorReporter } from "@/contexts/ErrorContext";
+import { ErrorKey, useErrorReporter } from "@/contexts/ErrorContext";
 import {
+  ContentTypeAppJson,
   ContentTypes,
   FetchMethods,
   ResponseLikeObject,
@@ -112,7 +113,7 @@ export default function NewWorkoutFormContainer({
     const response = await fetch(`${server}/api/user/${userId}/log-workout`, {
       method: FetchMethods.POST,
       headers: {
-        "Content-Type": ContentTypes.AppJson,
+        ...ContentTypeAppJson,
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
@@ -136,7 +137,10 @@ export default function NewWorkoutFormContainer({
     } else {
       alert("Error logging workout.");
       clearWaiter();
-      handleResponseError(response as ResponseLikeObject);
+      handleResponseError({
+        response: response as ResponseLikeObject,
+        key: ErrorKey.NewWorkout,
+      });
     }
   };
 
@@ -153,6 +157,7 @@ export default function NewWorkoutFormContainer({
         <form onSubmit={handleSubmit} className={styles.newSetForm}>
           <div className="form-xxl-row">
             <input
+              className={styles.newWorkoutField}
               type="date"
               name="date"
               value={formData.date}

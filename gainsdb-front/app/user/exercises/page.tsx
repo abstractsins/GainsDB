@@ -11,6 +11,11 @@ import NewExercisePopup from "@/components/NewExercisePopup";
 import ExerciseCards from "@/components/ExerciseCards";
 
 import { ExerciseCard } from "@/types/types";
+import {
+  ContentTypeAppJson,
+  ResponseLikeObject,
+} from "@/constants/fetchConstants";
+import { ErrorKey, useErrorReporter } from "@/contexts/ErrorContext";
 
 const server = process.env.NEXT_PUBLIC_BACKEND;
 
@@ -34,6 +39,8 @@ export default function Exercises() {
   const [logExeId, setLogExeId] = useState<string>("0");
 
   const [inputValue, setInputValue] = useState("");
+
+  const { handleResponseError, handleNoToken } = useErrorReporter();
 
   const handlePopupLog = (popup: boolean, id: string) => {
     setPopupLog(popup);
@@ -133,8 +140,7 @@ export default function Exercises() {
     const token = session?.user?.authToken || localStorage.getItem("token");
     if (status === "loading") return;
     if (!token) {
-      setError("No authentication session found. Please log in.");
-      setLoading(false); // ensure we don’t get stuck if we early-return
+      handleNoToken();
       return;
     }
 
@@ -148,32 +154,31 @@ export default function Exercises() {
       // Only show loader if this is a cold fetch
       if (!hasFetchedRef.current || exercises.length === 0) setLoading(true);
 
-      try {
-        const res = await fetch(`${server}/api/user/${userId}/exercises`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${server}/api/user/${userId}/exercises`, {
+        headers: {
+          ...ContentTypeAppJson,
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        handleResponseError({
+          response: response as ResponseLikeObject,
+          key: ErrorKey.ExcerciseList,
         });
-        if (!res.ok)
-          throw new Error(
-            (await res.json()).message || "Failed to fetch exercises",
-          );
-
-        const data: ExerciseCard[] = await res.json();
-        if (!Array.isArray(data))
-          throw new Error("API did not return an array");
-
-        const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name));
-        setExercises(sorted);
-        setFilteredExercises(sorted);
-        hasFetchedRef.current = true;
-      } catch (e: any) {
-        console.error("Error fetching exercises:", e.message);
-        setError(e.message);
-      } finally {
-        setLoading(false);
+        return;
       }
+
+      const data: ExerciseCard[] = await response.json();
+      if (!Array.isArray(data)) throw new Error("API did not return an array");
+
+      const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name));
+
+      setExercises(sorted);
+      setFilteredExercises(sorted);
+      hasFetchedRef.current = true;
+
+      setLoading(false);
     };
 
     if (status === "authenticated" && token) fetchExercises();

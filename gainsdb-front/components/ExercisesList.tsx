@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
 import { LoggedExe } from "../types/types";
 
-import { useErrorReporter } from "@/contexts/ErrorContext";
-import { ResponseLikeObject } from "@/constants/fetchConstants";
+import { ErrorKey, useErrorReporter } from "@/contexts/ErrorContext";
+import {
+  ResponseLikeObject,
+  ContentTypeAppJson,
+  FetchMethods,
+} from "@/constants/fetchConstants";
 
 import styles from "@/components/NewWorkoutFormContainer.module.css";
 interface ExercisesList {
@@ -21,11 +25,10 @@ interface Props {
 export default function ExercisesList({ value, name, onChange }: Props) {
   const { data: session, status } = useSession(); // Get authentication session
   const [exercises, setExercises] = useState<ExercisesList[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const userId = session?.user?.id || localStorage.getItem("userId");
   const server = process.env.NEXT_PUBLIC_BACKEND;
 
-  const { handleResponseError } = useErrorReporter();
+  const { handleResponseError, handleNoToken } = useErrorReporter();
 
   useEffect(() => {
     if (status === "authenticated" && session?.user?.authToken) {
@@ -39,32 +42,33 @@ export default function ExercisesList({ value, name, onChange }: Props) {
     const token = session?.user?.authToken || localStorage.getItem("token");
 
     if (!token) {
-      setError("No authentication session found. Please log in.");
+      handleNoToken();
       return;
     }
 
     const response = await fetch(`${server}/api/user/${userId}/exercises`, {
-      method: "GET",
+      method: FetchMethods.GET,
       headers: {
-        "Content-Type": "application/json",
+        ...ContentTypeAppJson,
         Authorization: `Bearer ${token}`, // Ensure token is attached if needed
       },
     });
 
-    console.warn(response);
-
     if (!response.ok) {
-      handleResponseError(response as ResponseLikeObject);
-    }
+      handleResponseError({
+        response: response as ResponseLikeObject,
+        key: ErrorKey.ExcerciseList,
+      });
+    } else {
+      const data = await response.json();
 
-    const data = await response.json();
-    console.log("Fetched Exercises:", data);
-    if (!Array.isArray(data)) {
-      console.warn("API did not return an array");
-      return;
-    }
+      if (!Array.isArray(data)) {
+        console.warn("API did not return an array");
+        return;
+      }
 
-    setExercises(data);
+      setExercises(data);
+    }
   };
 
   const toTitleCase = (text: string) =>
@@ -78,7 +82,7 @@ export default function ExercisesList({ value, name, onChange }: Props) {
 
   return (
     <select
-      className={styles.newWorkoutField}
+      className={`${styles.newWorkoutField} ${styles.dropdown}`}
       name="exercise"
       value={value}
       onChange={handleSelect}
