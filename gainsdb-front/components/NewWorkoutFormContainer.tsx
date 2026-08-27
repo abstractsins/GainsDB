@@ -2,20 +2,23 @@ import { ChangeEvent, useState, useEffect, SubmitEvent } from "react";
 import { useSession } from "next-auth/react"; // Import NextAuth session
 import { toTitleCase, getFormattedDate } from "@/utils/utils";
 import { WaiterMessage } from "@/components/Waiter";
-import { useWaiter } from "@/contexts/WaiterContext";
 import ExercisesList from "@/components/ExercisesList";
 
 import buttonStyles from "@/styles/buttons.module.css";
 import { ScreenSize } from "@/constants/generalConstants";
+
+import { useWaiter } from "@/contexts/WaiterContext";
 import { ErrorKey, useErrorReporter } from "@/contexts/ErrorContext";
+import { PopupType, usePopup } from "@/contexts/PopupContext";
+
 import {
   ContentTypeAppJson,
-  ContentTypes,
   FetchMethods,
   ResponseLikeObject,
 } from "@/constants/fetchConstants";
 
 import styles from "./NewWorkoutFormContainer.module.css";
+import PopupCloseButton from "./PopupCloseButton";
 
 interface Props {
   visible: boolean;
@@ -83,6 +86,7 @@ export default function NewWorkoutFormContainer({
 
   //* SUBMIT
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+    console.log("handleSubmit called");
     event.preventDefault();
     setWaiting(true);
 
@@ -91,13 +95,18 @@ export default function NewWorkoutFormContainer({
     if (!token) {
       // TODO: error popup
       alert("User not authenticated.");
-      // redirect them to login
+      // redirect user to login
       handleNoToken();
       return;
     }
 
     if (Number(formData.weight) <= 0 || Number(formData.reps) <= 0) {
-      alert("Weight and reps must be greater than zero!");
+      setPopup({
+        type: PopupType.Error,
+        title: "Invalid Entry",
+        message: "Weight and reps must be greater than zero!",
+        buttons: [],
+      });
       setWaiting(false);
       return;
     }
@@ -123,7 +132,12 @@ export default function NewWorkoutFormContainer({
     console.log("🔵 API Response:", responseData);
 
     if (response.ok) {
-      alert(responseData.message);
+      setPopup({
+        type: PopupType.Notification,
+        title: "Workout Logged",
+        message: responseData.message,
+        buttons: [<PopupCloseButton key={0} />],
+      });
       setFormData({
         date: formData.date,
         exercise: formData.exercise,
@@ -131,6 +145,7 @@ export default function NewWorkoutFormContainer({
         reps: "",
       });
       clearWaiter();
+      setWaiting(false);
       if (visible && onClose !== null) {
         onClose();
       }
@@ -143,6 +158,8 @@ export default function NewWorkoutFormContainer({
       });
     }
   };
+
+  const { setPopup } = usePopup();
 
   //* Waiting effects
   useEffect(() => {

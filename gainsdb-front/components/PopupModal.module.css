@@ -1,0 +1,56 @@
+.popupModalWrapper {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupModalBox {
+  background-color: cadetblue;
+  border-radius: var(--border-radius-popup);
+  border: 3px solid silver;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  gap: 1rem;
+  color: black;
+  padding: 1.5rem;
+  z-index: 9999;
+}
+
+.popupShield {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9998;
+}
+
+.popupHeaderText {
+  font-family: "Oswald";
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.popupButtonsWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.popupCloseButton {
+  appearance: none;
+  background-color: darkslategray;
+  border: 1px solide var(--near-black);
+  color: silver;
+  text-transform: uppercase;
+  padding: var(--padding-standard-2);
+  border-radius: var(--border-radius-popup);
+}
+
+.popupCloseButton:hover {
+  cursor: pointer;
+}

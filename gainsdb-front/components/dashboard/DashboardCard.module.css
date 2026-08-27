@@ -4,7 +4,7 @@ div.dashboardCard {
   flex-direction: column;
   width: 350px;
   height: 200px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-popup);
   /* border: 3px solid whitesmoke; */
   border: 3px solid rgb(195, 250, 237);
   position: relative;

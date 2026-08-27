@@ -262,10 +262,6 @@ div.new-workout-form-container {
   justify-content: center;
 }
 
-input[type="date"] {
-  padding: 10px;
-}
-
 .form-xl-row#weight-reps {
   display: flex;
   justify-content: space-between;
@@ -274,15 +270,6 @@ input[type="date"] {
 .form-xl-row#footer {
   display: flex;
   justify-content: center;
-}
-
-option {
-  /* color:black; */
-}
-
-input#input-weight,
-input#input-reps {
-  padding: 10px;
 }
 
 input#input-weight {

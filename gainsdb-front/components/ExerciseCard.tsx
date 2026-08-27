@@ -281,7 +281,7 @@ const ExerciseCard: React.FC<Props> = ({
               >{`${isExpanded2 ? "Less..." : "Chart..."}`}</button>
             </div>
           )}
-          //! for non logged exercises
+          {/* //! for non logged exercises */}
           <span className="text-[12pt]">
             {exercise && formattedData ? (
               <>Last logged: {normalizeDate(exercise.last_logged_date, true)}</>

@@ -20,6 +20,7 @@ import SessionProvider from "@/components/SessionProvider";
 // STYLES
 import "@/styles/global.css";
 import styles from "./layout.module.css";
+import { PopupProvider } from "@/contexts/PopupContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -81,7 +82,9 @@ export default function RootLayout({
       >
         <SessionProvider>
           <AuthProvider>
-            <WaiterProvider>{children}</WaiterProvider>
+            <PopupProvider>
+              <WaiterProvider>{children}</WaiterProvider>
+            </PopupProvider>
             <Analytics />
             <Footer />
           </AuthProvider>

@@ -20,7 +20,11 @@ import { Environments } from "@/constants/generalConstants";
 // Conexts
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLoaded } from "@/contexts/LoadedContext";
-import { useErrorReporter } from "@/contexts/ErrorContext";
+import {
+  ErrorKey,
+  ResponseErrorProps,
+  useErrorReporter,
+} from "@/contexts/ErrorContext";
 
 // Components
 import InfoCard from "@/components/dashboard/DashboardCard";
@@ -87,8 +91,13 @@ export default function DashboardPage() {
         },
       });
 
+      console.log(response);
+
       if (!response.ok) {
-        handleResponseError(response as ResponseLikeObject);
+        handleResponseError({
+          response: response as ResponseLikeObject,
+          key: ErrorKey.Dashboard,
+        });
         return;
       }
 

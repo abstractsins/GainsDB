@@ -34,6 +34,7 @@ export enum ErrorReportType {
 }
 
 export enum ErrorKey {
+  Dashboard = "dashboard",
   ExcerciseList = "exerciseList",
   LatestWorkout = "latestWorkout",
   NewWorkout = "newWorkout",
@@ -118,7 +119,8 @@ export const ErrorProvider = ({ children }: { children: ReactNode }) => {
 
 export const useErrorReporter = () => {
   const context = useContext(ErrorContext);
-  if (!context)
+  if (!context) {
     throw new Error("useErrorReporter must be used within ErrorProvider");
+  }
   return context;
 };
