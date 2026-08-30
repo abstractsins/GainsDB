@@ -28,17 +28,17 @@ aside.fullView h2 {
 
 .dashboardLink {
   display: flex;
-  padding: var(--padding-standard-2);
   border-radius: var(--border-radius-text-link);
   border: 1px solid transparent;
+  text-decoration: none;
 }
 
 .dashboardLinkText {
-  text-decoration: none;
+  padding: var(--padding-standard-2);
   color: whitesmoke;
 }
 
-.dashboardLinkText:visited {
+.dashboardLink:visited {
   color: inherit;
 }
 
@@ -46,10 +46,14 @@ aside.fullView h2 {
 .dashboardLink:hover {
   background-color: var(--near-black);
   border: 1px solid var(--lightGray2);
+}
+
+.dashboardLink.currentUserNavPath div,
+.dashboardLink:hover div {
   color: var(--core);
 }
 
-.dashboardLinkText {
+.dashboardLink {
   display: flex;
   gap: 0.5rem;
   align-items: center;

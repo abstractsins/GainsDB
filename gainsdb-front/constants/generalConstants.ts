@@ -16,6 +16,7 @@ export enum RouteSegment {
   NewWorkout = "new-workout",
   ComingSoon = "coming-soon",
   Settings = "settings",
+  BodyWeight = "body-weight",
 }
 
 export enum InputTypes {

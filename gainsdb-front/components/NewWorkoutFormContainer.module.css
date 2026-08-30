@@ -4,12 +4,18 @@
 }
 
 .newSetForm {
+  border: 1px solid var(--core);
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   background-color: var(--darkGray);
   padding: 20px 30px;
   width: fit-content;
+}
+
+.newWorkoutField:focus {
+  outline: 1px solid var(--core);
+  border: 1px solid transparent;
 }
 
 .newSetForm.xxl {
@@ -25,7 +31,7 @@
   /* background-color: whitesmoke; */
   /* color: black; */
 
-  border: 1px solid #ccc;
+  border: 1px solid silver;
   padding: var(--padding-text-input-1);
   margin: var(--margin-text-input-1);
   width: 100%;

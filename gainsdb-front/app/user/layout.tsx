@@ -28,6 +28,7 @@ import {
   FaRunning,
   FaUser,
   FaChartLine,
+  FaWeight,
   FaClipboardList,
 } from "react-icons/fa";
 import { FaTimeline } from "react-icons/fa6";
@@ -67,6 +68,7 @@ export default function DashboardLayout({
   const settings = false;
   const charts = false;
   const comingSoon = true;
+  const bodyWeight = true;
   const profile = false;
 
   const closeMenu = () => setIsMenuActive(false);
@@ -147,85 +149,83 @@ export default function DashboardLayout({
 
           <h2 className={styles.asideHeader}>GainsDB</h2>
           <nav className={styles.nav}>
-            <div
+            <Link
               className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Dashboard ? styles.currentUserNavPath : ""}`}
+              href={`/${user}/${RouteSegment.Dashboard}`}
             >
-              <Link
-                className={styles.dashboardLinkText}
-                href={`/${user}/${RouteSegment.Dashboard}`}
-              >
+              <div className={`${styles.dashboardLinkText}`}>
                 <MdDashboard /> Dashboard
-              </Link>
-            </div>
+              </div>
+            </Link>
 
-            <div
+            <Link
               className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.NewWorkout ? styles.currentUserNavPath : ""}`}
+              href={`/${user}/${RouteSegment.NewWorkout}`}
             >
-              <Link
-                className={styles.dashboardLinkText}
-                href={`/${user}/${RouteSegment.NewWorkout}`}
-              >
+              <div className={`${styles.dashboardLinkText}`}>
                 <FaClipboardList /> Log Workout
-              </Link>
-            </div>
+              </div>
+            </Link>
 
-            <div
+            <Link
+              href={`/${user}/${RouteSegment.History}`}
               className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.History ? styles.currentUserNavPath : ""}`}
             >
-              <Link
-                href={`/${user}/${RouteSegment.History}`}
-                className={styles.dashboardLinkText}
-              >
+              <div className={`${styles.dashboardLinkText}`}>
                 <FaTimeline /> Workout History
-              </Link>
-            </div>
+              </div>
+            </Link>
 
-            <div
+            <Link
+              href={`/${user}/${RouteSegment.Exercises}`}
               className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Exercises ? styles.currentUserNavPath : ""}`}
             >
-              <Link
-                href={`/${user}/${RouteSegment.Exercises}`}
-                className={styles.dashboardLinkText}
-              >
+              <div className={`${styles.dashboardLinkText}`}>
                 <FaRunning /> Exercises
+              </div>
+            </Link>
+
+            {bodyWeight && (
+              <Link
+                href={`/${user}/${RouteSegment.BodyWeight}`}
+                className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.BodyWeight ? styles.currentUserNavPath : ""}`}
+              >
+                <div className={`${styles.dashboardLinkText}`}>
+                  <FaWeight /> Body Weight
+                </div>
               </Link>
-            </div>
+            )}
 
             {charts && (
-              <div
-                className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Charts ? styles.currentUserNavPath : ""}`}
+              <Link
+                href={`/${user}/${RouteSegment.Charts}}`}
+                className={`${styles.dashboardLinkText} ${currentUserNavPath === RouteSegment.Charts ? styles.currentUserNavPath : ""}`}
               >
-                <Link
-                  href={`/${user}/${RouteSegment.Charts}}`}
-                  className={styles.dashboardLinkText}
-                >
+                <div className={`${styles.dashboardLink}`}>
                   <FaChartLine /> Charts
-                </Link>
-              </div>
+                </div>
+              </Link>
             )}
+
             {settings && (
-              <div
-                className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Settings ? styles.currentUserNavPath : ""}`}
+              <Link
+                href={`/${user}/${RouteSegment.Settings}`}
+                className={`${styles.dashboardLinkText} ${currentUserNavPath === RouteSegment.Settings ? styles.currentUserNavPath : ""}`}
               >
-                <Link
-                  href={`/${user}/${RouteSegment.Settings}`}
-                  className={styles.dashboardLinkText}
-                >
+                <div className={`${styles.dashboardLink}`}>
                   <IoSettingsSharp /> Settings
-                </Link>
-              </div>
+                </div>
+              </Link>
             )}
             {comingSoon && (
-              <div
+              <Link
+                href={`/${user}/${RouteSegment.ComingSoon}`}
                 className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.ComingSoon ? styles.currentUserNavPath : ""}`}
               >
-                <Link
-                  href={`/${user}/${RouteSegment.ComingSoon}`}
-                  className={styles.dashboardLinkText}
-                >
+                <div className={`${styles.dashboardLinkText}`}>
                   <IoSparklesSharp /> Coming Soon
-                </Link>
-              </div>
+                </div>
+              </Link>
             )}
           </nav>
         </aside>
