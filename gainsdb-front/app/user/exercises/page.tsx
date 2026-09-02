@@ -17,6 +17,8 @@ import {
 } from "@/constants/fetchConstants";
 import { ErrorKey, useErrorReporter } from "@/contexts/ErrorContext";
 
+import globalStyles from "@/styles/globalStyles.module.css";
+
 const server = process.env.NEXT_PUBLIC_BACKEND;
 
 export default function Exercises() {
@@ -186,7 +188,7 @@ export default function Exercises() {
   }, [status, session?.user?.authToken, dataUpdated, userId]);
 
   return (
-    <div id="exercises-page">
+    <div id="exercises-page" className={globalStyles.functionPage}>
       {error && <p className="text-red-500">{error}</p>}
 
       <div className="exe-header flex items-center">

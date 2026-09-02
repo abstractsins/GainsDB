@@ -1,0 +1,5 @@
+/* Log Workout, Body Weight, etc... */
+.infoPage,
+.functionPage {
+  padding: var(--padding-page);
+}

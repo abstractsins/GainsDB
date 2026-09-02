@@ -57,6 +57,7 @@
   --padding-submit-button: 8px 25px;
   --padding-standard-1: 5px 10px;
   --padding-standard-2: 10px 15px;
+  --padding-page: 20px;
 
   /* MARGIN */
   --margin-text-input-1: 5px;
@@ -244,16 +245,6 @@ h2.popup-header {
   /* border-bottom: 15px solid rgb(64, 64, 64); */
   /* background-color: deeppink; */
   @apply animate-pulse;
-}
-
-#history-page,
-#exercises-page,
-#new-workout-page,
-#charts-page,
-#settings-page,
-#profile-page,
-#coming-soon-page {
-  padding: 20px;
 }
 
 /** NEW SET */

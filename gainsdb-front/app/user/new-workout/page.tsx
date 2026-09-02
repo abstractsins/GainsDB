@@ -8,6 +8,8 @@ import {
   ScreenSize,
 } from "@/constants/generalConstants";
 
+import globalStyles from "@/styles/globalStyles.module.css";
+
 export default function NewWorkout() {
   const [screenSize, setScreenSize] = useState<ScreenSize>();
 
@@ -29,7 +31,7 @@ export default function NewWorkout() {
   }, [window.innerWidth]);
 
   return (
-    <div id="new-workout-page">
+    <div id="new-workout-page" className={globalStyles.functionPage}>
       <h1 className="page-header">Record a Set!</h1>
       <NewWorkoutFormContainer
         visible={true}

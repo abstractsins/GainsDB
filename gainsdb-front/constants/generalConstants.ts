@@ -17,6 +17,7 @@ export enum RouteSegment {
   ComingSoon = "coming-soon",
   Settings = "settings",
   BodyWeight = "body-weight",
+  Feedback = "feedback",
 }
 
 export enum InputTypes {

@@ -29,6 +29,7 @@ import {
   FaUser,
   FaChartLine,
   FaWeight,
+  FaCommentDots,
   FaClipboardList,
 } from "react-icons/fa";
 import { FaTimeline } from "react-icons/fa6";
@@ -68,8 +69,6 @@ export default function DashboardLayout({
   const settings = false;
   const charts = false;
   const comingSoon = true;
-  const bodyWeight = true;
-  const profile = false;
 
   const closeMenu = () => setIsMenuActive(false);
 
@@ -149,6 +148,7 @@ export default function DashboardLayout({
 
           <h2 className={styles.asideHeader}>GainsDB</h2>
           <nav className={styles.nav}>
+            {/*//* DASHBOARD */}
             <Link
               className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Dashboard ? styles.currentUserNavPath : ""}`}
               href={`/${user}/${RouteSegment.Dashboard}`}
@@ -158,6 +158,7 @@ export default function DashboardLayout({
               </div>
             </Link>
 
+            {/* //* LOG WORKOUT */}
             <Link
               className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.NewWorkout ? styles.currentUserNavPath : ""}`}
               href={`/${user}/${RouteSegment.NewWorkout}`}
@@ -185,16 +186,23 @@ export default function DashboardLayout({
               </div>
             </Link>
 
-            {bodyWeight && (
-              <Link
-                href={`/${user}/${RouteSegment.BodyWeight}`}
-                className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.BodyWeight ? styles.currentUserNavPath : ""}`}
-              >
-                <div className={`${styles.dashboardLinkText}`}>
-                  <FaWeight /> Body Weight
-                </div>
-              </Link>
-            )}
+            <Link
+              href={`/${user}/${RouteSegment.BodyWeight}`}
+              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.BodyWeight ? styles.currentUserNavPath : ""}`}
+            >
+              <div className={`${styles.dashboardLinkText}`}>
+                <FaWeight /> Body Weight
+              </div>
+            </Link>
+
+            <Link
+              href={`/${user}/${RouteSegment.Feedback}`}
+              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Feedback ? styles.currentUserNavPath : ""}`}
+            >
+              <div className={`${styles.dashboardLinkText}`}>
+                <FaCommentDots /> Feedback
+              </div>
+            </Link>
 
             {charts && (
               <Link
