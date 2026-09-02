@@ -1,0 +1,40 @@
+.sideNavWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dashboardLink {
+  display: flex;
+  border-radius: var(--border-radius-text-link);
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+
+.dashboardLinkText {
+  display: flex;
+  gap: 0.35rem;
+  padding: var(--padding-standard-2);
+  color: whitesmoke;
+}
+
+.dashboardLink:visited {
+  color: inherit;
+}
+
+.dashboardLink.currentUserNavPath,
+.dashboardLink:hover {
+  background-color: var(--near-black);
+  border: 1px solid var(--lightGray2);
+}
+
+.dashboardLink.currentUserNavPath div,
+.dashboardLink:hover div {
+  color: var(--core);
+}
+
+.dashboardLink {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}

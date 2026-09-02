@@ -4,12 +4,10 @@
 import { useEffect, useState, useRef } from "react";
 
 // Next
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 
 // Components
-import Navbar from "@/components/Navbar";
 import MobileNavbar from "@/components/MobileNavbar";
 
 // Constants
@@ -24,21 +22,12 @@ import { useWaiter } from "@/contexts/WaiterContext";
 import { LoadedProvider } from "@/contexts/LoadedContext";
 
 // Icons
-import {
-  FaRunning,
-  FaUser,
-  FaChartLine,
-  FaWeight,
-  FaCommentDots,
-  FaClipboardList,
-} from "react-icons/fa";
-import { FaTimeline } from "react-icons/fa6";
-import { IoSparklesSharp, IoSettingsSharp } from "react-icons/io5";
-import { MdDashboard } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 
 // Styles
 import styles from "./layout.module.css";
 import { ErrorProvider } from "@/contexts/ErrorContext";
+import SideNav from "@/components/nav/SideNav";
 
 export default function DashboardLayout({
   children,
@@ -60,15 +49,6 @@ export default function DashboardLayout({
     useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuActive, setIsMenuActive] = useState(false);
-
-  // Cache reusable string
-  const user = RouteSegment.User;
-
-  // Easily turn off or on extended nav options for now
-  // UNTIL SETTINGS IS RELEASED, hard code to false
-  const settings = false;
-  const charts = false;
-  const comingSoon = true;
 
   const closeMenu = () => setIsMenuActive(false);
 
@@ -147,99 +127,13 @@ export default function DashboardLayout({
           </div>
 
           <h2 className={styles.asideHeader}>GainsDB</h2>
-          <nav className={styles.nav}>
-            {/*//* DASHBOARD */}
-            <Link
-              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Dashboard ? styles.currentUserNavPath : ""}`}
-              href={`/${user}/${RouteSegment.Dashboard}`}
-            >
-              <div className={`${styles.dashboardLinkText}`}>
-                <MdDashboard /> Dashboard
-              </div>
-            </Link>
-
-            {/* //* LOG WORKOUT */}
-            <Link
-              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.NewWorkout ? styles.currentUserNavPath : ""}`}
-              href={`/${user}/${RouteSegment.NewWorkout}`}
-            >
-              <div className={`${styles.dashboardLinkText}`}>
-                <FaClipboardList /> Log Workout
-              </div>
-            </Link>
-
-            <Link
-              href={`/${user}/${RouteSegment.History}`}
-              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.History ? styles.currentUserNavPath : ""}`}
-            >
-              <div className={`${styles.dashboardLinkText}`}>
-                <FaTimeline /> Workout History
-              </div>
-            </Link>
-
-            <Link
-              href={`/${user}/${RouteSegment.Exercises}`}
-              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Exercises ? styles.currentUserNavPath : ""}`}
-            >
-              <div className={`${styles.dashboardLinkText}`}>
-                <FaRunning /> Exercises
-              </div>
-            </Link>
-
-            <Link
-              href={`/${user}/${RouteSegment.BodyWeight}`}
-              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.BodyWeight ? styles.currentUserNavPath : ""}`}
-            >
-              <div className={`${styles.dashboardLinkText}`}>
-                <FaWeight /> Body Weight
-              </div>
-            </Link>
-
-            <Link
-              href={`/${user}/${RouteSegment.Feedback}`}
-              className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.Feedback ? styles.currentUserNavPath : ""}`}
-            >
-              <div className={`${styles.dashboardLinkText}`}>
-                <FaCommentDots /> Feedback
-              </div>
-            </Link>
-
-            {charts && (
-              <Link
-                href={`/${user}/${RouteSegment.Charts}}`}
-                className={`${styles.dashboardLinkText} ${currentUserNavPath === RouteSegment.Charts ? styles.currentUserNavPath : ""}`}
-              >
-                <div className={`${styles.dashboardLink}`}>
-                  <FaChartLine /> Charts
-                </div>
-              </Link>
-            )}
-
-            {settings && (
-              <Link
-                href={`/${user}/${RouteSegment.Settings}`}
-                className={`${styles.dashboardLinkText} ${currentUserNavPath === RouteSegment.Settings ? styles.currentUserNavPath : ""}`}
-              >
-                <div className={`${styles.dashboardLink}`}>
-                  <IoSettingsSharp /> Settings
-                </div>
-              </Link>
-            )}
-            {comingSoon && (
-              <Link
-                href={`/${user}/${RouteSegment.ComingSoon}`}
-                className={`${styles.dashboardLink} ${currentUserNavPath === RouteSegment.ComingSoon ? styles.currentUserNavPath : ""}`}
-              >
-                <div className={`${styles.dashboardLinkText}`}>
-                  <IoSparklesSharp /> Coming Soon
-                </div>
-              </Link>
-            )}
+          <nav>
+            <SideNav currentUserNavPath={currentUserNavPath} />
           </nav>
         </aside>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col">
+        <div className="">
           <ErrorProvider>
             {/* Navbar */}
             {isMobile && (

@@ -1,6 +1,5 @@
 "use client";
 
-import SuggestionModule from "@/components/coming-soon/SuggestionModule";
 import FeaturesModule from "@/components/coming-soon/FeaturesModule";
 
 import globalStyles from "@/styles/globalStyles.module.css";
@@ -19,13 +18,7 @@ export default function ComingSoon() {
       </div>
 
       <div className="coming-soon-page-body">
-        <div className="features-half">
-          <FeaturesModule />
-        </div>
-
-        <div className="suggestions-half">
-          <SuggestionModule />
-        </div>
+        <FeaturesModule />
       </div>
 
       <div className="settings-footer">
