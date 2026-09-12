@@ -8,7 +8,7 @@ import workoutRoutes from "../routes/workoutRoutes.js";
 import exerciseRoutes from "../routes/exerciseRoutes.js";
 import dashboardRoutes from "../routes/dashboardRoutes.js";
 import profileRoutes from "../routes/profileRoutes.js";
-import suggestionRoutes from "../routes/suggestionRoutes.js"
+import suggestionRoutes from "../routes/suggestionRoutes.js";
 
 dotenv.config();
 
@@ -17,38 +17,32 @@ const app = express();
 // app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 const env = process.env.ENVIRONMENT;
-console.log('ENVIRONMENT: ' + env);
+console.log("ENVIRONMENT: " + env);
 
 let allowedOrigins;
 
-if (env === 'preview' || env === 'development') {
-
-    allowedOrigins = [
-        'https://gymprogress-development.up.railway.app',
-        'https://gym-progress-git-dev-divs4us-projects.vercel.app',
-    ];
-
-} else if (env === 'production') {
-
-    allowedOrigins = [
-        'https://gainsDB.com',
-        'https://gainsdb.com',
-        'https://www.gainsDB.com',
-        'https://www.gainsdb.com',
-        'https://gainsdb-prod.up.railway.app',
-    ];
-
-} else if (!env || env === 'local') {
-
-    allowedOrigins = [
-        'http://localhost:3000',
-        'http://10.0.0.116:3000',
-        'http://10.0.0.107:3000'
-    ]
-
+if (env === "preview" || env === "development") {
+  allowedOrigins = [
+    "https://gymprogress-development.up.railway.app",
+    "https://gym-progress-git-dev-divs4us-projects.vercel.app",
+  ];
+} else if (env === "production") {
+  allowedOrigins = [
+    "https://gainsDB.com",
+    "https://gainsdb.com",
+    "https://www.gainsDB.com",
+    "https://www.gainsdb.com",
+    "https://gainsdb-prod.up.railway.app",
+  ];
+} else if (!env || env === "local") {
+  allowedOrigins = [
+    "http://localhost:3000",
+    "http://10.0.0.116:3000",
+    "http://10.0.0.107:3000",
+  ];
 }
 
-console.log('allowed origins: ' + allowedOrigins);
+console.log("allowed origins: " + allowedOrigins);
 
 app.options("*", cors()); // Automatically handle preflight requests
 
@@ -66,28 +60,29 @@ app.options("*", cors()); // Automatically handle preflight requests
 //     allowedHeaders: "Content-Type,Authorization,Access-Control-Allow-Origin"
 // }));
 
-app.use(cors({
+app.use(
+  cors({
     origin: (origin, callback) => {
-        console.log("💡 Incoming CORS origin:", origin);
+      console.log("💡 Incoming CORS origin:", origin);
 
-        // Allow no-origin requests (like curl or mobile apps)
-        if (!origin) return callback(null, true);
+      // Allow no-origin requests (like curl or mobile apps)
+      if (!origin) return callback(null, true);
 
-        // Check if any allowed origin matches the beginning of the origin string
-        if (allowedOrigins.includes(origin)) {
-            return callback(null, true);
-        }
+      // Check if any allowed origin matches the beginning of the origin string
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
 
-        console.error(`❌ CORS Blocked : ${origin}`);
-        console.error(origin);
-        console.error(allowedOrigins);
-        return callback(new Error('Not allowed by CORS'));
+      console.error(`❌ CORS Blocked : ${origin}`);
+      console.error(origin);
+      console.error(allowedOrigins);
+      return callback(new Error("Not allowed by CORS"));
     },
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
-    allowedHeaders: "Content-Type,Authorization,Access-Control-Allow-Origin"
-}));
-
+    allowedHeaders: "Content-Type,Authorization,Access-Control-Allow-Origin",
+  }),
+);
 
 app.use(express.json());
 
@@ -96,8 +91,12 @@ app.use(cookieParser());
 //* API Routes
 app.use("/api", authRoutes, suggestionRoutes);
 
-app.use("/api/user", [workoutRoutes, exerciseRoutes, dashboardRoutes, profileRoutes]);
-
+app.use("/api/user", [
+  workoutRoutes,
+  exerciseRoutes,
+  dashboardRoutes,
+  profileRoutes,
+]);
 
 //* Test Route
 app.get("/", (req, res) => res.send("Server is running!"));
