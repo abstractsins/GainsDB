@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model exercises {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique @db.VarChar(100)
+  created_by        Int?
+  created_at        DateTime?           @default(now()) @db.Timestamp(6)
+  user_exercises    user_exercises[]
+  workout_exercises workout_exercises[]
+}
+
+model sets {
+  id                  Int                @id @default(autoincrement())
+  workout_exercise_id Int?
+  weight              Decimal            @db.Decimal(5, 2)
+  reps                Int
+  set_order           Int
+  workout_exercises   workout_exercises? @relation(fields: [workout_exercise_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model suggestions {
+  id         Decimal  @id @default(dbgenerated("nextval('suggestions_id_seq'::regclass)")) @db.Decimal
+  date       DateTime @db.Date
+  name       String   @db.VarChar(30)
+  suggestion String   @db.VarChar(300)
+}
+
+model user_exercises {
+  user_id     Int
+  exercise_id Int
+  exercises   exercises @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users       users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([user_id, exercise_id])
+  @@unique([user_id, exercise_id], map: "unique_user_exercise")
+}
+
+model users {
+  id             Int              @id @default(autoincrement())
+  username       String           @unique @db.VarChar(255)
+  password       String
+  created_on     DateTime?        @db.Date
+  custom_name    String?          @db.VarChar
+  preferences    Json?            @default("{\"unit\": \"lbs\", \"theme\": \"light\"}")
+  user_exercises user_exercises[]
+  workouts       workouts[]
+}
+
+model workout_exercises {
+  id          Int        @id @default(autoincrement())
+  workout_id  Int?
+  exercise_id Int?
+  sets        sets[]
+  exercises   exercises? @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  workouts    workouts?  @relation(fields: [workout_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model workouts {
+  id                Int                 @id @default(autoincrement())
+  user_id           Int?
+  workout_date      DateTime            @db.Date
+  created_at        DateTime?           @default(now()) @db.Timestamp(6)
+  workout_exercises workout_exercises[]
+  users             users?              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}

@@ -35,6 +35,12 @@ overrides:
   "qs": ">=6.16.0"
 
 allowBuilds:
+  "@prisma/client": true
+  "@prisma/engines": true
   bcrypt: true
+  esbuild: true
+  msgpackr-extract: true
+  prisma: true
   sharp: true
   unrs-resolver: true
+  workerd: true
