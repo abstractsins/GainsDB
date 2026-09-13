@@ -1,39 +1,40 @@
 import authMiddleware from "../middleware/authMiddleware.js";
 import express from "express";
-import pool from "../src/db.js";
-import dotenv from "dotenv";
-
-dotenv.config();
+import prisma from "../src/prisma.js";
 
 const router = express.Router();
-const SECRET_KEY = process.env.JWT_SECRET || "fake";
 
 // post suggestion
 router.post("/suggestions", authMiddleware, async (req, res) => {
-    const { date, name, suggestion } = req.body;
+  const { date, name, suggestion } = req.body;
 
-    try {
-        const result = await pool.query(`INSERT INTO suggestions (date, name, suggestion) VALUES ($1, $2, $3);`, [date, name, suggestion]);
-        res.json(result.rows);
-    } catch (error) {
-        console.error("Database error:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-
+  try {
+    const created = await prisma.suggestions.create({
+      data: {
+        date: new Date(date),
+        name,
+        suggestion,
+      },
+    });
+    res.json(created);
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
-
 
 router.get("/suggestions", authMiddleware, async (req, res) => {
-
-    try {
-        const result = await pool.query(`SELECT * FROM suggestions ORDER BY id DESC`);
-        res.json(result.rows);
-    } catch (err) {
-        console.error("Database error:", err);
-        res.status(500).json({ error: "Internal server error" });
-    }
-
+  try {
+    const suggestions = await prisma.suggestions.findMany({
+      orderBy: {
+        id: "desc",
+      },
+    });
+    res.json(suggestions);
+  } catch (err) {
+    console.error("Database error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
-
 
 export default router;

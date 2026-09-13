@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import pool from "../src/db.js";
+import prisma from "../src/prisma.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -17,12 +17,16 @@ router.post("/register", async (req, res) => {
   console.log(">>> Attempting registration, user:  " + username);
 
   try {
-    const existingUser = await pool.query(
-      "SELECT id FROM users WHERE username = $1",
-      [normalizedUsername],
-    );
+    const existingUser = await prisma.users.findUnique({
+      where: {
+        username: normalizedUsername,
+      },
+      select: {
+        id: true,
+      },
+    });
 
-    if (existingUser.rows.length > 0) {
+    if (existingUser) {
       console.error("❌ Registration unsuccessful, username already exists");
       return res
         .status(400)
@@ -30,12 +34,18 @@ router.post("/register", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const result = await pool.query(
-      "INSERT INTO users (username, password, created_on) VALUES ($1, $2, $3) RETURNING id;",
-      [normalizedUsername, hashedPassword, date],
-    );
+    const createdUser = await prisma.users.create({
+      data: {
+        username: normalizedUsername,
+        password: hashedPassword,
+        created_on: date ? new Date(date) : null,
+      },
+      select: {
+        id: true,
+      },
+    });
 
-    const userId = result.rows[0].id;
+    const userId = createdUser.id;
     const token = jwt.sign(
       { userId, username: normalizedUsername },
       SECRET_KEY,
@@ -67,17 +77,17 @@ router.post("/login", async (req, res) => {
   console.log(">>> Attempting login, user: " + username);
 
   try {
-    const userResult = await pool.query(
-      "SELECT * FROM users WHERE username = $1",
-      [username.toLowerCase()],
-    );
+    const user = await prisma.users.findUnique({
+      where: {
+        username: username.toLowerCase(),
+      },
+    });
 
-    if (userResult.rows.length === 0) {
+    if (!user) {
       console.error("❌ Login unsuccessful, username not found");
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const user = userResult.rows[0];
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       console.error("❌ Login unsuccessful, invalid credentials");
