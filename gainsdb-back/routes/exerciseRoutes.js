@@ -1,6 +1,5 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
-import { Prisma } from "@prisma/client";
 import prisma from "../src/prisma.js";
 import exerciseCategorizer from "../utils/exerciseCatagories.js";
 
@@ -13,32 +12,94 @@ const normalizeExercise = (exercise) => {
   return exercise;
 };
 
+const formatDateKey = (date) => {
+  if (!date) return null;
+
+  if (typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return date;
+  }
+
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed.getTime())) return null;
+
+  const year = parsed.getFullYear();
+  const month = String(parsed.getMonth() + 1).padStart(2, "0");
+  const day = String(parsed.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 //* Fetch exercises
 router.get("/:userId/exercises", authMiddleware, async (req, res) => {
   const { userId } = req.params;
   console.log(`Fetching exercises for user ${userId}`);
 
   try {
-    const rows = await prisma.$queryRaw(
-      Prisma.sql`SELECT 
-            e.id, 
-            e.name, 
-            COALESCE(
-                TO_CHAR(
-                    (SELECT MAX(w.workout_date) 
-                    FROM workout_exercises we
-                    JOIN workouts w ON we.workout_id = w.id
-                    WHERE we.exercise_id = e.id AND w.user_id = ${Number(userId)}),
-                    'YYYY-MM-DD'
-                ),
-                TO_CHAR(e.created_at, 'YYYY-MM-DD')
-            ) AS last_logged_date
-        FROM exercises e
-        JOIN user_exercises ue ON e.id = ue.exercise_id
-        WHERE ue.user_id = ${Number(userId)}
-        GROUP BY e.id, e.name, e.created_at
-        ORDER BY last_logged_date DESC;`,
-    );
+    const userExercises = await prisma.user_exercises.findMany({
+      where: {
+        user_id: Number(userId),
+      },
+      include: {
+        exercises: {
+          select: {
+            id: true,
+            name: true,
+            created_at: true,
+          },
+        },
+      },
+    });
+
+    const exerciseIds = userExercises.map((entry) => entry.exercise_id);
+
+    const workoutExercises = exerciseIds.length
+      ? await prisma.workout_exercises.findMany({
+          where: {
+            exercise_id: {
+              in: exerciseIds,
+            },
+            workouts: {
+              user_id: Number(userId),
+            },
+          },
+          include: {
+            workouts: {
+              select: {
+                workout_date: true,
+              },
+            },
+          },
+        })
+      : [];
+
+    const latestByExercise = new Map();
+
+    for (const workoutExercise of workoutExercises) {
+      const workoutDate = workoutExercise.workouts?.workout_date;
+      const currentLatest = latestByExercise.get(workoutExercise.exercise_id);
+
+      if (!currentLatest || workoutDate > currentLatest) {
+        latestByExercise.set(workoutExercise.exercise_id, workoutDate);
+      }
+    }
+
+    const rows = userExercises
+      .map((entry) => {
+        const exercise = entry.exercises;
+        const latestWorkoutDate = latestByExercise.get(exercise.id);
+
+        return {
+          id: exercise.id,
+          name: exercise.name,
+          last_logged_date: latestWorkoutDate
+            ? formatDateKey(latestWorkoutDate)
+            : "TBD",
+        };
+      })
+      .sort((left, right) => {
+        const leftDate = left.last_logged_date === "TBD" ? "0000-00-00" : left.last_logged_date;
+        const rightDate = right.last_logged_date === "TBD" ? "0000-00-00" : right.last_logged_date;
+        return rightDate.localeCompare(leftDate);
+      });
 
     res.json(exerciseCategorizer(rows));
   } catch (error) {
@@ -54,33 +115,53 @@ router.get(
     try {
       const { userId, exerciseId } = req.params;
 
-      const rows = await prisma.$queryRaw(
-        Prisma.sql`
-            WITH RecentWorkout AS (
-                SELECT we.id AS workout_exercise_id, w.id AS workout_id, w.workout_date, w.user_id
-                FROM workout_exercises we
-                JOIN workouts w ON we.workout_id = w.id
-                WHERE we.exercise_id = ${Number(exerciseId)} AND w.user_id = ${Number(userId)}
-                ORDER BY w.workout_date DESC
-                LIMIT 1
-            )
-            SELECT 
-                rw.workout_id,
-                rw.workout_date,
-                rw.user_id,
-                s.set_order,
-                s.weight,
-                s.reps
-            FROM RecentWorkout rw
-            JOIN sets s ON rw.workout_exercise_id = s.workout_exercise_id
-            ORDER BY s.set_order;`,
-      );
+      const workoutExercises = await prisma.workout_exercises.findMany({
+        where: {
+          exercise_id: Number(exerciseId),
+          workouts: {
+            user_id: Number(userId),
+          },
+        },
+        include: {
+          workouts: {
+            select: {
+              id: true,
+              workout_date: true,
+              user_id: true,
+            },
+          },
+          sets: {
+            select: {
+              set_order: true,
+              weight: true,
+              reps: true,
+            },
+            orderBy: {
+              set_order: "asc",
+            },
+          },
+        },
+      });
 
-      if (rows.length === 0) {
+      const latestWorkoutExercise = workoutExercises.sort(
+        (left, right) =>
+          right.workouts.workout_date - left.workouts.workout_date,
+      )[0];
+
+      if (!latestWorkoutExercise) {
         return res
           .status(404)
           .json({ error: "No recent workout found for this exercise." });
       }
+
+      const rows = latestWorkoutExercise.sets.map((set) => ({
+        workout_id: latestWorkoutExercise.workouts.id,
+        workout_date: latestWorkoutExercise.workouts.workout_date,
+        user_id: latestWorkoutExercise.workouts.user_id,
+        set_order: set.set_order,
+        weight: set.weight,
+        reps: set.reps,
+      }));
 
       res.json(rows);
     } catch (error) {
@@ -156,18 +237,49 @@ router.get(
     try {
       const { userId, exerciseId } = req.params;
 
-      const rows = await prisma.$queryRaw(
-        Prisma.sql`
-        SELECT 
-            w.workout_date, 
-            SUM(s.weight * s.reps) AS total_volume
-        FROM workouts w
-        JOIN workout_exercises we ON w.id = we.workout_id
-        JOIN sets s ON we.id = s.workout_exercise_id
-        WHERE w.user_id = ${Number(userId)} AND we.exercise_id = ${Number(exerciseId)}
-        GROUP BY w.workout_date
-        ORDER BY w.workout_date;`,
-      );
+      const workoutExercises = await prisma.workout_exercises.findMany({
+        where: {
+          exercise_id: Number(exerciseId),
+          workouts: {
+            user_id: Number(userId),
+          },
+        },
+        include: {
+          workouts: {
+            select: {
+              workout_date: true,
+            },
+          },
+          sets: {
+            select: {
+              weight: true,
+              reps: true,
+            },
+          },
+        },
+      });
+
+      const volumeByDate = new Map();
+
+      for (const workoutExercise of workoutExercises) {
+        const dateKey = formatDateKey(workoutExercise.workouts.workout_date);
+        const currentVolume = volumeByDate.get(dateKey) || 0;
+        const workoutVolume = workoutExercise.sets.reduce(
+          (total, set) => total + Number(set.weight) * Number(set.reps),
+          0,
+        );
+
+        volumeByDate.set(dateKey, currentVolume + workoutVolume);
+      }
+
+      const rows = Array.from(volumeByDate.entries())
+        .map(([workout_date, total_volume]) => ({
+          workout_date,
+          total_volume,
+        }))
+        .sort((left, right) =>
+          left.workout_date.localeCompare(right.workout_date),
+        );
 
       if (rows.length === 0) {
         return res.status(404).json({ error: "No workout history found" });

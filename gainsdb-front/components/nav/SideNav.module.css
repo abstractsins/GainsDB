@@ -13,9 +13,10 @@
 
 .dashboardLinkText {
   display: flex;
-  gap: 0.35rem;
+  gap: 0.5rem;
   padding: var(--padding-standard-2);
   color: whitesmoke;
+  width: max-content;
 }
 
 .dashboardLink:visited {

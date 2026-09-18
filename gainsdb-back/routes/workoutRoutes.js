@@ -1,12 +1,26 @@
 import express from "express";
-import { Prisma } from "@prisma/client";
 import authMiddleware from "../middleware/authMiddleware.js";
 import prisma from "../src/prisma.js";
 import workoutProcessing from "../utils/workoutProcessing.js";
 
 const router = express.Router();
 
-router.get(":/userId/history", authMiddleware, async (req, res) => {
+const flattenWorkoutHistory = (workouts) =>
+  workouts.flatMap((workout) =>
+    workout.workout_exercises.flatMap((workoutExercise) =>
+      workoutExercise.sets.map((set) => ({
+        workout_id: workout.id,
+        workout_date: workout.workout_date,
+        exercise_id: workoutExercise.exercises.id,
+        exercise_name: workoutExercise.exercises.name,
+        set_order: set.set_order,
+        weight: set.weight,
+        reps: set.reps,
+      })),
+    ),
+  );
+
+router.get("/:userId/history", authMiddleware, async (req, res) => {
   console.log(`:userId/history get request`);
   const { userId } = req.params;
   const timeframe = req.query.timeframe || "all";
@@ -18,90 +32,84 @@ router.get(":/userId/history", authMiddleware, async (req, res) => {
   console.log(`timeframe ${timeframe}`);
 
   try {
-    let rows = [];
+    const whereClause = {
+      user_id: Number(userId),
+    };
 
-    if (timeframe === "all") {
-      rows = await prisma.$queryRaw(
-        Prisma.sql`
-            WITH PaginatedWorkouts AS (
-                SELECT id AS workout_id, workout_date
-                FROM workouts
-                WHERE user_id = ${Number(userId)}
-                ORDER BY workout_date DESC
-                LIMIT ${limit} OFFSET ${offset}
-            )
-            SELECT 
-                pw.workout_id, 
-                pw.workout_date, 
-                e.id AS exercise_id, 
-                e.name AS exercise_name, 
-                s.set_order, 
-                s.weight, 
-                s.reps
-            FROM PaginatedWorkouts pw
-            JOIN workout_exercises we ON pw.workout_id = we.workout_id
-            JOIN exercises e ON we.exercise_id = e.id
-            JOIN sets s ON we.id = s.workout_exercise_id
-            ORDER BY pw.workout_date DESC, e.id, s.set_order;`,
-      );
-    } else {
-      let interval;
-      switch (timeframe) {
-        case "1w":
-          interval = "7 days";
-          break;
-        case "2w":
-          interval = "14 days";
-          break;
-        case "3w":
-          interval = "21 days";
-          break;
-        case "4w":
-          interval = "28 days";
-          break;
-        case "5w":
-          interval = "35 days";
-          break;
-        case "6w":
-          interval = "42 days";
-          break;
-        default:
-          return res.status(400).json({ error: "Invalid timeframe" });
+    if (timeframe !== "all") {
+      const now = new Date();
+      const timeframeMap = {
+        "1w": 7,
+        "2w": 14,
+        "3w": 21,
+        "4w": 28,
+        "5w": 35,
+        "6w": 42,
+      };
+      const days = timeframeMap[timeframe];
+
+      if (!days) {
+        return res.status(400).json({ error: "Invalid timeframe" });
       }
 
-      rows = await prisma.$queryRaw(
-        Prisma.sql`
-        SELECT 
-            w.id AS workout_id, 
-            w.workout_date, 
-            e.id AS exercise_id, 
-            e.name AS exercise_name, 
-            s.set_order, 
-            s.weight, 
-            s.reps
-        FROM workouts w
-        JOIN workout_exercises we ON w.id = we.workout_id
-        JOIN exercises e ON we.exercise_id = e.id
-        JOIN sets s ON we.id = s.workout_exercise_id
-        WHERE w.user_id = ${Number(userId)} 
-        AND w.workout_date >= NOW() - INTERVAL '${interval}'
-        ORDER BY w.workout_date DESC, e.id, s.set_order;`,
-      );
+      const startDate = new Date(now);
+      startDate.setDate(startDate.getDate() - days);
+
+      whereClause.workout_date = {
+        gte: startDate,
+      };
     }
 
+    const totalWorkoutsPromise = prisma.workouts.count({
+      where: whereClause,
+    });
+
+    const workoutsPromise = prisma.workouts.findMany({
+      where: whereClause,
+      orderBy: {
+        workout_date: "desc",
+      },
+      ...(timeframe === "all"
+        ? {
+            take: limit,
+            skip: offset,
+          }
+        : {}),
+      include: {
+        workout_exercises: {
+          include: {
+            exercises: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            sets: {
+              select: {
+                set_order: true,
+                weight: true,
+                reps: true,
+              },
+              orderBy: {
+                set_order: "asc",
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const [totalWorkouts, workouts] = await Promise.all([
+      totalWorkoutsPromise,
+      workoutsPromise,
+    ]);
+
     let totalPages = 1;
-    let totalWorkouts = 0;
+    const rows = flattenWorkoutHistory(workouts);
     const workoutsRefined = workoutProcessing(rows);
 
     if (timeframe === "all") {
-      totalWorkouts = await prisma.workouts.count({
-        where: {
-          user_id: Number(userId),
-        },
-      });
       totalPages = Math.ceil(totalWorkouts / limit);
-    } else {
-      totalWorkouts = workoutsRefined.dates.length;
     }
 
     if (rows.length === 0) {

@@ -5,88 +5,108 @@ import prisma from "../src/prisma.js";
 
 const router = express.Router();
 
+function toJsonSafe(value) {
+  return JSON.parse(
+    JSON.stringify(value, (_, current) => {
+      if (typeof current === "bigint") {
+        return Number(current);
+      }
+
+      if (current instanceof Prisma.Decimal) {
+        return current.toNumber();
+      }
+
+      return current;
+    }),
+  );
+}
+
 //* Dashboard
 router.get("/:userId/dashboard", authMiddleware, async (req, res) => {
   const { userId } = req.params;
   console.log("Fetching Dashboard for user " + userId);
 
-  //* TOTAL WEEKS
-  const numWeeks = await prisma.$queryRaw(
-    Prisma.sql`SELECT COUNT(DISTINCT DATE_TRUNC('week', workout_date)) AS total_weeks 
-      FROM workouts WHERE user_id = ${Number(userId)}`,
-  );
-  const totalWeeks = Number(numWeeks[0]["total_weeks"]);
+  const userIdNumber = Number(userId);
 
-  //* TOTAL WORKOUTS
-  const numWorkouts = await prisma.$queryRaw(
-    Prisma.sql`SELECT COUNT(*) AS total_workouts FROM workouts WHERE user_id = ${Number(userId)}`,
-  );
-  const totalWorkouts = numWorkouts[0].total_workouts;
-
-  //* MOST LOGGED
-  const mostLoggedExe = await prisma.$queryRaw(
-    Prisma.sql`SELECT 
-          e.id AS exercise_id, 
-          e.name AS exercise_name, 
-      COUNT(we.exercise_id) AS log_count
-      FROM workout_exercises we
-      JOIN workouts w ON we.workout_id = w.id
-      JOIN exercises e ON we.exercise_id = e.id
-      WHERE w.user_id = ${Number(userId)} 
-      GROUP BY e.id, e.name
-      ORDER BY log_count DESC;`,
-  );
-
-  //* MOST WEIGHT
-  const theMostWeight = await prisma.$queryRaw(
-    Prisma.sql`SELECT 
-          e.id AS exercise_id, 
-          e.name AS exercise_name, 
+  const [
+    totalWeeksResult,
+    totalWorkoutsResult,
+    mostLoggedExe,
+    theMostWeight,
+    mostVolumeChange,
+  ] = await Promise.all([
+    prisma.$queryRaw(
+      Prisma.sql`SELECT COUNT(DISTINCT DATE_TRUNC('week', workout_date)) AS total_weeks
+          FROM workouts
+          WHERE user_id = ${userIdNumber}`,
+    ),
+    prisma.workouts.count({
+      where: {
+        user_id: userIdNumber,
+      },
+    }),
+    prisma.$queryRaw(
+      Prisma.sql`SELECT
+          e.id AS exercise_id,
+          e.name AS exercise_name,
+          COUNT(we.exercise_id) AS log_count
+        FROM workout_exercises we
+        JOIN workouts w ON we.workout_id = w.id
+        JOIN exercises e ON we.exercise_id = e.id
+        WHERE w.user_id = ${userIdNumber}
+        GROUP BY e.id, e.name
+        ORDER BY log_count DESC`,
+    ),
+    prisma.$queryRaw(
+      Prisma.sql`SELECT
+          e.id AS exercise_id,
+          e.name AS exercise_name,
           MAX(s.weight) AS max_weight
-      FROM sets s
-      JOIN workout_exercises we ON s.workout_exercise_id = we.id
-      JOIN workouts w ON we.workout_id = w.id
-      JOIN exercises e ON we.exercise_id = e.id
-      WHERE w.user_id = ${Number(userId)}
-      GROUP BY e.id, e.name
-      ORDER BY max_weight DESC;`,
-  );
-
-  //* MOST CHANGE
-  const mostVolumeChange = await prisma.$queryRaw(
-    Prisma.sql`WITH VolumeProgress AS (
-          SELECT 
-              we.exercise_id, 
-              e.name AS exercise_name,
-              MIN(SUM(s.weight * s.reps)) OVER(PARTITION BY we.exercise_id) AS min_volume,  
-              MAX(SUM(s.weight * s.reps)) OVER(PARTITION BY we.exercise_id) AS max_volume  
+        FROM sets s
+        JOIN workout_exercises we ON s.workout_exercise_id = we.id
+        JOIN workouts w ON we.workout_id = w.id
+        JOIN exercises e ON we.exercise_id = e.id
+        WHERE w.user_id = ${userIdNumber}
+        GROUP BY e.id, e.name
+        ORDER BY max_weight DESC`,
+    ),
+    prisma.$queryRaw(
+      Prisma.sql`WITH volume_progress AS (
+          SELECT
+            we.exercise_id,
+            e.name AS exercise_name,
+            w.workout_date,
+            SUM(s.weight * s.reps) AS volume
           FROM sets s
           JOIN workout_exercises we ON s.workout_exercise_id = we.id
           JOIN workouts w ON we.workout_id = w.id
           JOIN exercises e ON we.exercise_id = e.id
-          WHERE w.user_id = ${Number(userId)}
+          WHERE w.user_id = ${userIdNumber}
           GROUP BY we.exercise_id, e.name, w.workout_date
-      )
-      SELECT 
-          exercise_id, 
-          exercise_name, 
-          min_volume, 
-          max_volume, 
-          (max_volume - min_volume) AS volume_change
-      FROM VolumeProgress
-      WHERE min_volume IS NOT NULL AND max_volume IS NOT NULL
-      ORDER BY volume_change DESC LIMIT 1;`,
-  );
+        )
+        SELECT
+          exercise_id,
+          exercise_name,
+          MIN(volume) AS min_volume,
+          MAX(volume) AS max_volume,
+          (MAX(volume) - MIN(volume)) AS volume_change
+        FROM volume_progress
+        GROUP BY exercise_id, exercise_name
+        HAVING MIN(volume) IS NOT NULL AND MAX(volume) IS NOT NULL
+        ORDER BY volume_change DESC
+        LIMIT 1`,
+    ),
+  ]);
 
   const dashboardObj = {
-    totalWorkouts,
-    totalWeeks,
+    totalWorkouts: totalWorkoutsResult,
+    totalWeeks: Number(totalWeeksResult[0]?.total_weeks ?? 0),
     mostLoggedExe,
     theMostWeight,
     mostVolumeChange,
   };
 
-  res.json(dashboardObj);
+  res.json(toJsonSafe(dashboardObj));
 });
 
 export default router;

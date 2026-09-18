@@ -23,6 +23,9 @@ model sets {
   reps                Int
   set_order           Int
   workout_exercises   workout_exercises? @relation(fields: [workout_exercise_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([workout_exercise_id])
+  @@index([workout_exercise_id, set_order])
 }
 
 model suggestions {
@@ -60,6 +63,11 @@ model workout_exercises {
   sets        sets[]
   exercises   exercises? @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   workouts    workouts?  @relation(fields: [workout_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([workout_id])
+  @@index([exercise_id])
+  @@index([workout_id, exercise_id])
+  @@index([exercise_id, workout_id])
 }
 
 model workouts {
@@ -69,4 +77,8 @@ model workouts {
   created_at        DateTime?           @default(now()) @db.Timestamp(6)
   workout_exercises workout_exercises[]
   users             users?              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([user_id])
+  @@index([user_id, workout_date])
+  @@index([workout_date])
 }
