@@ -2,4 +2,14 @@
 .infoPage,
 .functionPage {
   padding: var(--padding-page);
+  /* width: 100%; */
+}
+
+.mainContentArea {
+  /* width: 100%; */
+}
+
+h1.pageHeader {
+  font-size: 28pt;
+  font-family: var(--oswald);
 }

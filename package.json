@@ -5,6 +5,7 @@
     "node": "22.x"
   },
   "scripts": {
+    "dev": "pnpm -r --parallel --filter gainsdb-frontend --filter gainsdb-backend run dev",
     "start:backend": "node gainsdb-back/src/server.js",
     "build:frontend": "pnpm --filter gym-progress-frontend build"
   }

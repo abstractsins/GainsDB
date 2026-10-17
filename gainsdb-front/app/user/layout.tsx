@@ -26,6 +26,7 @@ import { FaUser } from "react-icons/fa";
 
 // Styles
 import styles from "./layout.module.css";
+import globalStyles from "@/styles/globalStyles.module.css";
 import { ErrorProvider } from "@/contexts/ErrorContext";
 import SideNav from "@/components/nav/SideNav";
 
@@ -133,7 +134,7 @@ export default function DashboardLayout({
         </aside>
 
         {/* Main Content Area */}
-        <div className="">
+        <div className={globalStyles.mainContentArea}>
           <ErrorProvider>
             {/* Navbar */}
             {isMobile && (

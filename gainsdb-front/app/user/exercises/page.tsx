@@ -191,8 +191,8 @@ export default function Exercises() {
     <div id="exercises-page" className={globalStyles.functionPage}>
       {error && <p className="text-red-500">{error}</p>}
 
-      <div className="exe-header flex items-center">
-        <div className="flex flex-col items-center header-left">
+      <div className="exe-header">
+        <div className="">
           <h1 className="page-header">Your Exercises</h1>
           <span className="w-[100%]">
             Total exercises logged: {exercises.length}
@@ -209,7 +209,7 @@ export default function Exercises() {
         />
         {inputValue && (
           <button onClick={handleClearSearch} className="clear-button">
-            <IoClose className="text-lg" />
+            <IoClose className="" />
           </button>
         )}
       </div>

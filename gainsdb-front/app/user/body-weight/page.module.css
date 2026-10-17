@@ -1,0 +1,44 @@
+.currentWeightAndLoggingContainer {
+  display: flex;
+  /* justify-content: space-between; */
+  gap: 2vw;
+}
+
+h2.sectionHeader {
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+.pageContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4vh;
+  padding: var(--padding-standard-2);
+  width: 100%;
+}
+
+.chartArea {
+  border: 1px solid var(--upper-body);
+  border-radius: var(--border-radius-page-section);
+}
+
+.sectionContainer {
+  padding: var(--padding-standard-2);
+  border-radius: var(--border-radius-page-section);
+}
+
+.weightLoggingSectionContainer {
+  /* width: 100%; */
+  min-width: 600px;
+  border: 1px solid var(--core);
+}
+
+.currentBodyWeightContainer {
+  min-width: 250px;
+  border: 1px solid var(--lower-body);
+}
+
+.chartContainer {
+  min-width: 1200px;
+  min-height: 400px;
+}
