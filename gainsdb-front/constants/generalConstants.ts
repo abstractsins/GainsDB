@@ -41,4 +41,5 @@ export enum ScreenSize {
 }
 
 export const XXLargeScreenWidth = 1700;
+export const CompactScreenWidth = 1500;
 export const MobileScreenWidth = 768;

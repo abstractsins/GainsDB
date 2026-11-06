@@ -1,7 +1,12 @@
 .currentWeightAndLoggingContainer {
   display: flex;
-  /* justify-content: space-between; */
   gap: 2vw;
+  width: 100%;
+  align-items: stretch;
+}
+
+.currentWeightAndLoggingContainer > .sectionContainer {
+  min-width: 0;
 }
 
 h2.sectionHeader {
@@ -14,7 +19,8 @@ h2.sectionHeader {
   flex-direction: column;
   gap: 4vh;
   padding: var(--padding-standard-2);
-  width: 100%;
+  width: 75vw;
+  min-width: 1200px;
 }
 
 .chartArea {
@@ -28,17 +34,49 @@ h2.sectionHeader {
 }
 
 .weightLoggingSectionContainer {
-  /* width: 100%; */
-  min-width: 600px;
+  flex: 2 1 0;
   border: 1px solid var(--core);
 }
 
 .currentBodyWeightContainer {
-  min-width: 250px;
+  flex: 0.75 1 0;
   border: 1px solid var(--lower-body);
 }
 
 .chartContainer {
-  min-width: 1200px;
+  width: 100%;
   min-height: 400px;
+}
+
+.inputsWrapper {
+  display: flex;
+  gap: 2vw;
+  margin: var(--margin-standard-1);
+}
+
+.rollingWeightChart {
+  flex: 1.2 1 0;
+  border: 1px solid var(--other);
+}
+
+#bodyWeightPage {
+  min-width: 1200px;
+}
+
+.currentBodyWeightContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4vh;
+}
+
+@media (max-width: 1500px) {
+  .pageContent {
+    min-width: unset;
+  }
+}
+
+@media (max-width: 1100px) {
+  .currentWeightAndLoggingContainer {
+    flex-direction: column;
+  }
 }

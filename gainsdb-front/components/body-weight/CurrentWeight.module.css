@@ -1,0 +1,19 @@
+h2.sectionHeader {
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+.currentBodyWeightWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.currentBodyWeightValue {
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  border: 1px solid var(--lightGray1);
+  background-color: var(--charcoal-blue);
+  padding: var(--padding-standard-2);
+  border-radius: var(--border-radius-text-input);
+}

@@ -46,14 +46,15 @@ model user_exercises {
 }
 
 model users {
-  id             Int              @id @default(autoincrement())
-  username       String           @unique @db.VarChar(255)
-  password       String
-  created_on     DateTime?        @db.Date
-  custom_name    String?          @db.VarChar
-  preferences    Json?            @default("{\"unit\": \"lbs\", \"theme\": \"light\"}")
-  user_exercises user_exercises[]
-  workouts       workouts[]
+  id                Int                   @id @default(autoincrement())
+  username          String                @unique @db.VarChar(255)
+  password          String
+  created_on        DateTime?             @db.Date
+  custom_name       String?               @db.VarChar
+  preferences       Json?                 @default("{\"unit\": \"lbs\", \"theme\": \"light\"}")
+  user_exercises    user_exercises[]
+  workouts          workouts[]
+  bodyWeightEntries body_weight_entries[]
 }
 
 model workout_exercises {
@@ -81,4 +82,16 @@ model workouts {
   @@index([user_id])
   @@index([user_id, workout_date])
   @@index([workout_date])
+}
+
+model body_weight_entries {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  weightLbs Decimal   @db.Decimal(6, 2)
+  loggedAt  DateTime  @db.Timestamp(6)
+  deletedAt DateTime? @db.Timestamp(6)
+
+  user users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, deletedAt, loggedAt])
 }

@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 // CONTEXT
 import { WaiterProvider } from "@/contexts/WaiterContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { MobileProvider } from "@/contexts/MobileContext";
 
 // ANALYTICS
 import { Analytics } from "@vercel/analytics/next";
@@ -80,15 +81,17 @@ export default function RootLayout({
       <body
         className={`${styles.LandingBody} ${robotoSlab.variable} ${tourney.variable} ${oswald.variable} ${inter.className} antialiased relative`}
       >
-        <SessionProvider>
-          <AuthProvider>
-            <PopupProvider>
-              <WaiterProvider>{children}</WaiterProvider>
-            </PopupProvider>
-            <Analytics />
-            <Footer />
-          </AuthProvider>
-        </SessionProvider>
+        <MobileProvider>
+          <SessionProvider>
+            <AuthProvider>
+              <PopupProvider>
+                <WaiterProvider>{children}</WaiterProvider>
+              </PopupProvider>
+              <Analytics />
+              <Footer />
+            </AuthProvider>
+          </SessionProvider>
+        </MobileProvider>
       </body>
     </html>
   );

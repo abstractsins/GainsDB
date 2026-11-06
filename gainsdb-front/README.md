@@ -20,6 +20,34 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Responsive structure
+
+The root layout mounts `MobileProvider` from
+[`contexts/MobileContext.tsx`](./contexts/MobileContext.tsx). Client components can
+call `useIsMobile()` from that module to choose mobile or desktop structure.
+It returns `true` at viewport widths of 768px or less, using the shared
+`mobileMaxWidth` constant and one media-query change listener.
+
+The value is initially `false` during server rendering and hydration, then
+updates to match the viewport after mounting. Conditional trees may remount when
+the breakpoint changes; keep state that must survive above those conditionals.
+
+For page-specific breakpoints, use
+[`useMediaQuery`](./hooks/useMediaQuery.ts) in a client component:
+
+```tsx
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { XXLargeScreenWidth } from "@/constants/generalConstants";
+
+const isWide = useMediaQuery(`(min-width: ${XXLargeScreenWidth}px)`);
+const isCompact = useMediaQuery("(max-width: 600px)");
+```
+
+Each hook call owns a media-query change listener, updates when the query changes,
+and removes its listener on cleanup. Like `useIsMobile()`, it initially returns
+`false` during server rendering and hydration. Prefer `useIsMobile()` for the
+shared mobile breakpoint to reuse the provider's listener.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
