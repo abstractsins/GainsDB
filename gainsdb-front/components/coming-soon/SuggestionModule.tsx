@@ -3,12 +3,8 @@ import SuggestionForm from "./SuggestionForm";
 import { useState } from "react";
 
 export default function SuggestionModule() {
-
     const [refresh, setRefresh] = useState(false);
-
-    const refreshSuggestions = () => setRefresh(prev=> prev === true ? false : true);
-
-    const refreshTrigger = () => {};
+    const refreshSuggestions = () => setRefresh((prev) => !prev);
 
     return (
         <div className="coming-soon-module" id="suggestions">
@@ -17,7 +13,7 @@ export default function SuggestionModule() {
 
             <SuggestionForm onSubmission={refreshSuggestions}/>
 
-            <SuggestionBoard trigger={refreshTrigger}/>
+            <SuggestionBoard trigger={refresh}/>
 
         </div>)
 }

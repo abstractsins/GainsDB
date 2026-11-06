@@ -1,9 +1,6 @@
 // External libraries
 import { useEffect, useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from "react-icons/bs";
 
 // Internal components
@@ -19,10 +16,8 @@ interface Suggestion {
 }
 
 interface Props {
-    trigger: () => void;
+    trigger: boolean;
 }
-
-const SCROLL_OFFSET = 68;
 
 export default function SuggestionBoard({ trigger }: Props) {
     const { data: session } = useSession();
@@ -30,35 +25,21 @@ export default function SuggestionBoard({ trigger }: Props) {
     const [loading, setLoading] = useState(true);
     const [suggestions, setSuggestions] = useState<Suggestion[] | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isFirst, setIsFirst] = useState(true);
-    const [isLast, setIsLast] = useState(false);
 
     const server = process.env.NEXT_PUBLIC_BACKEND || "http://localhost:5000";
     const token = session?.user?.authToken || localStorage.getItem("token");
 
+    const totalSuggestions = suggestions?.length ?? 0;
+    const isFirst = currentIndex === 0;
+    const isLast = totalSuggestions === 0 || currentIndex >= totalSuggestions - 1;
+
     const scrollToSuggestion = (direction: "left" | "right") => {
-        const board = document.querySelector(".suggestion-board");
-        const containers = document.querySelectorAll(".suggestion-container");
+        if (totalSuggestions === 0) return;
 
-        if (!board || containers.length === 0) return;
-
-        const positions = Array.from(containers).map(
-            (container) => (container as HTMLElement).offsetLeft
-        );
-
-        let newIndex = direction === "right" ? currentIndex + 1 : currentIndex - 1;
-        newIndex = Math.max(0, Math.min(newIndex, positions.length - 1));
-        setIsFirst(newIndex === 0);
-        setIsLast(suggestions ? newIndex === suggestions.length - 1 : true);
-
-        gsap.to(board, {
-            scrollTo: { x: positions[newIndex] - SCROLL_OFFSET, autoKill: false },
-            duration: 0.6,
-            ease: "power2.inOut",
+        setCurrentIndex((prevIndex) => {
+            const rawNextIndex = direction === "right" ? prevIndex + 1 : prevIndex - 1;
+            return Math.max(0, Math.min(rawNextIndex, totalSuggestions - 1));
         });
-
-
-        setCurrentIndex(newIndex);
     };
 
     const getSuggestions = useCallback(async () => {
@@ -77,6 +58,7 @@ export default function SuggestionBoard({ trigger }: Props) {
             if (!res.ok) throw new Error("Failed to fetch suggestions");
 
             setSuggestions(responseData);
+            setCurrentIndex(0);
         } catch (err) {
             console.error("❌ Error fetching suggestions:", err);
             setError("Something went wrong while retrieving suggestions.");
@@ -85,36 +67,9 @@ export default function SuggestionBoard({ trigger }: Props) {
         }
     }, [server, token]);
 
-    const animateSuggestions = () => {
-        const board = document.querySelector(".suggestion-board");
-        const items = document.querySelectorAll(".suggestion-container");
-
-        if (!board || items.length === 0) return;
-
-        gsap.to(board, {
-            scrollTrigger: {
-                trigger: board,
-                start: "left center",
-                scrub: 1,
-                snap: {
-                    snapTo: "labels",
-                    duration: { min: 0.2, max: 0.5 },
-                    ease: "power1.inOut",
-                },
-                horizontal: true,
-                invalidateOnRefresh: true,
-            },
-        });
-    };
-
     useEffect(() => {
         getSuggestions();
-    }, [trigger]);
-
-    useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-        animateSuggestions();
-    }, [suggestions]);
+    }, [getSuggestions, trigger]);
 
     if (error) return <p>{error}</p>;
     if (loading) return <p>Loading...</p>;
@@ -126,17 +81,25 @@ export default function SuggestionBoard({ trigger }: Props) {
             </div>
 
             <div className="suggestion-board">
-                <div className="suggestion-board-track">
+                <div
+                    className="suggestion-board-track"
+                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                >
                     {loading
-                        ? (<SuggestionLISkeleton />)
+                        ? (
+                            <div className="suggestion-board-slide">
+                                <SuggestionLISkeleton />
+                            </div>
+                        )
                         : (suggestions?.map((suggestion, i) => (
-                            <SuggestionLI
-                                key={i}
-                                id={suggestion.id}
-                                date={suggestion.date}
-                                name={suggestion.name}
-                                suggestion={suggestion.suggestion}
-                            />
+                            <div key={suggestion.id || i} className="suggestion-board-slide">
+                                <SuggestionLI
+                                    id={suggestion.id}
+                                    date={suggestion.date}
+                                    name={suggestion.name}
+                                    suggestion={suggestion.suggestion}
+                                />
+                            </div>
                         )))
                     }
                 </div>

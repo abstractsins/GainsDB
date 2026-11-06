@@ -3,7 +3,7 @@ import { HRTime } from "@/utils/utils";
 
 export const useHistoryState = () => {
   const [page, setPage] = useState(1);
-  const [timeframe, setTimeframe] = useState("2w");
+  const [timeframe, setTimeframe] = useState("all");
   const [HRTimeframe, setHRTimeframe] = useState<string>();
   const [activeCategoryWorkouts, setActiveCategoryWorkouts] = useState<string | null>(null);
   const [isCatFiltered, setIsCatFiltered] = useState(false);

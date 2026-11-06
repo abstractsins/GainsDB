@@ -3,7 +3,7 @@ import { WeightUnits } from "@/constants/weightsAndMeasures";
 import styles from "./CurrentWeight.module.css";
 
 export default function CurrentWeight() {
-  const [currentBodyWeight, setCurrentBodyWeight] = useState(249.8);
+  const [currentBodyWeight, setCurrentBodyWeight] = useState();
   const [bodyWeightUnits, setBodyWeightUnits] = useState(WeightUnits.lbs);
 
   return (

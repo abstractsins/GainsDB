@@ -94,8 +94,8 @@ export default function SuggestionForm({onSubmission}: Props) {
     }
 
     return (
-        <form onSubmit={submissionHandler}>
-            <div className="flex">
+        <form className="suggestion-form" onSubmit={submissionHandler}>
+            <div className="suggestion-form-row">
                 <input
                     className="suggestion-name"
                     type="text"
@@ -118,7 +118,7 @@ export default function SuggestionForm({onSubmission}: Props) {
                     onClick={clearForm}
                 />
             </div>
-            <div className="flex">
+            <div className="suggestion-form-row suggestion-text-row">
                 <textarea
                     className="suggestion-text"
                     placeholder="300 character limit"

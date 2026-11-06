@@ -5,8 +5,8 @@ import FeaturesModule from "@/components/coming-soon/FeaturesModule";
 import globalStyles from "@/styles/globalStyles.module.css";
 
 export default function ComingSoon() {
-  const version = process.env.NEXT_PUBLIC_VERSION;
-  const releaseDate = process.env.NEXT_PUBLIC_RELEASE_DATE;
+  const version = process.env.NEXT_PUBLIC_VERSION ?? "dev";
+  const releaseDate = process.env.NEXT_PUBLIC_RELEASE_DATE ?? "TBD";
 
   return (
     <div id="coming-soon-page" className={globalStyles.infoPage}>
@@ -17,7 +17,7 @@ export default function ComingSoon() {
         </span>
       </div>
 
-      <div className="coming-soon-page-body">
+      <div className="coming-soon-page-body coming-soon-features">
         <FeaturesModule />
       </div>
 

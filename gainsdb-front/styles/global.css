@@ -1310,13 +1310,19 @@ span.app-signature {
 #coming-soon-page {
   display: flex;
   flex-direction: column;
-  max-height: 85vh;
+  width: min(100%, 860px);
+  margin: 0 auto;
+  gap: 0.5rem;
 }
 
 .coming-soon-page-body {
   display: flex;
   width: 100%;
-  /* flex: 1; */
+}
+
+.coming-soon-features {
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .coming-soon-module {
@@ -1324,7 +1330,7 @@ span.app-signature {
   width: 100%;
   border-radius: 10px;
   padding: 20px;
-  margin: 20px;
+  margin: 0;
   display: flex;
   flex-direction: column;
 }
@@ -1334,6 +1340,15 @@ span.app-signature {
   font-family: var(--oswald);
   display: flex;
   align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.coming-soon-feature-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .features-half {
@@ -1438,7 +1453,8 @@ input.clear-button:active :not(.inactive) {
   display: flex;
   flex-direction: column;
   /* flex-wrap: wrap; */
-  width: 400px;
+  /* width: 400px; */
+  justify-self: center;
   height: 170px;
   margin: 5px 20px;
   padding: 20px;
@@ -1454,13 +1470,12 @@ ul.dashboard-list .suggestion-body p {
 
 .suggestion-board-container {
   position: relative;
-  /* background-color: red; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 30px;
-  height: 100%;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  padding: 0;
   overflow: hidden;
 }
 
@@ -1495,44 +1510,153 @@ ul.dashboard-list .suggestion-body p {
 }
 
 .suggestion-board {
-  /* position: relative; */
-  /* border-radius: 10px; */
-  /* background-color: rebeccapurple; */
   display: flex;
-  /* flex-direction: row-reverse; */
-  /* align-items: flex-start; */
-  overflow: scroll;
-  justify-content: space-evenly;
-  /* height: 100%; */
-  /* padding: 0 30px; */
-  width: 430px;
+  width: 100%;
+  overflow: hidden;
 }
 
 .suggestion-board-track {
   display: flex;
-  justify-content: space-evenly;
+  width: 100%;
+  transition: transform 320ms ease-in-out;
+  will-change: transform;
+}
+
+.suggestion-board-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: 0 2.75rem;
 }
 
 .suggestion-container .header {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
 }
 
 .suggestion-container .date {
   font-size: 10pt;
   color: lightgray;
   font-style: italic;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .suggestion-container .username {
   color: lightcyan;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suggestion-container {
+  width: 90%;
+  min-width: 0;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.suggestion-board-container .nav-button {
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  border: none;
+  background: transparent;
 }
 
 .coming-soon-module#suggestions {
   background-color: rgb(17, 24, 39);
-  width: 570px;
-  height: 570px;
+  width: min(100%, 720px);
+  height: auto;
+  gap: 0.75rem;
+}
+
+.coming-soon-module#suggestions h2 {
+  margin: 0.25rem 0 0.5rem 0;
+}
+
+.coming-soon-module#suggestions .suggestion-form {
+  width: 100%;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.coming-soon-module#suggestions .suggestion-form-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.coming-soon-module#suggestions input.suggestion-name {
+  flex: 1 1 220px;
+  min-width: 180px;
+  margin: 0;
+}
+
+.coming-soon-module#suggestions textarea.suggestion-text {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  margin: 0;
+}
+
+.coming-soon-module#suggestions input.submit,
+.coming-soon-module#suggestions input.clear-button {
+  min-width: 110px;
+  height: 48px;
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.coming-soon-module#suggestions input.submit {
+  background-color: lightgray;
+  color: gray;
+  border-radius: 8px;
+  text-align: center;
+  transition: background-color 300ms ease;
+}
+
+.coming-soon-module#suggestions input.submit.valid {
+  background-color: lightgreen;
+  color: black;
+  cursor: pointer;
+}
+
+.coming-soon-module#suggestions input.submit.valid:hover {
+  background-color: lightseagreen;
+}
+
+.coming-soon-module#suggestions input.submit.valid:active {
+  background-color: seagreen;
+}
+
+.coming-soon-module#suggestions input.clear-button {
+  background-color: lightblue;
+  color: black;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.coming-soon-module#suggestions input.clear-button:hover {
+  background-color: lightskyblue;
+  transition: background-color 300ms ease;
+}
+
+.coming-soon-module#suggestions input.clear-button:active {
+  background-color: rgb(67, 183, 230);
+  outline: none;
 }
 
 /* 
@@ -1714,6 +1838,10 @@ html, body {
     width: 90vw;
   }
 
+  #coming-soon-page {
+    width: 100%;
+  }
+
   .coming-soon-module#suggestions {
     width: 100%;
     height: unset;
@@ -1721,12 +1849,19 @@ html, body {
     margin: 10px 0;
   }
 
-  .coming-soon-module#suggestions form {
-    padding: 0;
+  .coming-soon-module#suggestions .suggestion-form {
+    padding: 0.25rem 0;
   }
 
-  .coming-soon-module#suggestions form > div {
+  .coming-soon-module#suggestions .suggestion-form-row {
     flex-wrap: wrap;
+  }
+
+  .coming-soon-module#suggestions input.submit,
+  .coming-soon-module#suggestions input.clear-button {
+    min-width: 90px;
+    height: 40px;
+    font-size: 10pt;
   }
 
   #coming-soon-page {
@@ -1766,16 +1901,15 @@ html, body {
 
   .suggestion-container {
     width: 100%;
-    margin: unset;
+    min-width: 100%;
+    margin: 0;
     padding: 10px;
-    /* margin: 8px 0; */
-    /* height: 100%; */
     height: unset;
     min-height: 100px;
   }
 
   .suggestion-board-container .nav-button {
-    display: none;
+    display: block;
     font-size: 16pt;
     bottom: 0;
   }
@@ -1789,11 +1923,13 @@ html, body {
   }
 
   .suggestion-board-track {
-    align-items: baseline;
-    flex-direction: column;
-    justify-content: space-evenly;
-    height: 100%;
-    gap: 10px;
+    align-items: stretch;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .suggestion-board-slide {
+    padding: 0;
   }
 }
 
