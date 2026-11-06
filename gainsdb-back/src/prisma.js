@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
+import prismaClientPkg from "@prisma/client";
+
+const { PrismaClient } = prismaClientPkg;
 
 // Reuse a single client in development to avoid too many connections on reloads.
 const globalForPrisma = globalThis;
