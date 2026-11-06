@@ -1,7 +1,6 @@
 "use client"; // Required for state & interactivity in Next.js App Router
 
 import { useRef, useEffect, useState } from "react";
-import { Oswald, Tourney } from "next/font/google";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { profile } from "console";

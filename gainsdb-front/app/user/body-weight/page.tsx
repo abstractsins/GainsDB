@@ -1,6 +1,6 @@
 "use client";
 
-import { Tourney } from "next/font/google";
+import { tourney } from "@/lib/fonts";
 
 import styles from "./page.module.css";
 import globalStyles from "@/styles/globalStyles.module.css";
@@ -14,12 +14,6 @@ import { CompactScreenWidth } from "@/constants/generalConstants";
 import LogWeight from "@/components/body-weight/LogWeight";
 import RollingWeightChart from "@/components/body-weight/RollingWeight";
 import CurrentWeight from "@/components/body-weight/CurrentWeight";
-
-const tourney = Tourney({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
 
 export default function BodyWeight() {
   const isCompact = useMediaQuery(`(max-width: ${CompactScreenWidth}px)`);

@@ -1,16 +1,10 @@
 import Link from "next/link"
-import { Roboto_Slab } from "next/font/google";
+import { robotoSlab } from "@/lib/fonts";
 
 interface Props {
     isMobile: boolean
     width: number
 }
-
-const robotoSlab = Roboto_Slab({
-    subsets: ["latin"],
-    weight: ["400", "700"],
-    display: "swap"
-});
 
 export default function About3({ isMobile }: Props) {
 

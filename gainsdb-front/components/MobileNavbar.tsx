@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-import { Oswald } from "next/font/google";
+import { oswald } from "@/lib/fonts";
 
 import { FaUser } from "react-icons/fa"; // FontAwesome icons
 import { MdDashboard } from "react-icons/md";
@@ -16,12 +16,6 @@ interface SidebarInfo {
 interface Props {
   sidebar: SidebarInfo;
 }
-
-const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
 
 export default function Navbar({ sidebar }: Props) {
   const { data: session, status } = useSession();

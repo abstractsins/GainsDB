@@ -1,12 +1,6 @@
 import Image from "next/image";
 import weightsImg from "@/public/weights.webp"
-import { Tourney } from "next/font/google";
-
-const tourney = Tourney({
-    subsets: ["latin"],
-    weight: ["400", "700"],
-    display: "swap"
-});
+import { tourney } from "@/lib/fonts";
 
 export default function Charts() {
     return (

@@ -1,15 +1,9 @@
 import { FaUser } from "react-icons/fa"; // FontAwesome icons
 import { MdDashboard } from "react-icons/md"; // Material Icons
-import { Oswald } from "next/font/google";
+import { oswald } from "@/lib/fonts";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { RouteSegment } from "@/constants/generalConstants";
-
-const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
 
 export default function Navbar() {
   const { data: session, status } = useSession();

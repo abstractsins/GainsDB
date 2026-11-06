@@ -1,5 +1,5 @@
 // FONTS
-import { Inter, Oswald, Roboto_Slab, Tourney } from "next/font/google";
+import { inter, oswald, robotoSlab, tourney } from "@/lib/fonts";
 
 // TYPES
 import type { Metadata } from "next";
@@ -22,31 +22,6 @@ import SessionProvider from "@/components/SessionProvider";
 import "@/styles/global.css";
 import styles from "./layout.module.css";
 import { PopupProvider } from "@/contexts/PopupContext";
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: "400",
-});
-
-const oswald = Oswald({
-  variable: "--oswald",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "block",
-});
-
-const tourney = Tourney({
-  variable: "--tourney",
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "700"],
-  display: "block",
-});
-
-const robotoSlab = Roboto_Slab({
-  variable: "--roboto-slab",
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "600", "700", "800"],
-});
 
 export const metadata: Metadata = {
   title: "GainsDB",

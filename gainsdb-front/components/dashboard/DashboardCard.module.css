@@ -57,7 +57,7 @@ header.dashboardCard h3 {
 span.dashboardCardValue {
   width: fit-content;
   text-align: center;
-  font-family: "oswald";
+  font-family: var(--oswald);
   font-size: calc(3rem - 0.03rem * var(--char-count));
 }
 

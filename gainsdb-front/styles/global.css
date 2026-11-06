@@ -138,7 +138,7 @@ div.image-container-coming-soon {
 span.coming-soon {
   display: flex;
   justify-content: center;
-  font-family: "Tourney";
+  font-family: var(--tourney);
   margin: 50px;
   font-size: 4rem;
 }
@@ -515,7 +515,7 @@ h2.new-exercise-button-header {
   display: flex;
   text-align: center;
   justify-content: center;
-  font-family: "Tourney";
+  font-family: var(--tourney);
 }
 
 li.upper-body,
@@ -945,7 +945,7 @@ li.dashboard-list {
 }
 
 span.app-name {
-  font-family: "Tourney" !important;
+  font-family: var(--tourney) !important;
   font-size: 1.25rem;
 }
 
@@ -2738,7 +2738,7 @@ div.opaque {
 }
 
 #stack-text {
-  font-family: "Tourney";
+  font-family: var(--tourney);
   font-size: 24pt;
 }
 
