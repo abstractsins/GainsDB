@@ -4,6 +4,7 @@ import { DateObj, SetArr } from "@/types/types";
 
 import WorkoutCardGlance from "./WorkoutCardGlance";
 import WorkoutCardDetails from "./WorkoutCardDetails";
+import WorkoutSplitGraphic from "./WorkoutSplitGraphic";
 
 interface Props {
   id: string;
@@ -53,6 +54,7 @@ export default function WorkoutHistoryCard({ id, date, workout }: Props) {
         <span className="day">
           {dayOfWeek(date)} {normalizeDate(date, false)}
         </span>
+        <WorkoutSplitGraphic exercises={workout.exercises} />
       </div>
       {atGlance && (
         <WorkoutCardGlance

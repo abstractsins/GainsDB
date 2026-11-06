@@ -5,6 +5,18 @@ import prismaClientPkg from "@prisma/client";
 
 const { Prisma, PrismaClient } = prismaClientPkg;
 
+const appendOnly = process.env.SEED_APPEND_ONLY !== "false";
+const seedMonthsBack = Number.parseInt(process.env.SEED_MONTHS_BACK ?? "10", 10);
+const sessionsPerWeek = Number.parseInt(
+  process.env.SEED_SESSIONS_PER_WEEK ?? "3",
+  10,
+);
+const targetUsersRaw = process.env.SEED_TARGET_USERS ?? "demo,power_user";
+const targetUsernames = targetUsersRaw
+  .split(",")
+  .map((value) => value.trim())
+  .filter(Boolean);
+
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
@@ -13,6 +25,21 @@ if (!connectionString) {
 
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
+
+const DEFAULT_SEED_USER_PROFILES = [
+  {
+    username: "demo",
+    custom_name: "Demo User",
+    created_on: new Date("2026-01-01"),
+    preferences: { unit: "lbs", theme: "light" },
+  },
+  {
+    username: "power_user",
+    custom_name: "Power User",
+    created_on: new Date("2026-02-01"),
+    preferences: { unit: "lbs", theme: "light" },
+  },
+];
 
 const EXERCISE_NAMES = [
   "Diverging Seated Row",
@@ -30,32 +57,46 @@ const EXERCISE_NAMES = [
 async function upsertUsers() {
   const seedPassword = process.env.SEED_DEMO_PASSWORD || "password123";
   const demoPasswordHash = await bcrypt.hash(seedPassword, 10);
+  const selectedProfiles = DEFAULT_SEED_USER_PROFILES.filter((profile) =>
+    targetUsernames.includes(profile.username),
+  );
 
-  const demoUser = await prisma.users.upsert({
-    where: { username: "demo" },
-    update: {},
-    create: {
-      username: "demo",
-      password: demoPasswordHash,
-      custom_name: "Demo User",
-      created_on: new Date("2026-01-01"),
-      preferences: { unit: "lbs", theme: "light" },
-    },
-  });
+  const seededUsers = [];
 
-  const powerUser = await prisma.users.upsert({
-    where: { username: "power_user" },
-    update: {},
-    create: {
-      username: "power_user",
-      password: demoPasswordHash,
-      custom_name: "Power User",
-      created_on: new Date("2026-02-01"),
-      preferences: { unit: "lbs", theme: "light" },
-    },
-  });
+  for (const profile of selectedProfiles) {
+    const user = await prisma.users.upsert({
+      where: { username: profile.username },
+      update: {},
+      create: {
+        username: profile.username,
+        password: demoPasswordHash,
+        custom_name: profile.custom_name,
+        created_on: profile.created_on,
+        preferences: profile.preferences,
+      },
+    });
 
-  return { demoUser, powerUser, seedPassword };
+    seededUsers.push(user);
+  }
+
+  const customUsernames = targetUsernames.filter(
+    (username) =>
+      !DEFAULT_SEED_USER_PROFILES.some((profile) => profile.username === username),
+  );
+
+  for (const username of customUsernames) {
+    const existingUser = await prisma.users.findUnique({
+      where: { username },
+    });
+
+    if (existingUser) {
+      seededUsers.push(existingUser);
+    } else {
+      console.warn(`Skipping unknown user '${username}' (not found).`);
+    }
+  }
+
+  return { seededUsers, seedPassword };
 }
 
 async function ensureExercises() {
@@ -126,12 +167,19 @@ function addDaysLocal(date, daysToAdd) {
   return next;
 }
 
-function getSixMonthWindow() {
+function getSeedWindow(monthsBack) {
   // End at yesterday (local) so seed data never includes today/tomorrow.
   const endDate = addDaysLocal(startOfLocalDay(new Date()), -1);
+  const januaryFirst = new Date(endDate.getFullYear(), 0, 1);
+
   const startDate = new Date(endDate);
-  startDate.setMonth(startDate.getMonth() - 6);
+  startDate.setMonth(startDate.getMonth() - Math.max(monthsBack, 0));
   startDate.setDate(startDate.getDate() + 1);
+
+  if (startDate < januaryFirst) {
+    return { startDate: januaryFirst, endDate };
+  }
+
   return { startDate, endDate };
 }
 
@@ -173,9 +221,10 @@ async function seedWorkoutsForUser(
   userId,
   exerciseIds,
   trainingDays,
+  startDate,
+  endDate,
   startOffsetDays = 0,
 ) {
-  const { startDate, endDate } = getSixMonthWindow();
   let cursor = addDaysLocal(startDate, startOffsetDays);
   let sessionIndex = 0;
   let createdCount = 0;
@@ -199,6 +248,24 @@ async function seedWorkoutsForUser(
   }
 
   return createdCount;
+}
+
+function getTrainingDays(perWeek) {
+  const normalized = Math.min(Math.max(perWeek, 1), 7);
+  const dayMap = {
+    1: [3],
+    2: [2, 5],
+    3: [1, 3, 5],
+    4: [1, 2, 4, 6],
+    5: [1, 2, 3, 5, 6],
+    6: [1, 2, 3, 4, 5, 6],
+    7: [0, 1, 2, 3, 4, 5, 6],
+  };
+  return dayMap[normalized];
+}
+
+function shiftTrainingDays(days, shiftBy) {
+  return days.map((day) => (day + shiftBy) % 7);
 }
 
 async function removeFutureWorkouts(userId, endDate) {
@@ -236,38 +303,47 @@ async function normalizeUserWeightsToWholeNumbers(userId) {
 }
 
 async function seed() {
-  const { demoUser, powerUser, seedPassword } = await upsertUsers();
+  const { seededUsers, seedPassword } = await upsertUsers();
   const exerciseIds = await ensureExercises();
-  const { startDate, endDate } = getSixMonthWindow();
+  const { startDate, endDate } = getSeedWindow(seedMonthsBack);
 
-  await ensureUserExercises(demoUser.id, exerciseIds);
-  await ensureUserExercises(powerUser.id, exerciseIds);
-  await removeFutureWorkouts(demoUser.id, endDate);
-  await removeFutureWorkouts(powerUser.id, endDate);
-  await resetSeedWindowWorkouts(demoUser.id, startDate, endDate);
-  await resetSeedWindowWorkouts(powerUser.id, startDate, endDate);
+  const createdByUser = [];
+  const trainingDays = getTrainingDays(sessionsPerWeek);
 
-  const demoCreated = await seedWorkoutsForUser(
-    demoUser.id,
-    exerciseIds,
-    [1, 3, 5],
-    0,
-  );
-  const powerCreated = await seedWorkoutsForUser(
-    powerUser.id,
-    exerciseIds,
-    [2, 4],
-    1,
-  );
+  for (let i = 0; i < seededUsers.length; i += 1) {
+    const user = seededUsers[i];
 
-  await normalizeUserWeightsToWholeNumbers(demoUser.id);
-  await normalizeUserWeightsToWholeNumbers(powerUser.id);
+    await ensureUserExercises(user.id, exerciseIds);
+
+    if (!appendOnly) {
+      await removeFutureWorkouts(user.id, endDate);
+      await resetSeedWindowWorkouts(user.id, startDate, endDate);
+    }
+
+    const createdCount = await seedWorkoutsForUser(
+      user.id,
+      exerciseIds,
+      shiftTrainingDays(trainingDays, i),
+      startDate,
+      endDate,
+      i % 2,
+    );
+
+    await normalizeUserWeightsToWholeNumbers(user.id);
+
+    createdByUser.push({ username: user.username, createdCount });
+  }
 
   console.log("Seed complete:");
-  console.log(`- Users: demo, power_user (password: ${seedPassword})`);
+  console.log(`- Users seeded: ${seededUsers.map((user) => user.username).join(", ")}`);
+  console.log(`- Demo-style seed password: ${seedPassword}`);
+  console.log(`- Mode: ${appendOnly ? "append-only" : "reset-window"}`);
+  console.log(`- Window: ${startDate.toISOString().slice(0, 10)} to ${endDate.toISOString().slice(0, 10)}`);
+  console.log(`- Sessions/week target: ${sessionsPerWeek}`);
   console.log(`- Exercises: ${EXERCISE_NAMES.length}`);
-  console.log(`- Workouts created for demo: ${demoCreated}`);
-  console.log(`- Workouts created for power_user: ${powerCreated}`);
+  createdByUser.forEach((entry) => {
+    console.log(`- Workouts created for ${entry.username}: ${entry.createdCount}`);
+  });
   console.log("- All seeded workout weights normalized to whole integers");
 }
 

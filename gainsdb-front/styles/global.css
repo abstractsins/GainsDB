@@ -703,11 +703,36 @@ li.workout-card {
   width: 514px;
   height: 275px;
   margin: 15px;
+  overflow: hidden;
+}
+
+div.workout-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 div.workout-card-header span.day {
   font-family: var(--oswald);
   font-size: 24pt;
+}
+
+div.workout-split-container {
+  width: min(100%, 180px);
+}
+
+div.workout-split-bar {
+  display: flex;
+  width: 100%;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+div.workout-split-segment {
+  height: 100%;
 }
 
 div.workout-card-header span.date {
@@ -723,8 +748,11 @@ div.workout-card-glance-body {
   display: flex;
   flex-wrap: wrap;
   height: 100%;
+  min-height: 0;
   width: 100%;
   border-radius: var(--border-radius-popup);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 div.workout-card-glance-body ul {
@@ -734,6 +762,8 @@ div.workout-card-glance-body ul {
   margin-top: 10px;
   gap: 8px;
   width: 100%;
+  align-content: flex-start;
+  padding-right: 4px;
 }
 
 div.workout-card-glance-body ul li {
@@ -743,16 +773,18 @@ div.workout-card-glance-body ul li {
 .glance-exe {
   display: flex;
   flex-wrap: wrap;
-  width: calc(33% - 4px);
+  width: calc(25% - 6px);
   border-radius: 8px;
-  font-size: 16px;
-  height: 89px;
-  padding: var(--padding-standard-1);
+  font-size: 11pt;
+  min-height: 62px;
+  padding: 6px 8px;
   cursor: pointer;
   border: 2px solid transparent;
   transition: border 300ms ease;
-  flex: 1 1 calc(33% - 4px);
-  max-width: calc(33% - 4px);
+  flex: 1 1 calc(25% - 6px);
+  max-width: calc(25% - 6px);
+  align-content: flex-start;
+  overflow-wrap: anywhere;
 }
 
 .glance-exe:hover {
@@ -781,8 +813,8 @@ li.workout.skeleton {
 }
 
 li.glance-exe.skeleton {
-  width: calc(33% - 4px);
-  height: 89px;
+  width: calc(25% - 6px);
+  height: 62px;
   background-color: rgb(78, 78, 78);
 }
 
@@ -825,7 +857,6 @@ span.order {
   flex-direction: column;
   border-radius: var(--border-radius-popup);
   height: 100%;
-  width: 100%;
   max-height: 185px;
   padding: 10px;
   margin-top: 10px;
@@ -1985,9 +2016,10 @@ html, body {
   }
 
   .glance-exe {
-    flex: 1 1 calc(50% - 4px);
-    max-width: calc(50% - 4px);
-    font-size: 11pt;
+    flex: 1 1 calc(33.333% - 6px);
+    max-width: calc(33.333% - 6px);
+    font-size: 10pt;
+    min-height: 56px;
   }
 
   .workout-card-details-body {

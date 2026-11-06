@@ -3,7 +3,11 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { WorkoutsObj, WorkoutListContainer } from "@/types/types";
 import { useSession } from "next-auth/react";
 
-export const useFetchWorkouts = (page: number, timeframe: string) => {
+export const useFetchWorkouts = (
+  page: number,
+  timeframe: string,
+  category: string,
+) => {
   const { data: session, status } = useSession();
 
   const [workoutsObj, setWorkoutsObj] = useState<WorkoutsObj>();
@@ -31,8 +35,8 @@ export const useFetchWorkouts = (page: number, timeframe: string) => {
   const cacheRef = useRef(new Map<string, WorkoutListContainer>());
 
   const doFetch = useCallback(
-    async (uId: string, p: number, tf: string, t: string) => {
-      const key = `${uId}|${p}|${tf}`;
+    async (uId: string, p: number, tf: string, cat: string, t: string) => {
+      const key = `${uId}|${p}|${tf}|${cat}`;
       // Serve from cache if present
       const cached = cacheRef.current.get(key);
       if (cached) {
@@ -46,7 +50,7 @@ export const useFetchWorkouts = (page: number, timeframe: string) => {
       setLoading(true);
       setError(null);
 
-      const url = `${server}/api/user/${uId}/history?page=${p}&timeframe=${tf}`;
+      const url = `${server}/api/user/${uId}/history?page=${p}&timeframe=${tf}&category=${cat}`;
       const res = await fetch(url, {
         method: "GET",
         headers: {
@@ -86,7 +90,7 @@ export const useFetchWorkouts = (page: number, timeframe: string) => {
     let cancelled = false;
     (async () => {
       try {
-        await doFetch(userId, page, timeframe, token);
+        await doFetch(userId, page, timeframe, category, token);
       } catch (e: any) {
         if (!cancelled) {
           setError(e.message ?? "Failed to fetch exercises");
@@ -98,7 +102,7 @@ export const useFetchWorkouts = (page: number, timeframe: string) => {
     return () => {
       cancelled = true;
     };
-  }, [isAuthed, status, userId, page, timeframe, token, doFetch]);
+  }, [isAuthed, status, userId, page, timeframe, category, token, doFetch]);
 
   return { workoutsObj, totalPages, totalWorkouts, loading, error };
 };

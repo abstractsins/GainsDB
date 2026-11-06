@@ -13,7 +13,7 @@ export interface WorkoutsObj {
 
 export interface DateObj {
     id: string;
-    exercises: string[];
+    exercises: [string, string][];
     sets: Sets;
 }
 

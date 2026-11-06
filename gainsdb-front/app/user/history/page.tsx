@@ -1,12 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
 import { useHistoryState } from "@/hooks/useHistoryState";
 import { useFetchWorkouts } from "@/hooks/useFetchWorkouts";
 import Loading from "./loading";
 import WorkoutHistoryList from "@/components/WorkoutHistory/WorkoutHistoryList";
 import ExercisesLegend from "@/components/ExercisesLegend";
 import Pagination from "@/components/WorkoutHistory/Pagination";
-import { applyCategoryFilter } from "@/utils/utils";
 
 import { toTitleCase } from "@/utils/utils";
 
@@ -20,19 +20,11 @@ export default function History() {
     HRTimeframe,
     activeCategoryWorkouts,
     setActiveCategoryWorkouts,
-    isCatFiltered,
-    setIsCatFiltered,
     onTimeChange,
   } = useHistoryState();
+  const selectedCategory = activeCategoryWorkouts ?? "all";
   const { workoutsObj, totalPages, totalWorkouts, loading, error } =
-    useFetchWorkouts(page, timeframe);
-
-  const filteredWorkoutsObj =
-    activeCategoryWorkouts !== null && activeCategoryWorkouts !== "all"
-      ? applyCategoryFilter(activeCategoryWorkouts, workoutsObj)
-      : workoutsObj;
-
-  const totalFilteredWorkouts = filteredWorkoutsObj?.dates.length;
+    useFetchWorkouts(page, timeframe, selectedCategory);
 
   if (error) {
     return <p className="error-message">{error}</p>;
@@ -41,6 +33,17 @@ export default function History() {
   const onResetExpansion = () => {
     console.log("Reset triggered but not implemented yet.");
   };
+
+  const onCategorySelect = (category: string) => {
+    setActiveCategoryWorkouts(category);
+    setPage(1);
+  };
+
+  useEffect(() => {
+    if (totalPages > 0 && page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [page, totalPages, setPage]);
 
   return (
     <div id="history-page" className={globalStyles.functionPage}>
@@ -65,7 +68,7 @@ export default function History() {
           </select>
           <span className="timeframe">
             {timeframe !== "all"
-              ? `You logged ${totalFilteredWorkouts || 0} workout${totalFilteredWorkouts !== 1 ? "s" : ""} ${activeCategoryWorkouts && activeCategoryWorkouts !== "all" ? "with " + toTitleCase(activeCategoryWorkouts.replace(/-/g, " ")) + " exercises" : ""} in the last ${HRTimeframe || "2 weeks"}!`
+              ? `You logged ${totalWorkouts || 0} workout${totalWorkouts !== 1 ? "s" : ""} ${activeCategoryWorkouts && activeCategoryWorkouts !== "all" ? "with " + toTitleCase(activeCategoryWorkouts.replace(/-/g, " ")) + " exercises" : ""} in the last ${HRTimeframe || "2 weeks"}!`
               : `Total workouts logged: ${totalWorkouts}`}
           </span>
         </div>
@@ -74,13 +77,13 @@ export default function History() {
       <ExercisesLegend
         onResetExpansion={onResetExpansion}
         activeCategoryOverride={activeCategoryWorkouts}
-        onCategorySelect={setActiveCategoryWorkouts}
+        onCategorySelect={onCategorySelect}
       />
 
       {loading ? (
         <Loading />
       ) : (
-        <WorkoutHistoryList workoutsObj={filteredWorkoutsObj} />
+        <WorkoutHistoryList workoutsObj={workoutsObj} />
       )}
 
       <Pagination page={page} totalPages={totalPages} setPage={setPage} />

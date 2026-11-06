@@ -20,13 +20,49 @@ const flattenWorkoutHistory = (workouts) =>
     ),
   );
 
+const filterWorkoutsByCategory = (workoutsObj, category) => {
+  if (!category || category === "all") {
+    return workoutsObj;
+  }
+
+  const filteredDates = workoutsObj.dates.filter((date) => {
+    const workout = workoutsObj[date];
+    if (!workout || !workout.exercises) return false;
+    return workout.exercises.some((exercise) => exercise[1] === category);
+  });
+
+  const filtered = { dates: filteredDates };
+  filteredDates.forEach((date) => {
+    filtered[date] = workoutsObj[date];
+  });
+
+  return filtered;
+};
+
+const paginateWorkoutsObj = (workoutsObj, page, limit) => {
+  if (!limit || limit <= 0) {
+    return workoutsObj;
+  }
+
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  const pagedDates = workoutsObj.dates.slice(start, end);
+  const paged = { dates: pagedDates };
+
+  pagedDates.forEach((date) => {
+    paged[date] = workoutsObj[date];
+  });
+
+  return paged;
+};
+
 router.get("/:userId/history", authMiddleware, async (req, res) => {
   console.log(`:userId/history get request`);
   const { userId } = req.params;
   const timeframe = req.query.timeframe || "all";
+  const category = req.query.category || "all";
   const page = parseInt(req.query.page) || 1;
-  const limit = timeframe === "all" ? 9 : null;
-  const offset = limit ? (page - 1) * limit : null;
+  const limit = 9;
 
   console.log(`looking up workout history for user ${userId}`);
   console.log(`timeframe ${timeframe}`);
@@ -60,21 +96,11 @@ router.get("/:userId/history", authMiddleware, async (req, res) => {
       };
     }
 
-    const totalWorkoutsPromise = prisma.workouts.count({
-      where: whereClause,
-    });
-
-    const workoutsPromise = prisma.workouts.findMany({
+    const workouts = await prisma.workouts.findMany({
       where: whereClause,
       orderBy: {
         workout_date: "desc",
       },
-      ...(timeframe === "all"
-        ? {
-            take: limit,
-            skip: offset,
-          }
-        : {}),
       include: {
         workout_exercises: {
           include: {
@@ -99,28 +125,23 @@ router.get("/:userId/history", authMiddleware, async (req, res) => {
       },
     });
 
-    const [totalWorkouts, workouts] = await Promise.all([
-      totalWorkoutsPromise,
-      workoutsPromise,
-    ]);
-
-    let totalPages = 1;
     const rows = flattenWorkoutHistory(workouts);
     const workoutsRefined = workoutProcessing(rows);
+    const filteredWorkouts = filterWorkoutsByCategory(workoutsRefined, category);
+    const filteredTotalWorkouts = filteredWorkouts.dates.length;
+    const totalPages =
+      timeframe === "all"
+        ? Math.max(1, Math.ceil(filteredTotalWorkouts / limit))
+        : 1;
 
-    if (timeframe === "all") {
-      totalPages = Math.ceil(totalWorkouts / limit);
-    }
-
-    if (rows.length === 0) {
-      return res
-        .status(200)
-        .json({ message: "No workouts found for this user" });
-    }
+    const pagedWorkouts =
+      timeframe === "all"
+        ? paginateWorkoutsObj(filteredWorkouts, page, limit)
+        : filteredWorkouts;
 
     res.json({
-      workouts: workoutsRefined,
-      totalWorkouts,
+      workouts: pagedWorkouts,
+      totalWorkouts: filteredTotalWorkouts,
       totalPages,
       currentPage: page,
     });
