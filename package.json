@@ -6,7 +6,7 @@
   },
   "scripts": {
     "dev": "pnpm -r --parallel --filter gainsdb-frontend --filter gainsdb-backend run dev",
-    "start:backend": "node gainsdb-back/src/server.js",
+    "start:backend": "pnpm --dir gainsdb-back run start",
     "build:frontend": "pnpm --filter gym-progress-frontend build"
   }
 }
