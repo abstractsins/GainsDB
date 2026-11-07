@@ -1,7 +1,15 @@
 import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { Prisma, PrismaClient } from "@prisma/client";
+import * as PrismaClientPackage from "@prisma/client";
+
+const PrismaClient =
+  PrismaClientPackage.PrismaClient ?? PrismaClientPackage.default?.PrismaClient;
+const Prisma = PrismaClientPackage.Prisma ?? PrismaClientPackage.default?.Prisma;
+
+if (!PrismaClient || !Prisma) {
+  throw new Error("Unable to resolve Prisma exports from @prisma/client");
+}
 
 const connectionString = process.env.DATABASE_URL;
 

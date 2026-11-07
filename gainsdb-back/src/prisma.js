@@ -1,6 +1,13 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
+import * as PrismaClientPackage from "@prisma/client";
+
+const PrismaClient =
+  PrismaClientPackage.PrismaClient ?? PrismaClientPackage.default?.PrismaClient;
+
+if (!PrismaClient) {
+  throw new Error("Unable to resolve PrismaClient from @prisma/client");
+}
 
 // Reuse a single client in development to avoid too many connections on reloads.
 const globalForPrisma = globalThis;

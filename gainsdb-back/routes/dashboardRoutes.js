@@ -1,7 +1,13 @@
 import express from "express";
-import { Prisma } from "@prisma/client";
+import * as PrismaClientPackage from "@prisma/client";
 import authMiddleware from "../middleware/authMiddleware.js";
 import prisma from "../src/prisma.js";
+
+const Prisma = PrismaClientPackage.Prisma ?? PrismaClientPackage.default?.Prisma;
+
+if (!Prisma) {
+  throw new Error("Unable to resolve Prisma from @prisma/client");
+}
 
 const router = express.Router();
 
