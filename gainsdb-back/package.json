@@ -4,9 +4,11 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "node ./src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
+    "db:generate": "prisma generate",
     "db:seed": "prisma db seed"
   },
   "keywords": [],
@@ -21,14 +23,13 @@
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
     "express": "^4.22.2",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "prisma": "7.10.0"
   },
   "engines": {
     "node": "22.x"
   },
-  "devDependencies": {
-    "prisma": "7.10.0"
-  },
+  "devDependencies": {},
   "prisma": {
     "seed": "node prisma/seed.js"
   }
