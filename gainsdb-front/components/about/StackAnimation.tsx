@@ -88,14 +88,13 @@ export default function StackAnimation() {
         ScrollTrigger.create({
             trigger: '.animation-container',
             scroller: '#about-page',
-            start: 'left right',
-            end: 'right left',
+            start: 'top bottom',
+            end: 'bottom top',
             scrub: false,
             onEnter: () => tl.play(),
             onLeave: () => tl.pause(),
             onEnterBack: () => tl.play(),
             onLeaveBack: () => tl.pause(),
-            horizontal: true,
             id: 'tl trigger'
         });
 
