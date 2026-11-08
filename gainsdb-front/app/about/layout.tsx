@@ -33,7 +33,7 @@ export default function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [isChecking, setIsChecking] = useState(true);
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isMenuActive, setIsMenuActive] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +51,7 @@ export default function DashboardLayout({
       setIsMobile(window.innerWidth <= 768);
     };
 
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
