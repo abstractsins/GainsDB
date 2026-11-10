@@ -1226,6 +1226,11 @@ div.about-section-skeleton {
   position: relative;
 }
 
+#p3 {
+  height: auto;
+  min-height: 50vh;
+}
+
 #p3 .left {
   display: flex;
   justify-content: center;
@@ -1234,6 +1239,13 @@ div.about-section-skeleton {
   font-size: 18pt;
   width: 50%;
   line-height: 2;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+#p3 .left p {
+  width: 100%;
+  overflow-wrap: anywhere;
 }
 
 #p3 .right {
@@ -1242,6 +1254,13 @@ div.about-section-skeleton {
   align-items: center;
   padding: 50px;
   width: 50%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+#p3 .right .img-app-window {
+  width: min(100%, 550px);
+  height: auto;
 }
 
 #p4 .left {
@@ -1259,6 +1278,13 @@ div.about-section-skeleton {
   justify-content: center;
   align-items: center;
   width: 50%;
+}
+
+#p4 .right .img-notes-app {
+  width: min(100%, 300px);
+  height: auto;
+  max-height: min(45vh, 520px);
+  object-fit: contain;
 }
 
 div.nav-arrow {
@@ -1288,9 +1314,15 @@ div.nav-arrow {
   display: flex;
   flex-direction: column;
   line-height: 2;
-  padding: 100px;
+  padding: 50px;
   height: 100%;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+}
+
+#p5 p:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #new-workout-popup h2 {
@@ -2424,6 +2456,25 @@ html, body {
 }
 
 /** ABOUT PAGE MEDIA QUERIES */
+@media screen and (max-width: 2330px) {
+  #p3 .left {
+    padding-right: 0 !important;
+  }
+}
+
+@media screen and (max-width: 2050px) {
+  #p3 .left {
+    font-size: 16pt;
+  }
+}
+
+@media screen and (max-width: 1770) {
+  #p3 .left {
+    line-height: 1.5;
+    padding-right: 25px !important;
+  }
+}
+
 @media screen and (max-width: 2120px) {
   #p1 .left {
     padding: 20px !important;
@@ -2537,6 +2588,11 @@ html, body {
   div#nav-signal-container-left {
     left: 7vw !important;
   }
+
+  #p3 .right .img-app-window {
+    width: min(100%, 460px);
+    height: auto;
+  }
 }
 
 @media screen and (max-width: 1400px) {
@@ -2548,6 +2604,9 @@ html, body {
 
   #p3 {
     flex-direction: column;
+    height: auto;
+    min-height: 50vh;
+    padding-bottom: 40px;
   }
 
   #p3 .left,
@@ -2561,8 +2620,13 @@ html, body {
     padding: 30px;
   }
 
-  #p3 .right img {
-    width: 400;
+  #p3 .right {
+    padding: 0 30px 30px 30px;
+  }
+
+  #p3 .right .img-app-window {
+    width: min(100%, 380px);
+    height: auto;
   }
 
   #p4 .left {
@@ -2573,8 +2637,9 @@ html, body {
     margin: 0px;
   }
 
-  .img-notes-app {
-    width: 300px;
+  #p4 .right .img-notes-app {
+    width: min(100%, 260px);
+    max-height: min(40vh, 450px);
   }
 }
 
@@ -2657,9 +2722,19 @@ html, body {
     font-size: 12pt;
   }
 
+  #p2 .right {
+    position: relative;
+    width: 100%;
+    min-height: 240px;
+    overflow: hidden;
+  }
+
   #p2 div.animation-container {
-    top: 100px !important;
-    right: 50px !important;
+    top: 85px !important;
+    right: auto !important;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100%, 260px);
   }
 
   #p4 .left {
@@ -2678,12 +2753,29 @@ html, body {
     height: 70vh;
   }
 
+  #p1 .left,
+  #p1 .right,
+  #p2 .left,
+  #p2 .right,
+  #p3 .left,
+  #p3 .right,
+  #p4 .left,
+  #p4 .right,
+  #p5 .body {
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+
   #p3 .left {
-    padding: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
 
   #p4 {
     flex-direction: column;
+    height: auto;
+    min-height: 70vh;
   }
 
   #p4 .left,
@@ -2691,8 +2783,23 @@ html, body {
     width: 100%;
   }
 
+  #p4 .left {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    line-height: 1.35;
+  }
+
+  #p4 .left p {
+    overflow-wrap: anywhere;
+  }
+
   #p4 .right {
     height: 100% !important;
+  }
+
+  #p4 .right .img-notes-app {
+    width: min(100%, 240px);
+    max-height: 32vh;
   }
 }
 

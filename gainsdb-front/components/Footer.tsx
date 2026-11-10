@@ -2,15 +2,19 @@
 
 import styles from "./Footer.module.css";
 import { signOut } from "next-auth/react";
-import { useAuthContext } from "@/contexts/AuthContext";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Footer() {
-  const { isLoggedIn } = useAuthContext();
+  const pathname = usePathname();
+  const { status } = useSession();
+  const isAuthenticated = status === "authenticated";
+  const isAboutPage = pathname === "/about";
 
   return (
     <footer className={styles.footerWrapper}>
-      {isLoggedIn && (
+      {isAuthenticated && !isAboutPage && (
         <a
           onClick={() => signOut({ callbackUrl: "/" })}
           className={styles.footerLink}
@@ -18,9 +22,31 @@ export default function Footer() {
           Logout
         </a>
       )}
-      <Link href="/about" className={styles.footerLink}>
-        About
-      </Link>
+
+      {isAboutPage ? (
+        isAuthenticated ? (
+          <>
+            <Link href="/user/dashboard" className={styles.footerLink}>
+              Back
+            </Link>
+            <a
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className={styles.footerLink}
+            >
+              Logout
+            </a>
+          </>
+        ) : (
+          <Link href="/" className={styles.footerLink}>
+            Login
+          </Link>
+        )
+      ) : (
+        <Link href="/about" className={styles.footerLink}>
+          About
+        </Link>
+      )}
+
       <Link
         href="https://divs4u.com"
         target="_blank"

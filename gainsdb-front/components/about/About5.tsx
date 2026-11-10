@@ -1,28 +1,28 @@
-import Link from "next/link"
+import Link from "next/link";
 import { robotoSlab } from "@/lib/fonts";
 
 interface Props {
-    isMobile: boolean
-    width: number
+  isMobile: boolean;
+  width: number;
 }
 
 export default function About3({ isMobile }: Props) {
-
-    return (
-
-        <div id="p5" className="about-section">
-
-            <div className="body">
-                <p>
-                    <span className="p-lead">This project showcases</span> my full-stack development skills, including building a modern, interactive UI, designing RESTful APIs, and implementing secure authentication and database management.
-                </p>
-                <p className="flex flex-col justify-center items-center">
-                    Check out my other projects or drop me a message at
-                    <Link
-                        href="https://divs4u.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`
+  return (
+    <div id="p5" className="about-section">
+      <div className="body">
+        <p>
+          <span className="p-lead">This project showcases</span> my full-stack
+          development skills, including building a modern, interactive UI,``
+          designing RESTful APIs, and implementing secure authentication and
+          database management.
+        </p>
+        <p>
+          Check out my other projects or drop me a message at
+          <Link
+            href="https://divs4u.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`
                             ${robotoSlab.className} 
                             flex
                             items-center
@@ -36,13 +36,14 @@ export default function About3({ isMobile }: Props) {
                             lg:text-[22pt]
                             xl:text-[24pt]
                         `}
-                    >
-                        Divs4U
-                    </Link>
-                </p>
-            </div>
-            <div className="nav-arrow" id="right"><span className="nav-text">5/5</span></div>
-
-        </div>
-    )
+          >
+            Divs4U
+          </Link>
+        </p>
+      </div>
+      <div className="nav-arrow" id="right">
+        <span className="nav-text">5/5</span>
+      </div>
+    </div>
+  );
 }
